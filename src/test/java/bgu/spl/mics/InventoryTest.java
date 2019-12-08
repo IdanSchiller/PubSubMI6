@@ -10,11 +10,10 @@ public class InventoryTest {
     public void setUp(){
 
     }
-
+    // test for commit and push
     @Test
     public void test(){
         //TODO: change this test and add more tests :)
-        // TEST
         fail("Not a good test");
     }
 }
