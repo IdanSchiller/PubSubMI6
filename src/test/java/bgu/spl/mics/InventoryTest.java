@@ -14,6 +14,7 @@ public class InventoryTest {
     @Test
     public void test(){
         //TODO: change this test and add more tests :)
+        // TEST
         fail("Not a good test");
     }
 }
