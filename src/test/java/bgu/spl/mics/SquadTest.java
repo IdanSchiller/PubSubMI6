@@ -5,6 +5,10 @@ import bgu.spl.mics.application.passiveObjects.Squad;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SquadTest {
@@ -25,6 +29,19 @@ public class SquadTest {
         sq.load(s);
     }
 
+    public void testgetAgentsNames(){
+        List<String> s1= new ArrayList<String>();
+        s1.add("a");
+        s1.add("b");
+        s1.add("c");
+        List<String> s2= new ArrayList<String>();
+        s2.add("007");
+        s2.add("009");
+        s2.add("0012");
+        assertEquals(s1,sq.getAgentsNames(s2));
+
+    }
+//    public void test
     @Test
     public void test(){
         //TODO: change this test and add more tests :)
