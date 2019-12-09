@@ -29,6 +29,12 @@ public class Inventory {
      */
 	public void load (String[] inventory) {
 		//TODO: Implement this
+		List<String> gadgets = new List<String>;
+
+		for(String s : inventory)
+		{
+			gadgets.add(s);
+		}
 	}
 	
 	/**
