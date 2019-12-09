@@ -39,9 +39,16 @@ public class SquadTest {
         s2.add("009");
         s2.add("0012");
         assertEquals(s1,sq.getAgentsNames(s2));
-
     }
-//    public void test
+
+    public void testreleaseAgents(){
+        List<String> s=new ArrayList<String>();
+        s.add("007");
+        s.add("009");
+        sq.releaseAgents(s);
+        assertEquals(false,"007");
+        assertEquals(true,"0012");
+    }
     @Test
     public void test(){
         //TODO: change this test and add more tests :)

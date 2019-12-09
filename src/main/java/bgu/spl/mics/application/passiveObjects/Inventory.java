@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +30,7 @@ public class Inventory {
      */
 	public void load (String[] inventory) {
 		//TODO: Implement this
-		List<String> gadgets = new List<String>;
-
+		List<String> gadgets = new ArrayList<String>();
 		for(String s : inventory)
 		{
 			gadgets.add(s);
