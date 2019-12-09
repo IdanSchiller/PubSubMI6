@@ -10,7 +10,7 @@ public class InventoryTest {
     public void setUp(){
 
     }
-    // test
+    // tes
     @Test
     public void test(){
         //TODO: change this test and add more tests :)
