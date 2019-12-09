@@ -15,7 +15,12 @@ public class SquadTest {
         Agent a = new Agent();
         Agent b = new Agent();
         Agent c = new Agent();
-
+        a.setName("a");
+        b.setName("b");
+        c.setName("c");
+        a.setSerialNumber("007");
+        b.setSerialNumber("009");
+        c.setSerialNumber("0012");
         Agent[] s = {a,b,c};
         sq.load(s);
     }
