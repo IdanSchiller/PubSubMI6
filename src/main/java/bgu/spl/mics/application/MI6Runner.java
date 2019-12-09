@@ -16,8 +16,12 @@ import org.json.simple.parser.ParseException;
 public class MI6Runner {
     public static void main(String[] args) {
         // TODO Implement this
+        if(args[0]==null)
+        {
 
-
+        }
+        Object obj = new JSONParser().parse(new FileReader(args[0]));
+        JSONObject jo = (JSONObject) obj;
 
     }
 }

@@ -9,12 +9,18 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class MissionInfo {
-
+	private String missionName;
+	private List<String> SerialAgentsNumbers;
+	private String gadget;
+	private int TimeIssued;
+	private int TimeExpired;
+	private int Duration;
     /**
      * Sets the name of the mission.
      */
     public void setMissionName(String missionName) {
         // TODO Implement this
+		this.missionName=missionName;
     }
 
 	/**
@@ -22,7 +28,7 @@ public class MissionInfo {
      */
 	public String getMissionName() {
 		// TODO Implement this
-		return null;
+		return missionName;
 	}
 
     /**
@@ -30,6 +36,7 @@ public class MissionInfo {
      */
     public void setSerialAgentsNumbers(List<String> serialAgentsNumbers) {
         // TODO Implement this
+		this.SerialAgentsNumbers=serialAgentsNumbers;
     }
 
 	/**
@@ -37,7 +44,7 @@ public class MissionInfo {
      */
 	public List<String> getSerialAgentsNumbers() {
 		// TODO Implement this
-		return null;
+		return SerialAgentsNumbers;
 	}
 
     /**
@@ -45,6 +52,7 @@ public class MissionInfo {
      */
     public void setGadget(String gadget) {
         // TODO Implement this
+		this.gadget=gadget;
     }
 
 	/**
@@ -52,7 +60,7 @@ public class MissionInfo {
      */
 	public String getGadget() {
 		// TODO Implement this
-		return null;
+		return gadget;
 	}
 
     /**
@@ -60,6 +68,7 @@ public class MissionInfo {
      */
     public void setTimeIssued(int timeIssued) {
         // TODO Implement this
+		this.TimeIssued=timeIssued;
     }
 
 	/**
@@ -67,7 +76,7 @@ public class MissionInfo {
      */
 	public int getTimeIssued() {
 		// TODO Implement this
-		return 0;
+		return TimeIssued;
 	}
 
     /**
@@ -75,6 +84,7 @@ public class MissionInfo {
      */
     public void setTimeExpired(int timeExpired) {
         // TODO Implement this
+		this.TimeExpired=timeExpired;
     }
 
 	/**
@@ -82,7 +92,7 @@ public class MissionInfo {
      */
 	public int getTimeExpired() {
 		// TODO Implement this
-		return 0;
+		return TimeExpired;
 	}
 
     /**
@@ -90,6 +100,7 @@ public class MissionInfo {
      */
     public void setDuration(int duration) {
         // TODO Implement this
+		this.Duration=duration;
     }
 
 	/**
@@ -97,6 +108,6 @@ public class MissionInfo {
 	 */
 	public int getDuration() {
 		// TODO Implement this
-		return 0;
+		return Duration;
 	}
 }
