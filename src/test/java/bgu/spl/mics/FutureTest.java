@@ -26,9 +26,10 @@ public class FutureTest {
     }
 
     public void testResolve(){
-        T result=
+        boolean result= false;
         f.resolve(result);
-
+        Object x=f.get();
+        assertEquals(true,x instanceof boolean);
     }
 
     @Test
