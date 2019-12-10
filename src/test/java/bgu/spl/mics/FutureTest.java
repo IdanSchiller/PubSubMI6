@@ -10,10 +10,34 @@ public class FutureTest {
     public void setUp(){
         f=new Future();
 
+
+    }
+
+    public void testGet(){
+
+    }
+
+    public void testIsDone(){
+        boolean b = f.isDone();
+        assertEquals(false,b);
+        boolean result=true;
+        f.resolve(result);
+        assertEquals(true,b);
+    }
+
+    public void testResolve(){
+        T result=
+        f.resolve(result);
+
     }
 
     @Test
     public void test(){
+        testIsDone();
+        testResolve();
+        testGet();
+
+
         //TODO: change this test and add more tests :)
         fail("Not a good test");
     }
