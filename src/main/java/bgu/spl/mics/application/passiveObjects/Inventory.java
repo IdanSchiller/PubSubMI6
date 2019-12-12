@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +30,7 @@ public class Inventory {
      */
 	public void load (String[] inventory) {
 		//TODO: Implement this
-		List<String> gadgets = new List<String>;
-
+		List<String> gadgets = new ArrayList<String>();
 		for(String s : inventory)
 		{
 			gadgets.add(s);
@@ -44,8 +44,13 @@ public class Inventory {
      * @return 	‘false’ if the gadget is missing, and ‘true’ otherwise
      */
 	public boolean getItem(String gadget){
+		if(gadgets.contains(gadget))
+		{
+			gadgets.remove(gadget);
+			return true;
+		}
 		//TODO: Implement this
-		return true;
+		return false;
 	}
 
 	/**
