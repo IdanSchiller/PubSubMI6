@@ -13,9 +13,9 @@ public class FutureTest {
 
     }
 
-    public void testGet(){
-
-    }
+//    public void testGet(){
+//
+//    }
 
     public void testIsDone(){
         boolean b = f.isDone();
@@ -29,14 +29,14 @@ public class FutureTest {
         boolean result= false;
         f.resolve(result);
         Object x=f.get();
-        assertEquals(true,x instanceof boolean);
+        assertEquals(true,x.getClass());
     }
 
     @Test
     public void test(){
         testIsDone();
         testResolve();
-        testGet();
+//        testGet();
 
 
         //TODO: change this test and add more tests :)

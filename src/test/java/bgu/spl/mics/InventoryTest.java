@@ -26,6 +26,7 @@ public class InventoryTest {
     // test ziv
     @Test
     public void test(){
+        setUp();
         testLoad();
 //        //TODO: change this test and add more tests :)
 //        fail("Not a good test");

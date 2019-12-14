@@ -51,6 +51,9 @@ public class SquadTest {
     }
     @Test
     public void test(){
+        setUp();
+        testgetAgentsNames();
+        testreleaseAgents();
         //TODO: change this test and add more tests :)
         fail("Not a good test");
     }
