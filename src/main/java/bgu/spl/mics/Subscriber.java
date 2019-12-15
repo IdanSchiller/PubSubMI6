@@ -81,8 +81,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-
-        //TODO: implement this.
+                    this.broadcastMap.put(type,callback);
+                    MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
     }
 
     /**
@@ -117,11 +117,17 @@ public abstract class Subscriber extends RunnableSubPub {
         while (!terminated) {
             try {
                 Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);
-
                 Class type = currMS.getClass();
-                if (type.equals(MissionReceivedEvent.class)) {
+                switch (type.toString()) {
+                    case "TickBroadcast":
+                        TickBroadcast b = new TickBroadcast();
+                        Callback<TickBroadcast> tickBroadcastCallback = broadcastMap.get(TickBroadcast.class);
+                        tickBroadcastCallback.call(b);
+                    case "MissionReceivedEvent":
+//                        MissionReceivedEvent e = new MissionReceivedEvent();
+//                        Callback<MissionReceivedEvent> MREcallBack = eventMap.get(MissionReceivedEvent.class);
+//                        MREcallBack.call(e);
                 }
-
 
             }catch (Exception e){}
         }

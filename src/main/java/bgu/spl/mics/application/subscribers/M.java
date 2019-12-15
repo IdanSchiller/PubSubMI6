@@ -2,6 +2,8 @@ package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.*;
 
+import java.util.List;
+
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
  *
@@ -20,16 +22,15 @@ public class M extends Subscriber {
 	protected void initialize() {
 		tickCounter=0;
 		MessageBrokerImpl.getInstance().register(this);
-		TickBroadcast tickBroadcast = new TickBroadcast();
-		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast c) -> tickCounter++;
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
-		MissionReceivedEvent MRE = new MissionReceivedEvent();
-		Callback<MissionReceivedEvent> MREcallBack = c -> {
-			// initiate everything that is needed.
-
+		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
+			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
+			String gadget = missionEvent.getMission().getGadget();
+			GadgetAvailableEvent gadgetEvent = new GadgetAvailableEvent(gadget);
 		};
 		this.subscribeEvent(MissionReceivedEvent.class,MREcallBack);
-//
+
 	}
 
 }
