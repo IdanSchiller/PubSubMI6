@@ -34,6 +34,7 @@ public class MessageBrokerTest {
         }
         catch (Exception e){};
     }
+
     public void testSubscribeBroadcast() {
         ms.subscribeBroadcast(b.getClass(), simlpeSub);
         ms.sendBroadcast(b);
@@ -47,6 +48,7 @@ public class MessageBrokerTest {
         ms.complete(event,"resolved");
         assertEquals("resolved",f.get());
     }
+
     public void testSendBroadcast(){
         ms.sendBroadcast(b);
         try{
@@ -54,6 +56,7 @@ public class MessageBrokerTest {
     }
         catch (Exception e){};
     }
+
     public void testSendEvent(){
         ms.sendEvent(event);
         try{
@@ -61,6 +64,7 @@ public class MessageBrokerTest {
     }
         catch (Exception e){};
     }
+
     public void testRegister(){
         ms.register(anotherSimpleSub);
         ms.subscribeEvent(event.class,anotherSimpleSub);
@@ -70,6 +74,7 @@ public class MessageBrokerTest {
     }
         catch (Exception e){};
     }
+
     public void testUnregister() {
         ms.unregister(anotherSimpleSub);
         try {
@@ -77,12 +82,14 @@ public class MessageBrokerTest {
         }
         catch (Exception e){};
     }
+
     public void testAwaitMessage(){
         try {
             assertEquals(b,ms.awaitMessage(simlpeSub));
         }
         catch (Exception e){};
     }
+
     @Test
     public void test(){
         setUp();

@@ -9,13 +9,7 @@ public class FutureTest {
     @BeforeEach
     public void setUp(){
         f=new Future();
-
-
     }
-
-//    public void testGet(){
-//
-//    }
 
     public void testIsDone(){
         boolean b = f.isDone();
@@ -36,9 +30,6 @@ public class FutureTest {
     public void test(){
         testIsDone();
         testResolve();
-//        testGet();
-
-
         //TODO: change this test and add more tests :)
         fail("Not a good test");
     }
