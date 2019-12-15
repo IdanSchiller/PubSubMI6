@@ -1,8 +1,6 @@
 package bgu.spl.mics.application.subscribers;
 
-import bgu.spl.mics.MessageBrokerImpl;
-import bgu.spl.mics.Subscriber;
-import bgu.spl.mics.TickBroadcast;
+import bgu.spl.mics.*;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -11,6 +9,7 @@ import bgu.spl.mics.TickBroadcast;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class M extends Subscriber {
+	private int tickCounter;
 
 	public M() {
 		super("Change_This_Name");
@@ -19,10 +18,20 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		tickCounter=0;
 		MessageBrokerImpl.getInstance().register(this);
 		TickBroadcast tickBroadcast = new TickBroadcast();
-		this.subscribeBroadcast(tickBroadcast.getClass(),tickBroadcast.getCallback());
-		
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast c) -> tickCounter++;
+		this.subscribeBroadcast(tickBroadcast.getClass(),tickBroadcastCallback);
+		MissionReceivedEvent MRE = new MissionReceivedEvent();
+		Callback<MissionReceivedEvent> MREcallBack = new Callback<MissionReceivedEvent>() {
+			@Override
+			public void call(MissionReceivedEvent c) {
+
+			}
+		};
+		this.subscribeEvent(MRE.getClass(),MREcallBack);
+
 	}
 
 }

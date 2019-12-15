@@ -1,4 +1,4 @@
-package bgu.spl.mics.application;
+package bgu.spl.mics;
 
 import bgu.spl.mics.Callback;
 

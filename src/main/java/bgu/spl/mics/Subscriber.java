@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 
+import java.util.Map;
+
 /**
  * The Subscriber is an abstract class that any subscriber in the system
  * must extend. The abstract Subscriber class is responsible to get and
@@ -16,7 +18,12 @@ package bgu.spl.mics;
  * <p>
  */
 public abstract class Subscriber extends RunnableSubPub {
+
+    //Fields:
+    private Map <Class,Callback> eventMap;
+    private Map <Class,Callback> broadcastMap;
     private boolean terminated = false;
+
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
@@ -48,6 +55,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
+        eventMap.put(type,callback);
+        MessageBrokerImpl.getInstance().subscribeEvent(type,this);
         //TODO: implement this.
     }
 
@@ -72,6 +81,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
+
         //TODO: implement this.
     }
 
@@ -105,6 +115,12 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         initialize();
         while (!terminated) {
+            Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);
+            Class type = currMS.getClass();
+            if (type.equals(MissionReceivedEvent.class)) {
+            }
+
+
 
             System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
         }

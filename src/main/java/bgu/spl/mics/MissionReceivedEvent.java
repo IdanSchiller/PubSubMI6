@@ -1,10 +1,8 @@
 package bgu.spl.mics;
 
-public class MissionReceivedEvent<T> implements Event<T> {
-   private T t;
+public class MissionReceivedEvent implements Event {
 
 
-    public MissionReceivedEvent(T resault){
-        t = resault;
+    public MissionReceivedEvent(){
     }
 }
