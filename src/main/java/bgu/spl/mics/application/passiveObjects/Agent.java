@@ -8,11 +8,16 @@ package bgu.spl.mics.application.passiveObjects;
  */
 public class Agent {
 
+	private String name;
+	private String serialNumber;
+	private boolean isAvailable=true;
+
 	/**
 	 * Sets the serial number of an agent.
 	 */
 	public void setSerialNumber(String serialNumber) {
 		// TODO Implement this
+		serialNumber=serialNumber;
 	}
 
 	/**
@@ -22,7 +27,7 @@ public class Agent {
      */
 	public String getSerialNumber() {
 		// TODO Implement this
-		return null;
+		return serialNumber;
 	}
 
 	/**
@@ -30,6 +35,7 @@ public class Agent {
 	 */
 	public void setName(String name) {
 		// TODO Implement this
+		name=name;
 	}
 
 	/**
@@ -39,7 +45,7 @@ public class Agent {
      */
 	public String getName() {
 		// TODO Implement this
-		return null;
+		return name;
 	}
 
 	/**
@@ -49,7 +55,7 @@ public class Agent {
      */
 	public boolean isAvailable() {
 		// TODO Implement this
-		return false;
+		return isAvailable;
 	}
 
 	/**
