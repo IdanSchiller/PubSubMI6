@@ -31,7 +31,7 @@ public class M extends Subscriber {
 			}
 		};
 		this.subscribeEvent(MRE.getClass(),MREcallBack);
-
+//
 	}
 
 }
