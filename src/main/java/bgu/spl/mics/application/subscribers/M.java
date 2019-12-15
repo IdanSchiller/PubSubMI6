@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.TickBroadcast;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -17,7 +19,9 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
+		MessageBrokerImpl.getInstance().register(this);
+		TickBroadcast tickBroadcast = new TickBroadcast();
+		this.subscribeBroadcast(tickBroadcast.getClass(),tickBroadcast.getCallback());
 		
 	}
 
