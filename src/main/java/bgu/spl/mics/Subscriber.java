@@ -115,14 +115,15 @@ public abstract class Subscriber extends RunnableSubPub {
     public final void run() {
         initialize();
         while (!terminated) {
-            Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);
-            Class type = currMS.getClass();
-            if (type.equals(MissionReceivedEvent.class)) {
-            }
+            try {
+                Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);
+
+                Class type = currMS.getClass();
+                if (type.equals(MissionReceivedEvent.class)) {
+                }
 
 
-
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+            }catch (Exception e){}
         }
     }
 
