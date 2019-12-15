@@ -22,7 +22,7 @@ public class M extends Subscriber {
 		MessageBrokerImpl.getInstance().register(this);
 		TickBroadcast tickBroadcast = new TickBroadcast();
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast c) -> tickCounter++;
-		this.subscribeBroadcast(tickBroadcast.getClass(),tickBroadcastCallback);
+		this.subscribeBroadcast( tickBroadcast.getClass(),tickBroadcastCallback);
 		MissionReceivedEvent MRE = new MissionReceivedEvent();
 		Callback<MissionReceivedEvent> MREcallBack = new Callback<MissionReceivedEvent>() {
 			@Override
