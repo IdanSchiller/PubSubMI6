@@ -29,6 +29,6 @@ public class InventoryTest {
         setUp();
         testLoad();
 //        //TODO: change this test and add more tests :)
-//        fail("Not a good test");
+        fail("Not a good test");
     }
 }

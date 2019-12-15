@@ -11,7 +11,6 @@ public class MessageBrokerTest {
     Subscriber simlpeSub;// = new SimpleSubscriber();
     String resault = "Not Resolved";
     Event<String> event = new MissionReceivedEvent(resault);
-    Class<MissionReceivedEvent> c ;
     MessageBrokerImpl ms ;
     Broadcast b;
     Future<String > f = ms.sendEvent(event);
@@ -27,44 +26,73 @@ public class MessageBrokerTest {
     }
 
 
-    public void testSubscribEvent(){
-        ms.subscribeEvent(event.class,simlpeSub);
+    public void testSubscribEvent() {
+        ms.subscribeEvent(event.class, simlpeSub);
         ms.sendEvent(event);
-            assertEquals(event,ms.awaitMessage(simlpeSub));
+        try {
+            assertEquals(event, ms.awaitMessage(simlpeSub));
+        }
+        catch (Exception e){};
     }
-    public void testSubscribeBroadcast(){
-        ms.subscribeBroadcast(b.getClass(),simlpeSub);
+
+    public void testSubscribeBroadcast() {
+        ms.subscribeBroadcast(b.getClass(), simlpeSub);
         ms.sendBroadcast(b);
-        assertEquals(b,ms.awaitMessage(simlpeSub));
+        try {
+            assertEquals(b, ms.awaitMessage(simlpeSub));
+        }
+        catch (Exception e){};
     }
 
     public void testComplete(){
         ms.complete(event,"resolved");
         assertEquals("resolved",f.get());
     }
+
     public void testSendBroadcast(){
         ms.sendBroadcast(b);
+        try{
         assertEquals(b,ms.awaitMessage(simlpeSub));
     }
+        catch (Exception e){};
+    }
+
     public void testSendEvent(){
         ms.sendEvent(event);
+        try{
         assertEquals(event,ms.awaitMessage(simlpeSub));
     }
+        catch (Exception e){};
+    }
+
     public void testRegister(){
         ms.register(anotherSimpleSub);
         ms.subscribeEvent(event.class,anotherSimpleSub);
         ms.sendEvent(event);
+        try{
         assertEquals(event,ms.awaitMessage(anotherSimpleSub));
     }
-    public void testUnregister(){
+        catch (Exception e){};
+    }
+
+    public void testUnregister() {
         ms.unregister(anotherSimpleSub);
-        assertEquals(null,ms.awaitMessage(anotherSimpleSub));
+        try {
+            assertEquals(null, ms.awaitMessage(anotherSimpleSub));
+        }
+        catch (Exception e){};
     }
+
     public void testAwaitMessage(){
-        assertEquals(b,ms.awaitMessage(simlpeSub));
+        try {
+            assertEquals(b,ms.awaitMessage(simlpeSub));
+        }
+        catch (Exception e){};
     }
+
     @Test
     public void test(){
+        setUp();
         testAwaitMessage();
         testComplete();
         testRegister();
