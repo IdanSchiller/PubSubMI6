@@ -2,13 +2,10 @@ package bgu.spl.mics;
 
 public class GadgetAvailableEvent implements Event {
 
-    private Callback CB;
+    private String gadget;
 
-    public GadgetAvailableEvent(){
-        CB= new GadgetAvailableEventCallBack();
+    public GadgetAvailableEvent(String gadget){
+        this.gadget=gadget;
     }
 
-    public Callback getCallback() {
-        return CB;
-    }
 }
