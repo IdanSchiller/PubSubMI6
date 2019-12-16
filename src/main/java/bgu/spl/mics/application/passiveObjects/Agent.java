@@ -36,6 +36,7 @@ public class Agent {
 	public void setName(String name) {
 		// TODO Implement this
 		name=name;
+
 	}
 
 	/**
