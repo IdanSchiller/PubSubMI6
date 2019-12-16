@@ -120,13 +120,11 @@ public abstract class Subscriber extends RunnableSubPub {
                 Class type = currMS.getClass();
                 switch (type.toString()) {
                     case "TickBroadcast":
-                        TickBroadcast b = new TickBroadcast();
                         Callback<TickBroadcast> tickBroadcastCallback = broadcastMap.get(TickBroadcast.class);
-                        tickBroadcastCallback.call(b);
-                    case "MissionReceivedEvent":
-//                        MissionReceivedEvent e = new MissionReceivedEvent();
-//                        Callback<MissionReceivedEvent> MREcallBack = eventMap.get(MissionReceivedEvent.class);
-//                        MREcallBack.call(e);
+                        tickBroadcastCallback.call((TickBroadcast) currMS);
+                    case "AgentsAvailableEvent":
+                        Callback<AgentsAvailableEvent> agentsCallBack =  eventMap.get(AgentsAvailableEvent.class);
+                        agentsCallBack.call((AgentsAvailableEvent) currMS);
                 }
 
             }catch (Exception e){}

@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.*;
+import bgu.spl.mics.application.passiveObjects.Diary;
+import bgu.spl.mics.application.passiveObjects.Report;
 
 import java.util.List;
 
@@ -28,10 +30,19 @@ public class M extends Subscriber {
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
+			Event<Boolean> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
+			Future<Boolean> agentsFuture = simPub.sendEvent(agentsEvent);
+
 			String gadget = missionEvent.getMission().getGadget();
 			Event<Boolean> gadgetEvent = new GadgetAvailableEvent(gadget);
-			Future<Boolean> future = simPub.sendEvent(gadgetEvent);
+			Future<Boolean> gadgFuture = simPub.sendEvent(gadgetEvent);
+			if (gadgFuture.isDone()){
 
+			}
+
+			missionEvent.getFuture().resolve("resolved");
+			Report r = new Report();
+			Diary.getInstance().addReport(r);
 		};
 		this.subscribeEvent(MissionReceivedEvent.class,MREcallBack);
 
