@@ -63,6 +63,7 @@ public class Agent {
 	 */
 	public void acquire(){
 		// TODO Implement this
+		isAvailable=false;
 	}
 
 	/**
@@ -70,5 +71,6 @@ public class Agent {
 	 */
 	public void release(){
 		// TODO Implement this
+		isAvailable=true;
 	}
 }

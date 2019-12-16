@@ -1,4 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ import java.util.Map;
  */
 public class Squad {
 
-	private Map<String, Agent> agents;
+	private HashMap<String, Agent> Agents;
 
 	/**
 	 * Retrieves the single instance of this class.
@@ -28,6 +30,11 @@ public class Squad {
 	 */
 	public void load (Agent[] agents) {
 		// TODO Implement this
+		HashMap<String, Agent> Agents= new HashMap<String, Agent>();
+		for(int i=0;i<agents.length;i++)
+		{
+			Agents.put(agents[i].getSerialNumber(),agents[i]);
+		}
 	}
 
 	/**
@@ -35,6 +42,11 @@ public class Squad {
 	 */
 	public void releaseAgents(List<String> serials){
 		// TODO Implement this
+		Iterator<String> iter = serials.iterator();
+		while(iter.hasNext()){
+			Agents.get(iter).release();
+			iter.next();
+		}
 	}
 
 	/**
@@ -52,6 +64,7 @@ public class Squad {
 	 */
 	public boolean getAgents(List<String> serials){
 		// TODO Implement this
+
 		return false;
 	}
 
