@@ -30,7 +30,8 @@ public class M extends Subscriber {
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
 			String gadget = missionEvent.getMission().getGadget();
 			Event<Boolean> gadgetEvent = new GadgetAvailableEvent(gadget);
-			simPub.sendEvent(gadgetEvent);
+			Future<Boolean> future = simPub.sendEvent(gadgetEvent);
+
 		};
 		this.subscribeEvent(MissionReceivedEvent.class,MREcallBack);
 

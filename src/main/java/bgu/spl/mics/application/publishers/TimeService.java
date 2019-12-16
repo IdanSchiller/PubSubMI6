@@ -19,19 +19,14 @@ public class TimeService extends Publisher {
 	private int currtick;
 
 
-	public TimeService() {
+	public TimeService(int ticks) {
 		super("TimeService");
-		ticks = ticks;
+		this.ticks = ticks;
 	}
 
 	@Override
 	protected void initialize() {
 		currtick = 0;
-		while (currtick < ticks) {
-			// for (every 100 miliseconds){
-			Broadcast tick = new TickBroadcast();
-			simpleSub.sendBroadcast(tick);
-			// }
 
 			// TODO Implement this
 		}
@@ -40,8 +35,13 @@ public class TimeService extends Publisher {
 	@Override
 	public void run () {
 		initialize();
+		while (currtick < ticks) {
+			// for (every 100 miliseconds){
+			Broadcast tick = new TickBroadcast();
+			simpleSub.sendBroadcast(tick);
+			// }
 
-		// TODO Implement this
+			// TODO Implement this
 	}
 
 

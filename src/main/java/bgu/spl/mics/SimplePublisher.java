@@ -23,9 +23,15 @@ public final class SimplePublisher {
      * 	       			null in case no Subscriber has subscribed to {@code e.getClass()}.
      */
     public final <T> Future<T> sendEvent(Event<T> e) {
+            Future<T>  future = MessageBrokerImpl.getInstance().sendEvent(e);
 
+        String eventClass = e.getClass().toString();
+        switch (eventClass){
+            case "MissionReceivedEvent":
+                return (MissionReceivedEvent) e.ge
+        }
         //TODO: implement this.
-        return e.ge
+        return future;
     }
 
     /**
