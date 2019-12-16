@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class M extends Subscriber {
 	private int tickCounter;
+	private SimplePublisher simPub;
 
 	public M() {
 		super("Change_This_Name");
@@ -21,13 +22,15 @@ public class M extends Subscriber {
 	@Override
 	protected void initialize() {
 		tickCounter=0;
+		simPub = new SimplePublisher();
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
 			String gadget = missionEvent.getMission().getGadget();
-			GadgetAvailableEvent gadgetEvent = new GadgetAvailableEvent(gadget);
+			Event<Boolean> gadgetEvent = new GadgetAvailableEvent(gadget);
+			simPub.sendEvent(gadgetEvent);
 		};
 		this.subscribeEvent(MissionReceivedEvent.class,MREcallBack);
 
