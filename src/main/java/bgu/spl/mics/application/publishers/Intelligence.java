@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.Publisher;
+import bgu.spl.mics.SimplePublisher;
 import bgu.spl.mics.Subscriber;
 
 /**
@@ -10,10 +11,12 @@ import bgu.spl.mics.Subscriber;
  * You can add private fields and public methods to this class.
  * You MAY change constructor signatures and even add new public constructors.
  */
-public class Intelligence extends Publisher {
+public class Intelligence  extends Subscriber {
+	private SimplePublisher simpub;
 
 	public Intelligence() {
 		super("Change_This_Name");
+
 		// TODO Implement this
 	}
 
