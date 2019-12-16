@@ -18,7 +18,6 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
-
 		// TODO Implement this
 		
 	}
