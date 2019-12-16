@@ -2,13 +2,13 @@ package bgu.spl.mics;
 
 import bgu.spl.mics.application.passiveObjects.MissionInfo;
 
-public class MissionReceivedEvent implements Event {
+public class MissionReceivedEvent<T> implements Event<T> {
     private MissionInfo mission;
-    private Future<Boolean> future;
+    private Future<T> future;
 
     public MissionReceivedEvent(MissionInfo mission){
         this.mission=mission;
-        this.future =  new Future<>();
+        this.future =  new Future();
 
     }
 
@@ -17,5 +17,5 @@ public class MissionReceivedEvent implements Event {
         return mission;
     }
 
-    public Future getFuture(){return future;}
+    public Future<T> getFuture(){return future;}
 }

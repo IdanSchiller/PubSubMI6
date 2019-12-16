@@ -43,6 +43,21 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
 		// TODO Auto-generated method stub
+		// add Event e to subscriber queue
+		String eventClass = e.getClass().toString();
+		switch (eventClass){
+			case "MissionReceivedEvent":
+				Future<T> future =  ((MissionReceivedEvent) e).getFuture();
+				currM = mQueue.pop();
+				currM.getQueue().push(e);
+				mQueue.push(currM);
+				return future;
+			case "AgentsAvailableEvent":
+				currMP = mpQueue.pop();
+				currMP.getQueue().push(e);
+				mpQueue.push(currMP);
+
+		}
 		return null;
 	}
 
