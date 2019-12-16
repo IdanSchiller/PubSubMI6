@@ -20,9 +20,9 @@ public class Q extends Subscriber {
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		MessageBrokerImpl.getInstance().register(this);
-		GadgetAvailableEvent GAE = new GadgetAvailableEvent();
-		this.subscribeEvent(GadgetAvailableEvent.class,GadgetAvailableEvent.getCallback());
+//		MessageBrokerImpl.getInstance().register(this);
+//		GadgetAvailableEvent GAE = new GadgetAvailableEvent("");
+//		this.subscribeEvent(GadgetAvailableEvent.class,GadgetAvailableEvent.getCallback());
 		
 	}
 

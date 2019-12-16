@@ -9,12 +9,22 @@ import java.util.List;
  * You may add ONLY private fields and methods to this class.
  */
 public class Report {
+
+	private String MissionName;
+	private int M;
+	private int MP;
+	private List<String> AgentsSerialNumbersNumber;
+	private List<String> AgentsNames;
+	private String GadgetName;
+	private int Qtime;
+	private int TimeIssued;
+	private int TimeCreated;
 	/**
      * Retrieves the mission name.
      */
 	public String getMissionName() {
 		// TODO Implement this
-		return null;
+		return MissionName;
 	}
 
 	/**
@@ -22,6 +32,7 @@ public class Report {
 	 */
 	public void setMissionName(String missionName) {
 		// TODO Implement this
+		MissionName=missionName;
 	}
 
 	/**
@@ -29,7 +40,7 @@ public class Report {
 	 */
 	public int getM() {
 		// TODO Implement this
-		return 0;
+		return M;
 	}
 
 	/**
@@ -37,6 +48,7 @@ public class Report {
 	 */
 	public void setM(int m) {
 		// TODO Implement this
+		M=m;
 	}
 
 	/**
@@ -44,7 +56,7 @@ public class Report {
 	 */
 	public int getMoneypenny() {
 		// TODO Implement this
-		return 0;
+		return MP;
 	}
 
 	/**
@@ -52,6 +64,7 @@ public class Report {
 	 */
 	public void setMoneypenny(int moneypenny) {
 		// TODO Implement this
+		MP=moneypenny;
 	}
 
 	/**
@@ -61,7 +74,7 @@ public class Report {
 	 */
 	public List<String> getAgentsSerialNumbersNumber() {
 		// TODO Implement this
-		return null;
+		return AgentsSerialNumbersNumber;
 	}
 
 	/**
@@ -69,6 +82,7 @@ public class Report {
 	 */
 	public void setAgentsSerialNumbersNumber(List<String> agentsSerialNumbersNumber) {
 		// TODO Implement this
+		AgentsSerialNumbersNumber=agentsSerialNumbersNumber;
 	}
 
 	/**
@@ -78,7 +92,7 @@ public class Report {
 	 */
 	public List<String> getAgentsNames() {
 		// TODO Implement this
-		return null;
+		return AgentsNames;
 	}
 
 	/**
@@ -86,6 +100,7 @@ public class Report {
 	 */
 	public void setAgentsNames(List<String> agentsNames) {
 		// TODO Implement this
+		AgentsNames=agentsNames;
 	}
 
 	/**
@@ -95,7 +110,7 @@ public class Report {
 	 */
 	public String getGadgetName() {
 		// TODO Implement this
-		return null;
+		return GadgetName;
 	}
 
 	/**
@@ -103,6 +118,7 @@ public class Report {
 	 */
 	public void setGadgetName(String gadgetName) {
 		// TODO Implement this
+		GadgetName=gadgetName;
 	}
 
 	/**
@@ -110,7 +126,7 @@ public class Report {
 	 */
 	public int getQTime() {
 		// TODO Implement this
-		return 0;
+		return Qtime;
 	}
 
 	/**
@@ -118,6 +134,7 @@ public class Report {
 	 */
 	public void setQTime(int qTime) {
 		// TODO Implement this
+		Qtime=qTime;
 	}
 
 	/**
@@ -125,7 +142,7 @@ public class Report {
 	 */
 	public int getTimeIssued() {
 		// TODO Implement this
-		return 0;
+		return TimeIssued;
 	}
 
 	/**
@@ -133,6 +150,7 @@ public class Report {
 	 */
 	public void setTimeIssued(int timeIssued) {
 		// TODO Implement this
+		TimeIssued=timeIssued;
 	}
 
 	/**
@@ -140,7 +158,7 @@ public class Report {
 	 */
 	public int getTimeCreated() {
 		// TODO Implement this
-		return 0;
+		return TimeCreated;
 	}
 
 	/**
@@ -148,5 +166,6 @@ public class Report {
 	 */
 	public void setTimeCreated(int timeCreated) {
 		// TODO Implement this
+		TimeCreated=timeCreated;
 	}
 }

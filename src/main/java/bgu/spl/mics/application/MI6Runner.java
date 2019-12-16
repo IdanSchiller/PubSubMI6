@@ -32,7 +32,6 @@ public class MI6Runner {
 //        }
         JSONParser parser = new JSONParser();
 
-
         Object obj = null;
         try {
             obj = parser.parse(new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json"));
@@ -45,14 +44,11 @@ public class MI6Runner {
             Inventory inv = new Inventory();
             inv.load(inventory);
 
-            JsonArray squad = (JsonArray) jsonObject.get("squad");
+            Map squad = (Map) jsonObject.get("squad");
 
-            Iterator iter = squad.iterator();
-            while(iter.hasNext())
-            {
                 String name= iter.next().toString();
                 String serialNumber= iter.next().toString();
-            }
+
 
 
             Agent[] agentsArr = new Agent[squad.size()];
