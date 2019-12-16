@@ -14,10 +14,12 @@ import java.util.List;
  */
 public class M extends Subscriber {
 	private int tickCounter;
+	private int thicksLimit;
 	private SimplePublisher simPub;
 
-	public M() {
+	public M(int ticksLimit) {
 		super("Change_This_Name");
+		this.thicksLimit=ticksLimit;
 		// TODO Implement this
 	}
 
@@ -32,12 +34,16 @@ public class M extends Subscriber {
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
 			Event<Boolean> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
 			Future<Boolean> agentsFuture = simPub.sendEvent(agentsEvent);
+			Boolean agentsIsDone = agentsFuture.get();
+			if (agentsIsDone) {
+				String gadget = missionEvent.getMission().getGadget();
+				Event<Boolean> gadgetEvent = new GadgetAvailableEvent(gadget);
+				Future<Boolean> gadgFuture = simPub.sendEvent(gadgetEvent);
+				Boolean gadgetIsDone = gadgFuture.get();
+				if (gadgetIsDone && missionEvent.getMission().getTimeExpired()<tickCounter) {
 
-			String gadget = missionEvent.getMission().getGadget();
-			Event<Boolean> gadgetEvent = new GadgetAvailableEvent(gadget);
-			Future<Boolean> gadgFuture = simPub.sendEvent(gadgetEvent);
-			if (gadgFuture.isDone()){
 
+				}
 			}
 
 			missionEvent.getFuture().resolve("resolved");

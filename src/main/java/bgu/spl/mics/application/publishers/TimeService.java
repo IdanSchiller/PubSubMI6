@@ -14,15 +14,18 @@ import bgu.spl.mics.*;
 public class TimeService extends Publisher {
 	// fields
 	private SimplePublisher simpleSub;
-	private int ticks;
+
+	private int ticksLimit;
 	private int timeCounter;
 	private int currtick;
 
 
-	public TimeService(int ticks) {
+	public TimeService(int ticksLimits) {
 		super("TimeService");
-		this.ticks = ticks;
+		this.ticksLimit = ticksLimits;
 	}
+
+
 
 	@Override
 	protected void initialize() {
@@ -43,6 +46,7 @@ public class TimeService extends Publisher {
 
 			// TODO Implement this
 	}
+
 
 
 }
