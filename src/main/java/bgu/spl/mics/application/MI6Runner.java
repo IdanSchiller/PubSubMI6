@@ -2,6 +2,7 @@ package bgu.spl.mics.application;
 import bgu.spl.mics.application.passiveObjects.Agent;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.Squad;
+import bgu.spl.mics.application.subscribers.Q;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.json.simple.JSONObject;
@@ -66,6 +67,11 @@ public class MI6Runner {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+
+
+
+
     }
 
 
