@@ -9,7 +9,7 @@ public class AgentsAvailableEvent<T> implements Event<T> {
 
 
     // Fields
-    private Future<Pair<List<Agent>,Integer>> fut;
+private Future<T> fut;
     private List<String> agentsSerialNum;
 
 
@@ -22,5 +22,5 @@ public class AgentsAvailableEvent<T> implements Event<T> {
         return agentsSerialNum;
     }
 
-    public Future<Pair<List<Agent>, Integer>> getFuture(){return fut;}
+    public Future<T> getFuture(){return fut;}
 }
