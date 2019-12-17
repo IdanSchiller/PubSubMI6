@@ -41,8 +41,15 @@ public class Moneypenny extends Subscriber {
 		};
 		this.subscribeEvent(AgentsAvailableEvent.class,agentsCallBack);
 		Callback<SendAgentsEvent> sendAgentsCB = (sendAgentsEvent)->{
-
+			Squad.getInstance().sendAgents(sendAgentsEvent.getSerials(),sendAgentsEvent.getDuration());
+			complete(sendAgentsEvent,true);
 		};
+		subscribeEvent(SendAgentsEvent.class,sendAgentsCB);
+		Callback<ReleaseAgentsEvent> releaseAgentsCB = releaseAgentsEvent -> {
+			Squad.getInstance().releaseAgents(releaseAgentsEvent.getSerials());
+			complete(releaseAgentsEvent,true);
+		};
+		subscribeEvent(ReleaseAgentsEvent.class,releaseAgentsCB);
 	};
 	public Integer getId() {
 		return id;
