@@ -29,58 +29,49 @@ public class MI6Runner {
 
     public static void main(String[] args) {
         // TODO Implement this
-//        HashMap<String,Agent> agents= new HashMap<String,Agent>();
+        HashMap<String, Agent> agents = new HashMap<String, Agent>();
+
+//        if (args[0] == null) {
 //
-////        if (args[0] == null) {
-////
-////        }
-//        JSONParser parser = new JSONParser();
-//
-//        Object obj = null;
-//        try {
-//            obj = parser.parse(new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json"));
-//
-//
-//            JSONObject jsonObject = (JSONObject) obj;
-//
-//            String[] inventory = (String[]) jsonObject.get("inventory");
-//
-//            Inventory inv = new Inventory();
-//            inv.load(inventory);
-//
-//            Map squad = (Map) jsonObject.get("squad");
-//
-//                String name= iter.next().toString();
-//                String serialNumber= iter.next().toString();
-//
-//
-//
-//            Agent[] agentsArr = new Agent[squad.size()];
-//
-//            Squad sq = new Squad();
-//            sq.load(agentsArr);
-//
-//            Map services = (Map) jsonObject.get("services");
-//
-//
-//        } catch (ParseException ex) {
-//            ex.printStackTrace();
-//        } catch (FileNotFoundException ex) {
-//            ex.printStackTrace();
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
 //        }
-//
-//
-//
-        MissionInfo info = new MissionInfo();
-        MissionReceivedEvent m = new MissionReceivedEvent(info);
-    System.out.println(m.getClass().getName());
+        JSONParser parser = new JSONParser();
+
+        Object obj = null;
+        try {
+            obj = parser.parse(new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json"));
+
+
+            JSONObject jsonObject = (JSONObject) obj;
+
+            String[] inventory = (String[]) jsonObject.get("inventory");
+
+            Inventory inv = new Inventory();
+            inv.load(inventory);
+
+            Map squad = (Map) jsonObject.get("squad");
+
+            String name = iter.next().toString();
+            String serialNumber = iter.next().toString();
+
+
+            Agent[] agentsArr = new Agent[squad.size()];
+
+            Squad sq = new Squad();
+            sq.load(agentsArr);
+
+            Map services = (Map) jsonObject.get("services");
+
+
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
     }
-
-
-
-
 
 
 }
