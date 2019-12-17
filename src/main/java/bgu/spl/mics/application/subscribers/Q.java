@@ -4,9 +4,13 @@ import bgu.spl.mics.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.Report;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.tools.javac.util.Pair;
+
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Q is the only Subscriber\Publisher that has access to the {@link bgu.spl.mics.application.passiveObjects.Inventory}.
@@ -16,16 +20,16 @@ import java.util.List;
  */
 public class Q extends Subscriber {
  	private Inventory inv;
- 	private int tickCounter;
+ 	private AtomicInteger tickCounter;
 
 	private static class QHolder{
 		private static Q instance=new Q();
-
 	}
 	private Q(){
 		// innitiate fields
 		super("Q");
 		inv= Inventory.getInstance();
+		tickCounter=new AtomicInteger();
 	}
 
  //TODO ziv
@@ -34,16 +38,23 @@ public class Q extends Subscriber {
 	protected void initialize() {
 		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
-		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter.getAndIncrement();
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
-		Callback<GadgetAvailableEvent> GAE = (GadgetAvailableEvent gadgetAvailable) ->
+		Callback<GadgetAvailableEvent> GAE = (GadgetAvailableEvent gadgetAvailable) -> CheckGadgetAvailable(gadgetAvailable);
 		this.subscribeEvent(GadgetAvailableEvent.class,GAE);
 
-//		MessageBrokerImpl.getInstance().register(this);
-//		GadgetAvailableEvent GAE = new GadgetAvailableEvent("");
-//		this.subscribeEvent(GadgetAvailableEvent.class,GadgetAvailableEvent.getCallback());
-		
+
 	}
 
-	private void CheckGadgetAvailble()
+	private void CheckGadgetAvailable(GadgetAvailableEvent gadgetAvailable){
+		int tick = tickCounter.get();
+		Boolean b=inv.getItem(gadgetAvailable.getGadget());
+		if (b){
+			this.complete(gadgetAvailable, tick);
+		}
+		else{
+			this.complete(gadgetAvailable, null);
+		}
+
+	}
 }

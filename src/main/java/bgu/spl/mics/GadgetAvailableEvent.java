@@ -15,6 +15,8 @@ public class GadgetAvailableEvent<T> implements Event<T> {
     public String getGadget() {
         return gadget;
     }
-    public Future<Pair<Boolean,Integer>> getFuture(){return future;}
+    public Future<Pair<Boolean,Integer>> getFuture(){
+        return future;
+    }
 
 }
