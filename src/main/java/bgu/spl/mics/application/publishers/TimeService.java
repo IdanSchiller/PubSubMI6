@@ -40,7 +40,7 @@ public class TimeService extends Publisher {
 	@Override
 	public void run() {
 		initialize();
-		while (currtick < ticks) {
+		while (currtick < ticksLimit) {
 			// for (every 100 miliseconds){
 			Broadcast tick = new TickBroadcast();
 			simpleSub.sendBroadcast(tick);

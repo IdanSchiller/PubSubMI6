@@ -1,4 +1,4 @@
-package bgu.spl.mics.application.publishers;
+package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.Publisher;
 import bgu.spl.mics.SimplePublisher;
@@ -25,9 +25,5 @@ public class Intelligence  extends Subscriber {
 		// TODO Implement this
 	}
 
-	@Override
-	public void run() {
-		// TODO Implement this
-	}
 
 }

@@ -1,18 +1,37 @@
 package bgu.spl.mics;
 
+import com.sun.jmx.remote.internal.ArrayQueue;
+
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
  * Write your implementation here!
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
+	private ConcurrentHashMap<Subscriber, Queue> subsMap;
+	private ConcurrentHashMap<String, List> topicsMap;
 
+
+	private static class MessageBrokerImplHolder{
+		private static MessageBrokerImpl instance = new MessageBrokerImpl();
+	}
+
+	private MessageBrokerImpl(){
+      // innitiate fields
+		subsMap = new ConcurrentHashMap<Subscriber, Queue>();
+		topicsMap = new ConcurrentHashMap<String, List>();
+	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static MessageBroker getInstance() {
 		//TODO: Implement this
-		return null;
+		return MessageBrokerImplHolder.instance;
 	}
 
 	@Override
@@ -64,6 +83,8 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {
 		// TODO Auto-generated method stub
+
+		subsMap.put(m,new ArrayQueue);
 
 	}
 

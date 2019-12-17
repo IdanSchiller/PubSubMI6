@@ -8,7 +8,8 @@ public class GadgetAvailableEvent<T> implements Event<T> {
         this.gadget=gadget;
     }
 
-
-
+    public String getGadget() {
+        return gadget;
+    }
 
 }

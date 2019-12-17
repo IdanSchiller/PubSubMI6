@@ -7,20 +7,21 @@ public class SendAgentsEvent<T> implements Event<T> {
 
 
     private List<String> serials;
-    private int time;
+    private int duration;
 
-    public SendAgentsEvent(List<String> serials, int time)
+
+    public SendAgentsEvent(List<String> serials, int duration)
     {
         serials=serials;
-        time=time;
+        duration = duration;
     }
 
     public List<String> getSerials() {
         return serials;
     }
 
-    public int getTime() {
-        return time;
+    public int getDuration() {
+        return duration;
     }
 
 }
