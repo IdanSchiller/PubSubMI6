@@ -28,7 +28,7 @@ public class Diary {
 	 * Retrieves the single instance of this class.
 	 */
 	public static Diary getInstance() {
-		//TODO: Implement this
+
 		return null;
 	}
 

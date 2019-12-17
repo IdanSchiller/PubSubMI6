@@ -16,8 +16,7 @@ public class Agent {
 	 * Sets the serial number of an agent.
 	 */
 	public void setSerialNumber(String serialNumber) {
-		// TODO Implement this
-		serialNumber=serialNumber;
+		this.serialNumber=serialNumber;
 	}
 
 	/**
@@ -26,7 +25,6 @@ public class Agent {
      * @return The serial number of an agent.
      */
 	public String getSerialNumber() {
-		// TODO Implement this
 		return serialNumber;
 	}
 
@@ -34,8 +32,7 @@ public class Agent {
 	 * Sets the name of the agent.
 	 */
 	public void setName(String name) {
-		// TODO Implement this
-		name=name;
+		this.name=name;
 
 	}
 
@@ -45,7 +42,6 @@ public class Agent {
      * @return the name of the agent.
      */
 	public String getName() {
-		// TODO Implement this
 		return name;
 	}
 
@@ -55,7 +51,6 @@ public class Agent {
      * @return if the agent is available.
      */
 	public boolean isAvailable() {
-		// TODO Implement this
 		return isAvailable;
 	}
 
@@ -63,7 +58,6 @@ public class Agent {
 	 * Acquires an agent.
 	 */
 	public void acquire(){
-		// TODO Implement this
 		isAvailable=false;
 	}
 
@@ -71,7 +65,7 @@ public class Agent {
 	 * Releases an agent.
 	 */
 	public void release(){
-		// TODO Implement this
 		isAvailable=true;
+		notifyAll();
 	}
 }

@@ -1,8 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Passive data-object representing a information about an agent in MI6.
@@ -12,19 +9,18 @@ import java.util.Map;
  */
 public class Squad {
 
-	private HashMap<String, Agent> Agents;
+	private HashMap<String, Agent> AgentsMap;
 
 	private static class SquadHolder{
 		private static Squad instance = new Squad();
 	}
 	private Squad(){
-		Agents= new HashMap<String, Agent>();
+		AgentsMap= new HashMap<String, Agent>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Squad getInstance() {
-		//TODO: Implement this
 		return SquadHolder.instance;
 	}
 
@@ -50,7 +46,7 @@ public class Squad {
 		// TODO Implement this
 		Iterator<String> iter = serials.iterator();
 		while(iter.hasNext()){
-			Agents.get(iter).release();
+			AgentsMap.get(iter).release();
 			iter.next();
 		}
 	}
@@ -68,10 +64,15 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
-		// TODO Implement this
-
-		return false;
+	public boolean getAgents(List<String> serials) throws InterruptedException {
+		Collections.sort(serials);
+		for (String agent: serials) {
+			if (!this.AgentsMap.containsKey(agent)) return false;
+			else if (this.AgentsMap.get(agent).isAvailable()) {
+				this.AgentsMap.get(agent).acquire();
+			} else {wait(); } // waits till the agent is release (notified by Agent.release() method) and available again
+		}
+		return true;
 	}
 
     /**
@@ -80,8 +81,13 @@ public class Squad {
      * @return a list of the names of the agents with the specified serials.
      */
     public List<String> getAgentsNames(List<String> serials){
-        // TODO Implement this
-	    return null;
+        List<String> agentsNameList = new LinkedList<>();
+        for (String agentSerialNum: serials){
+        	if (this.AgentsMap.containsKey(agentSerialNum)){
+        		agentsNameList.add(this.AgentsMap.get(agentSerialNum).getName());
+			}
+		}
+	    return  agentsNameList;
     }
 
 }
