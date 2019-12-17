@@ -36,7 +36,7 @@ public class TimeService extends Publisher {
 		// TODO Implement this
 
 	}
-
+// TODO ziv
 	@Override
 	public void run() {
 		initialize();

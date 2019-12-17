@@ -5,7 +5,10 @@ import com.sun.jmx.remote.internal.ArrayQueue;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
@@ -13,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private ConcurrentHashMap<Subscriber, Queue> subsMap;
+	private ConcurrentHashMap<Subscriber, BlockingQueue> subsMap;
 	private ConcurrentHashMap<String, List> topicsMap;
 
 
@@ -23,7 +26,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	private MessageBrokerImpl(){
       // innitiate fields
-		subsMap = new ConcurrentHashMap<Subscriber, Queue>();
+		subsMap = new ConcurrentHashMap<Subscriber, BlockingQueue>();
 		topicsMap = new ConcurrentHashMap<String, List>();
 	}
 	/**
@@ -83,9 +86,8 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {
 		// TODO Auto-generated method stub
-
-		subsMap.put(m,new ArrayQueue);
-
+		LinkedBlockingQueue q = new LinkedBlockingQueue();
+		subsMap.put(m,q);
 	}
 
 	@Override

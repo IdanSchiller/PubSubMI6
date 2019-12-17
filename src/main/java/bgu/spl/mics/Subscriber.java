@@ -13,7 +13,7 @@ import java.util.Map;
  * message-queue (see {@link MessageBroker#register(Subscriber)}
  * method). The abstract Subscriber stores this callback together with the
  * type of the message is related to.
- * 
+ *
  * Only private fields and methods may be added to this class.
  * <p>
  */
@@ -80,9 +80,10 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 {@code type} are taken from this Subscriber message
      *                 queue.
      */
+    // TODO ziv
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-                    this.broadcastMap.put(type,callback);
-                    MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
+        this.broadcastMap.put(type,callback);
+        MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
     }
 
     /**
