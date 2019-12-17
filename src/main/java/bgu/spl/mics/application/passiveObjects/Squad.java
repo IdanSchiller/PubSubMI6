@@ -14,12 +14,18 @@ public class Squad {
 
 	private HashMap<String, Agent> Agents;
 
+	private static class SquadHolder{
+		private static Squad instance = new Squad();
+	}
+	private Squad(){
+		Agents= new HashMap<String, Agent>();
+	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Squad getInstance() {
 		//TODO: Implement this
-		return null;
+		return SquadHolder.instance;
 	}
 
 	/**

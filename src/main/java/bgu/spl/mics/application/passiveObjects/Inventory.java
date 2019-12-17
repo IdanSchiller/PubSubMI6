@@ -16,9 +16,16 @@ public class Inventory {
 	/**
      * Retrieves the single instance of this class.
      */
+	private static class InventoryHolder{
+		private static Inventory instance = new Inventory();
+	}
+	private Inventory(){
+		gadgets = new ArrayList<String>();
+	}
+
 	public static Inventory getInstance() {
 		//TODO: Implement this
-		return null;
+		return InventoryHolder.instance;
 	}
 
 	/**

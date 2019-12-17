@@ -2,6 +2,7 @@ package bgu.spl.mics.application.passiveObjects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class Diary {
 	private List<Report> Reports;
-	private int total;
+	private AtomicInteger total;
 
 	private static class dairyHolder{
 		private static Diary instance=new Diary();
@@ -21,7 +22,7 @@ public class Diary {
 	}
 	private Diary(){
 		Reports = new ArrayList<Report>();
-		total=0;
+		total= new AtomicInteger();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -62,10 +63,10 @@ public class Diary {
 	 */
 	public int getTotal(){
 		//TODO: Implement this
-		return total;
+		return total.get();
 	}
 
 	public void incrementTotal(){
-		total=total+1;
+		total.getAndIncrement();
 	}
 }
