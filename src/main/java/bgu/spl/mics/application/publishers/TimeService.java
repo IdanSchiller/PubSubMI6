@@ -2,6 +2,8 @@ package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.*;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * TimeService is the global system timer There is only one instance of this Publisher.
  * It keeps track of the amount of ticks passed since initialization and notifies
@@ -18,6 +20,7 @@ public class TimeService extends Publisher {
 	private int ticksLimit;
 	private int timeCounter;
 	private int currtick;
+	private TimeUnit unit;
 
 
 	public TimeService(int ticksLimits) {
@@ -26,27 +29,28 @@ public class TimeService extends Publisher {
 	}
 
 
-
 	@Override
 	protected void initialize() {
 		currtick = 0;
 
-			// TODO Implement this
-		}
+		// TODO Implement this
+
 	}
 
 	@Override
-	public void run () {
+	public void run() {
 		initialize();
 		while (currtick < ticks) {
 			// for (every 100 miliseconds){
 			Broadcast tick = new TickBroadcast();
 			simpleSub.sendBroadcast(tick);
-			// }
-
+			try {
+				Thread.sleep(unit.toMillis(100));
+			}
+			catch (Exception e){}
 			// TODO Implement this
+		}
+
+
 	}
-
-
-
 }
