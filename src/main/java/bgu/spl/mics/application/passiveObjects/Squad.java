@@ -15,7 +15,7 @@ public class Squad {
 		private static Squad instance = new Squad();
 	}
 	private Squad(){
-		AgentsMap= new HashMap<String, Agent>();
+		AgentsMap= new HashMap<>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -31,12 +31,9 @@ public class Squad {
 	 * 						of the squad.
 	 */
 	public void load (Agent[] agents) {
-		// TODO Implement this
-		HashMap<String, Agent> Agents= new HashMap<String, Agent>();
-		for(int i=0;i<agents.length;i++)
-		{
-			Agents.put(agents[i].getSerialNumber(),agents[i]);
-		}
+	for(Agent a:agents)
+			this.AgentsMap.put(a.getSerialNumber(),a);
+
 	}
 
 	/**
