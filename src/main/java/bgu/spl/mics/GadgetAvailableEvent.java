@@ -1,7 +1,10 @@
 package bgu.spl.mics;
 
+import javafx.util.Pair;
+
 public class GadgetAvailableEvent<T> implements Event<T> {
 
+    Future<Pair<Boolean,Integer>> future; // returns the Boolean resault if the gadget is found and the Integer QTime  - the time the event was received
     private String gadget;
 
     public GadgetAvailableEvent(String gadget){
@@ -11,5 +14,6 @@ public class GadgetAvailableEvent<T> implements Event<T> {
     public String getGadget() {
         return gadget;
     }
+    public Future<Pair<Boolean,Integer>> getFuture(){return future;}
 
 }

@@ -12,23 +12,30 @@ import bgu.spl.mics.application.passiveObjects.Squad;
  */
 public class Moneypenny extends Subscriber {
 	private int tickCounter;
-	private SimplePublisher simPub;
+	private Integer id;
 
-	public Moneypenny() {
-		super("Change_This_Name");
+	public Moneypenny(Integer id) {
+		super("MoneyPenny"+id.toString());
 		// TODO Implement this
+		this.id=id;
 	}
 
 	@Override
 	protected void initialize() {
 		tickCounter=0;
-		simPub = new SimplePublisher();
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<AgentsAvailableEvent> agentsCallBack = (agentsEvent) -> {
-			 Boolean agentsAreAvailable = Squad.getInstance().getAgents(agentsEvent.getAgents());
+			 Boolean allAgentsExist = Squad.getInstance().getAgents(agentsEvent.getAgentsSerialNum());
+			if(!allAgentsExist){
+				// do something
+			}
 		};
+		this.subscribeEvent(AgentsAvailableEvent.class,agentsCallBack);
+	};
+	public Integer getId() {
+		return id;
 	}
 
 }

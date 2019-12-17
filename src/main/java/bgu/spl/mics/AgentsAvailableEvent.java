@@ -1,22 +1,26 @@
 package bgu.spl.mics;
-
+import bgu.spl.mics.application.passiveObjects.Agent;
+import javafx.util.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 public class AgentsAvailableEvent<T> implements Event<T> {
 
 
     // Fields
-    private List<String> agents;
+    private Future<Pair<List<Agent>,Integer>> fut;
+    private List<String> agentsSerialNum;
 
 
     // Constructor
-    public AgentsAvailableEvent(List<String> agents){
-        this.agents=agents;
+    public AgentsAvailableEvent(List<String> agentsSerialNum){
+        this.agentsSerialNum=agentsSerialNum;
     }
 
-    public List<String> getAgents() {
-        return agents;
+    public List<String> getAgentsSerialNum() {
+        return agentsSerialNum;
     }
 
+    public Future<Pair<List<Agent>, Integer>> getFuture(){return fut;}
 }

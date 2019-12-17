@@ -23,6 +23,13 @@ public abstract class Subscriber extends RunnableSubPub {
     private Map <Class,Callback> eventMap;
     private Map <Class,Callback> broadcastMap;
     private boolean terminated = false;
+    private final String MR = "bgu.spl.mics.MissionReceivedEvent";
+    private final String AA = "bgu.spl.mics.AgentsAvailableEvent";
+    private final String GA = "bgu.spl.mics.GadgetAvailableEvent";
+    private final String SA = "bgu.spl.mics.SendAgentsEvent";
+    private final String RA = "bgu.spl.mics.ReleaseAgentsEvent";
+    private final String TB = "bgu.spl.mics.TickBroadcast";
+
 
 
     /**
@@ -54,6 +61,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 {@code type} are taken from this Subscriber message
      *                 queue.
      */
+    //TODO: idan
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
         eventMap.put(type,callback);
         MessageBrokerImpl.getInstance().subscribeEvent(type,this);
@@ -117,14 +125,26 @@ public abstract class Subscriber extends RunnableSubPub {
         while (!terminated) {
             try {
                 Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);
-                Class type = currMS.getClass();
-                switch (type.toString()) {
-                    case "TickBroadcast":
-                        Callback<TickBroadcast> tickBroadcastCallback = broadcastMap.get(TickBroadcast.class);
-                        tickBroadcastCallback.call((TickBroadcast) currMS);
-                    case "AgentsAvailableEvent":
-                        Callback<AgentsAvailableEvent> agentsCallBack =  eventMap.get(AgentsAvailableEvent.class);
-                        agentsCallBack.call((AgentsAvailableEvent) currMS);
+                String type = currMS.getClass().getName();
+                switch (type) {
+                    case TB:
+                        Callback<TickBroadcast> tickBroadcastCallBack = broadcastMap.get(TickBroadcast.class);
+                        tickBroadcastCallBack.call((TickBroadcast) currMS);
+                    case MR:
+                        Callback<MissionReceivedEvent> MRCallBack = eventMap.get(MissionReceivedEvent.class);
+                        MRCallBack.call((MissionReceivedEvent)currMS);
+                    case AA:
+                        Callback<AgentsAvailableEvent> AACallBack =  eventMap.get(AgentsAvailableEvent.class);
+                        AACallBack.call((AgentsAvailableEvent) currMS);
+                    case GA:
+                        Callback<GadgetAvailableEvent> GACallBack = eventMap.get(GadgetAvailableEvent.class);
+                        GACallBack.call((GadgetAvailableEvent)currMS);
+                    case SA:
+                        Callback<SendAgentsEvent> SACallBack = eventMap.get(SendAgentsEvent.class);
+                        SACallBack.call((SendAgentsEvent)currMS);
+                    case RA:
+                        Callback<ReleaseAgentsEvent> RACallBack = eventMap.get(ReleaseAgentsEvent.class);
+                        RACallBack.call((ReleaseAgentsEvent)currMS);
                 }
 
             }catch (Exception e){}

@@ -10,23 +10,35 @@ import java.util.List;
  */
 public class Report {
 
-	private String MissionName;
-	private int M;
-	private int MP;
-	private List<String> AgentsSerialNumbersNumber;
-	private List<String> AgentsNames;
-	private String GadgetName;
-	private int Qtime;
-	private int TimeIssued;
-	private int TimeCreated;
+	private String missionName;
+	private int mId;
+	private int mpId;
+	private List<String> agentsSerialNumbers;
+	private List<String> agentsNames;
+	private String gadgetName;
+	private int qTime;
+	private int timeIssued;
+	private int timeCreated;
 	/**
      * Retrieves the mission name.
      */
-	public report
+	public Report(MissionInfo mission,List<Agent> agents,int mId,int mpId,int qTime,int timeCreated){
+			missionName=mission.getMissionName();
+			this.mId=mId;
+			this.mpId=mpId;
+			this.agentsSerialNumbers=mission.getSerialAgentsNumbers();
+			for(Agent a: agents){
+				agentsNames.add(a.getName());
+			}
+			this.gadgetName=mission.getGadget();
+			this.qTime=qTime;
+			this.timeIssued=mission.getTimeIssued();
+			this.timeCreated=timeCreated;
+	}
 
 	public String getMissionName() {
 		// TODO Implement this
-		return MissionName;
+		return missionName;
 	}
 
 	/**
@@ -34,39 +46,39 @@ public class Report {
 	 */
 	public void setMissionName(String missionName) {
 		// TODO Implement this
-		MissionName=missionName;
+		this.missionName=missionName;
 	}
 
 	/**
 	 * Retrieves the M's id.
 	 */
-	public int getM() {
+	public int getMId() {
 		// TODO Implement this
-		return M;
+		return mId;
 	}
 
 	/**
 	 * Sets the M's id.
 	 */
-	public void setM(int m) {
+	public void setM(int mId) {
 		// TODO Implement this
-		M=m;
+		this.mId=mId;
 	}
 
 	/**
 	 * Retrieves the Moneypenny's id.
 	 */
-	public int getMoneypenny() {
+	public int getMoneypennyId() {
 		// TODO Implement this
-		return MP;
+		return mpId;
 	}
 
 	/**
 	 * Sets the Moneypenny's id.
 	 */
-	public void setMoneypenny(int moneypenny) {
+	public void setMoneypennyId(int moneyPennyId) {
 		// TODO Implement this
-		MP=moneypenny;
+		mpId=moneyPennyId;
 	}
 
 	/**
@@ -76,15 +88,15 @@ public class Report {
 	 */
 	public List<String> getAgentsSerialNumbersNumber() {
 		// TODO Implement this
-		return AgentsSerialNumbersNumber;
+		return agentsSerialNumbers;
 	}
 
 	/**
 	 * Sets the serial numbers of the agents.
 	 */
-	public void setAgentsSerialNumbersNumber(List<String> agentsSerialNumbersNumber) {
+	public void setAgentsSerialNumbers(List<String> agentsSerialNumbers) {
 		// TODO Implement this
-		AgentsSerialNumbersNumber=agentsSerialNumbersNumber;
+		this.agentsSerialNumbers=agentsSerialNumbers;
 	}
 
 	/**
@@ -94,16 +106,16 @@ public class Report {
 	 */
 	public List<String> getAgentsNames() {
 		// TODO Implement this
-		return AgentsNames;
+		return agentsNames;
 	}
 
 	/**
 	 * Sets the agents names.
 	 */
-	public void setAgentsNames(List<String> agentsNames) {
-		// TODO Implement this
-		AgentsNames=agentsNames;
-	}
+//	public void setAgentsNames(List<String> agentsNames) {
+//		// TODO Implement this
+//		agentsNames=agentsNames;
+//	}
 
 	/**
 	 * Retrieves the name of the gadget.
@@ -112,7 +124,7 @@ public class Report {
 	 */
 	public String getGadgetName() {
 		// TODO Implement this
-		return GadgetName;
+		return gadgetName;
 	}
 
 	/**
@@ -120,7 +132,7 @@ public class Report {
 	 */
 	public void setGadgetName(String gadgetName) {
 		// TODO Implement this
-		GadgetName=gadgetName;
+		gadgetName=gadgetName;
 	}
 
 	/**
@@ -128,7 +140,7 @@ public class Report {
 	 */
 	public int getQTime() {
 		// TODO Implement this
-		return Qtime;
+		return qTime;
 	}
 
 	/**
@@ -136,7 +148,7 @@ public class Report {
 	 */
 	public void setQTime(int qTime) {
 		// TODO Implement this
-		Qtime=qTime;
+		this.qTime=qTime;
 	}
 
 	/**
@@ -144,7 +156,7 @@ public class Report {
 	 */
 	public int getTimeIssued() {
 		// TODO Implement this
-		return TimeIssued;
+		return timeIssued;
 	}
 
 	/**
@@ -152,7 +164,7 @@ public class Report {
 	 */
 	public void setTimeIssued(int timeIssued) {
 		// TODO Implement this
-		TimeIssued=timeIssued;
+		this.timeIssued=timeIssued;
 	}
 
 	/**
@@ -160,7 +172,7 @@ public class Report {
 	 */
 	public int getTimeCreated() {
 		// TODO Implement this
-		return TimeCreated;
+		return timeCreated;
 	}
 
 	/**
@@ -168,6 +180,6 @@ public class Report {
 	 */
 	public void setTimeCreated(int timeCreated) {
 		// TODO Implement this
-		TimeCreated=timeCreated;
+		this.timeCreated=timeCreated;
 	}
 }

@@ -84,7 +84,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void register(Subscriber m) {
 		// TODO Auto-generated method stub
 
-		subsMap.put(m,new ArrayQueue);
 
 	}
 

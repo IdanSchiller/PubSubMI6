@@ -8,7 +8,7 @@ public class MissionReceivedEvent<T> implements Event<T> {
 
     public MissionReceivedEvent(MissionInfo mission){
         this.mission=mission;
-        this.future =  new Future();
+        this.future =  null;
 
     }
 

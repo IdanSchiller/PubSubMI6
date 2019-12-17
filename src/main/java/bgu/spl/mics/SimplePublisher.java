@@ -10,6 +10,11 @@ package bgu.spl.mics;
  * <p>
  */
 public final class SimplePublisher {
+    private final String MR = "bgu.spl.mics.MissionReceivedEvent";
+    private final String AA = "bgu.spl.mics.AgentsAvailableEvent";
+    private final String GA = "bgu.spl.mics.GadgetAvailableEvent";
+    private final String SA = "bgu.spl.mics.SendAgentsEvent";
+    private final String RA = "bgu.spl.mics.ReleaseAgentsEvent";
     /**
      * Sends the event {@code e} using the MessageBroker and receive a {@link Future<T>}
      * object that may be resolved to hold a result. This method must be Non-Blocking since
@@ -22,24 +27,23 @@ public final class SimplePublisher {
      *         			subscriber processing this event.
      * 	       			null in case no Subscriber has subscribed to {@code e.getClass()}.
      */
+    //TODO: idan
     public final <T> Future<T> sendEvent(Event<T> e) {
         Future<T>  future = MessageBrokerImpl.getInstance().sendEvent(e);
 
-        String eventClass = e.getClass().toString();
+        String eventClass = e.getClass().getName();
         switch (eventClass){
-            case "MissionReceivedEvent":
-                return (MissionReceivedEvent) e.getMission;
-
-            case "SendAgentsEvent":
-
-            case "GadgetAvailableEvent":
-
-            case "AgentsAvailableEvent":
-
-            case "TickBroadcast":
-
+            case MR:
+                return ((MissionReceivedEvent) e).getFuture();
+            case AA:
+                return ((AgentsAvailableEvent) e).getFuture();
+            case GA:
+                return ((GadgetAvailableEvent) e).getFuture();
+            case SA:
+                return ((SendAgentsEvent) e).getFuture();
+            case RA:
+                return ((ReleaseAgentsEvent) e).getFuture();
         }
-        //TODO: implement this.
         return future;
     }
 
