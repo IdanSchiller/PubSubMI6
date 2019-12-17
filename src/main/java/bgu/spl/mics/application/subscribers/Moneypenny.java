@@ -29,7 +29,7 @@ public class Moneypenny extends Subscriber {
 		Callback<AgentsAvailableEvent> agentsCallBack = (agentsEvent) -> {
 			 Boolean allAgentsExist = Squad.getInstance().getAgents(agentsEvent.getAgentsSerialNum());
 			if(!allAgentsExist){
-				// do something
+				// do somethi
 			}
 		};
 		this.subscribeEvent(AgentsAvailableEvent.class,agentsCallBack);
