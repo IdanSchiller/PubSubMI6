@@ -1,8 +1,6 @@
 package bgu.spl.mics.application.subscribers;
 
-import bgu.spl.mics.GadgetAvailableEvent;
-import bgu.spl.mics.MessageBrokerImpl;
-import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.Report;
@@ -18,6 +16,7 @@ import java.util.List;
  */
 public class Q extends Subscriber {
  	private Inventory inv;
+ 	private int tickCounter;
 
 	private static class QHolder{
 		private static Q instance=new Q();
@@ -28,18 +27,23 @@ public class Q extends Subscriber {
 		super("Q");
 		inv= Inventory.getInstance();
 	}
-	 public void loadInventory(String[] gadgets){
-		inv.load(gadgets);
-	 }
 
+ //TODO ziv
 
 	@Override
 	protected void initialize() {
 		// TODO Implement this
+		MessageBrokerImpl.getInstance().register(this);
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
+		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
+		Callback<GadgetAvailableEvent> GAE = (GadgetAvailableEvent gadgetAvailable) ->
+		this.subscribeEvent(GadgetAvailableEvent.class,GAE);
+
 //		MessageBrokerImpl.getInstance().register(this);
 //		GadgetAvailableEvent GAE = new GadgetAvailableEvent("");
 //		this.subscribeEvent(GadgetAvailableEvent.class,GadgetAvailableEvent.getCallback());
 		
 	}
 
+	private void CheckGadgetAvailble()
 }
