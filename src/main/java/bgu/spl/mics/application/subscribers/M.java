@@ -19,7 +19,6 @@ public class M extends Subscriber {
 	private int tickCounter;
 	private int thicksLimit;
 	private Integer id;
-	private Pair<List<Agent>,Integer> MAEFT; //=Mission Available Event Future Type
 
 	public M(int ticksLimit) {
 		super("Change_This_Name");
@@ -36,9 +35,9 @@ public class M extends Subscriber {
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
 			Future<Pair<Boolean,Integer>> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
-			Event<Pair<List<Agent>,Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
-			Future<Pair<List<Agent>,Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
-			Pair<List<Agent>,Integer> agentsFutureResault = agentsFuture.get();
+			Event<Pair<List<String>,Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
+			Future<Pair<List<String>,Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
+			Pair<List<String>,Integer> agentsFutureResault = agentsFuture.get();
 			Boolean agentsIsDone = agentsFuture.isDone();
 			if (agentsIsDone) {
 				String gadget = missionEvent.getMission().getGadget();

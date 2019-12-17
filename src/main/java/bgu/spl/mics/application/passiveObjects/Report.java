@@ -22,14 +22,12 @@ public class Report {
 	/**
      * Retrieves the mission name.
      */
-	public Report(MissionInfo mission,List<Agent> agents,int mId,int mpId,int qTime,int timeCreated){
+	public Report(MissionInfo mission,List<String> agentsNames,int mId,int mpId,int qTime,int timeCreated){
 			missionName=mission.getMissionName();
 			this.mId=mId;
 			this.mpId=mpId;
 			this.agentsSerialNumbers=mission.getSerialAgentsNumbers();
-			for(Agent a: agents){
-				agentsNames.add(a.getName());
-			}
+			this.agentsNames=agentsNames;
 			this.gadgetName=mission.getGadget();
 			this.qTime=qTime;
 			this.timeIssued=mission.getTimeIssued();

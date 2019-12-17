@@ -2,6 +2,9 @@ package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.*;
 import bgu.spl.mics.application.passiveObjects.Squad;
+import javafx.util.Pair;
+
+import java.util.List;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -12,6 +15,7 @@ import bgu.spl.mics.application.passiveObjects.Squad;
  */
 public class Moneypenny extends Subscriber {
 	private int tickCounter;
+	private Pair<List<String>,Integer> resault;
 	private Integer id;
 
 	public Moneypenny(Integer id) {
@@ -29,10 +33,16 @@ public class Moneypenny extends Subscriber {
 		Callback<AgentsAvailableEvent> agentsCallBack = (agentsEvent) -> {
 			 Boolean allAgentsExist = Squad.getInstance().getAgents(agentsEvent.getAgentsSerialNum());
 			if(!allAgentsExist){
-				// do somethi
+				this.complete(agentsEvent,null);
+			}else{
+				resault= new Pair<>(agentsEvent.getAgentsSerialNum(),id);
+				this.complete(agentsEvent,resault);
 			}
 		};
 		this.subscribeEvent(AgentsAvailableEvent.class,agentsCallBack);
+		Callback<SendAgentsEvent> sendAgentsCB = (sendAgentsEvent)->{
+
+		};
 	};
 	public Integer getId() {
 		return id;
