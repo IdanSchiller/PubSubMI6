@@ -1,5 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,17 @@ import java.util.List;
  * You can add ONLY private fields and methods to this class as you see fit.
  */
 public class Diary {
+	private List<Report> Reports;
+	private int total;
+
+	private static class dairyHolder{
+		private static Diary instance=new Diary();
+
+	}
+	private Diary(){
+		Reports = new ArrayList<Report>();
+		total=0;
+	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
@@ -20,7 +32,7 @@ public class Diary {
 	}
 
 	public List<Report> getReports() {
-		return null;
+		return Reports;
 	}
 
 	/**
@@ -29,6 +41,8 @@ public class Diary {
 	 */
 	public void addReport(Report reportToAdd){
 		//TODO: Implement this
+		Reports.add(reportToAdd);
+		incrementTotal();
 	}
 
 	/**
@@ -48,6 +62,10 @@ public class Diary {
 	 */
 	public int getTotal(){
 		//TODO: Implement this
-		return 0;
+		return total;
+	}
+
+	public void incrementTotal(){
+		total=total+1;
 	}
 }
