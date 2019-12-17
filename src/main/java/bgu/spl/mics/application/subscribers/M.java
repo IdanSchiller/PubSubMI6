@@ -44,6 +44,10 @@ public class M extends Subscriber {
 					Event<Boolean> sendAgents= new SendAgentsEvent<>(serialAgentsList,missionEvent.getMission().getDuration());
 					Future<Boolean> sendAgentsFut = simPub.sendEvent(sendAgents);
 				}
+				if (gadgetIsDone && tickCounter<=missionEvent.getMission().getTimeExpired()){
+					Event<Boolean> releaseAgents = new ReleaseAgentsEvent<>(serialAgentsList);
+					Future<Boolean> releaseAgentsFut = simPub.sendEvent(releaseAgents);
+				}
 			}
 
 			missionEvent.getFuture().resolve("resolved");
