@@ -36,7 +36,6 @@ public class Q extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter.getAndIncrement();
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);

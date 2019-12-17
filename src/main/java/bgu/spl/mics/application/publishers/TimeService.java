@@ -2,12 +2,15 @@ package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.*;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * TimeService is the global system timer There is only one instance of this Publisher.
  * It keeps track of the amount of ticks passed since initialization and notifies
- * all other subscribers about the current time tick using {@link Tick Broadcast}.
+ * all other subscribers about the current time tick using {@link //Tick Broadcast}.
  * This class may not hold references for objects which it is not responsible for.
  *
  * You can add private fields and public methods to this class.
@@ -16,41 +19,42 @@ import java.util.concurrent.TimeUnit;
 public class TimeService extends Publisher {
 	// fields
 	private SimplePublisher simpleSub;
-
-	private int ticksLimit;
-	private int timeCounter;
-	private int currtick;
+	private TimerTask task;
+	private Timer timer;
+	private Long ticksLimit;
+	private AtomicInteger currTime;
 	private TimeUnit unit;
 
 
-	public TimeService(int ticksLimits) {
+	public TimeService(Long ticksLimits) {
 		super("TimeService");
 		this.ticksLimit = ticksLimits;
+		task= new TimerTask() {
+			@Override
+			public void run() {
+				currTime.getAndIncrement();
+				Broadcast tick = new TickBroadcast(currTime.get());
+				simpleSub.sendBroadcast(tick);
+			}
+		};
+		timer= new Timer("Timer");
+
 	}
 
 
 	@Override
 	protected void initialize() {
-		currtick = 0;
-
-		// TODO Implement this
+		currTime = new AtomicInteger();
 
 	}
-// TODO ziv
+	// TODO ziv
 	@Override
 	public void run() {
 		initialize();
-		while (currtick < ticksLimit) {
-			// for (every 100 miliseconds){
-			Broadcast tick = new TickBroadcast();
-			simpleSub.sendBroadcast(tick);
-			try {
-				Thread.sleep(unit.toMillis(100));
-			}
-			catch (Exception e){}
-			// TODO Implement this
+		while (currTime.get() < ticksLimit) {
+			timer.schedule(task,100);
 		}
-
+		timer.cancel();
 
 	}
 }
