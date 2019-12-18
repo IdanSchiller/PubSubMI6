@@ -11,9 +11,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> subsMap;
-	private ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>> eventsMap;
-	private ConcurrentHashMap<String, LinkedList<Subscriber>> broadcastList;
+	private Map<Subscriber, LinkedBlockingQueue<Message>> subsMap;
+	private Map<String, LinkedBlockingQueue<Subscriber>> eventsMap;
+	private Map<String, LinkedList<Subscriber>> broadcastMap;
 	private final String MR = "bgu.spl.mics.MissionReceivedEvent";
 	private final String AA = "bgu.spl.mics.AgentsAvailableEvent";
 	private final String GA = "bgu.spl.mics.GadgetAvailableEvent";
@@ -29,9 +29,9 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	private MessageBrokerImpl(){
 		// innitiate fields
-		subsMap = new ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>>();
-		eventsMap = new ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>>();
-		broadcastList = new ConcurrentHashMap<String, LinkedList<Subscriber>>();
+		subsMap = new ConcurrentHashMap<>();
+		eventsMap = new ConcurrentHashMap<>();
+		broadcastMap = new ConcurrentHashMap<>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -49,19 +49,30 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
-		// TODO Auto-generated method stub
-		broadcastList.get(type.getName()).add(m);
+		broadcastMap.get(type.getName()).add(m);
 	}
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
-		// TODO Auto-generated method stub
+		String type = e.getClass().getName();
+		switch (type){
+			case MR:
+				((MissionReceivedEvent)e).getFuture().resolve(result);
+			case AA:
+				((AgentsAvailableEvent)e).getFuture().resolve(result);
+			case GA:
+				((GadgetAvailableEvent)e).getFuture().resolve(result);
+			case SA:
+				((SendAgentsEvent)e).getFuture().resolve(result);
+			case RA:
+				((ReleaseAgentsEvent)e).getFuture().resolve(result);
+		}
 
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		for (Subscriber s: broadcastList.get(b.getClass().getName()))
+		for (Subscriber s: broadcastMap.get(b.getClass().getName()))
 		{
 			subsMap.get(s).add(b);
 		}
@@ -109,20 +120,18 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void unregister(Subscriber m) {
-		// TODO Auto-generated method stub
 		subsMap.remove(m);
 		for(String s: eventsMap.keySet()){
 			eventsMap.get(s).remove(m);
 		}
-		for(String s: broadcastList.keySet()){
-			broadcastList.get(s).remove(m);
+		for(String s: broadcastMap.keySet()){
+			broadcastMap.get(s).remove(m);
 		}
 	}
 
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.subsMap.get(m).take();
 	}
 
 }

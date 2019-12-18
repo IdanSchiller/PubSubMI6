@@ -64,7 +64,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 {@code type} are taken from this Subscriber message
      *                 queue.
      */
-    protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
+    protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) throws InterruptedException {
         eventMap.put(type,callback);
         MessageBrokerImpl.getInstance().subscribeEvent(type,this);
     }
@@ -89,7 +89,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 {@code type} are taken from this Subscriber message
      *                 queue.
      */
-    protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
+    protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) throws InterruptedException {
         this.broadcastMap.put(type,callback);
         MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
     }
@@ -105,19 +105,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        String type = e.getClass().getName();
-        switch (type){
-            case MR:
-                ((MissionReceivedEvent)e).getFuture().resolve(result);
-            case AA:
-                ((AgentsAvailableEvent)e).getFuture().resolve(result);
-            case GA:
-                ((GadgetAvailableEvent)e).getFuture().resolve(result);
-            case SA:
-                ((SendAgentsEvent)e).getFuture().resolve(result);
-            case RA:
-                ((ReleaseAgentsEvent)e).getFuture().resolve(result);
-        }
+        MessageBrokerImpl.getInstance().complete(e,result);
     }
 
     /**
