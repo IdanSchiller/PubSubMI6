@@ -36,15 +36,13 @@ public class Intelligence  extends Subscriber {
 	@Override
 	protected void initialize() {
 		MessageBrokerImpl.getInstance().register(this);
-		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
-		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
-		//TODO: MAKE this better
-		while (tickCounter<ticksLimit){
-			if (missionMap.containsKey(tickCounter)){
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
+			if (missionMap.containsKey(tickCounter)) {
 				Event<Boolean> missionEvent = new MissionReceivedEvent<>(missionMap.get(tickCounter));
 				Future<Boolean> dontCareFuture = this.getSimplePublisher().sendEvent(missionEvent);
 			}
-		}
+		};
+		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 	}
 
 }
