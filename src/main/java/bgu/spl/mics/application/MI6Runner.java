@@ -5,6 +5,10 @@ import bgu.spl.mics.application.passiveObjects.Agent;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.MissionInfo;
 import bgu.spl.mics.application.passiveObjects.Squad;
+import bgu.spl.mics.application.publishers.TimeService;
+import bgu.spl.mics.application.subscribers.Intelligence;
+import bgu.spl.mics.application.subscribers.M;
+import bgu.spl.mics.application.subscribers.Moneypenny;
 import bgu.spl.mics.application.subscribers.Q;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -37,57 +41,80 @@ public class MI6Runner {
         List<Thread> threads = new LinkedList<>();
 
 
-        try {
-            JsonReader read = new JsonReader(FR);
-            JsonElement element = JsonParser.parseReader(read);
+        JsonReader read = new JsonReader(FR);
+        JsonElement element = JsonParser.parseReader(read);
 
-            /** inventory*/
-            Inventory inventory = Inventory.getInstance();
-            JsonArray inv = element.getAsJsonObject().get("inventory").getAsJsonArray();
-            String[] inventoryToLoad = new String[inv.size()];
-            for(int i=0;i<inventoryToLoad.length;i++)
+        /** inventory*/
+        Inventory inventory = Inventory.getInstance();
+        JsonArray inv = element.getAsJsonObject().get("inventory").getAsJsonArray();
+        String[] inventoryToLoad = new String[inv.size()];
+        for(int i=0;i<inventoryToLoad.length;i++)
+        {
+            inventoryToLoad[i]= inv.get(i).toString();
+        }
+        Inventory.getInstance().load(inventoryToLoad);
+
+        /** services */
+        JsonObject ser = element.getAsJsonObject().get("services").getAsJsonObject();
+        Integer m = ser.getAsJsonObject().get("M").getAsInt();
+        Integer mp = ser.getAsJsonObject().get("Moneypenny").getAsInt();
+        Long time = ser.getAsJsonObject().get("time").getAsLong();
+        JsonArray intelligenceJson = ser.getAsJsonObject().get("intelligence").getAsJsonArray();
+
+        for(int i=0;i<intelligenceJson.size();i++)
+        {
+            JsonArray intel = intelligenceJson.get(i).getAsJsonObject().get("missions").getAsJsonArray();
+            List<MissionInfo> missionInfoList = new LinkedList<MissionInfo>();
+            for (int j=0;j<intel.size();j++)
             {
-                inventoryToLoad[i]= inv.get(i).toString();
+                JsonObject miss = intel.get(j).getAsJsonObject();
+                MissionInfo mi = new MissionInfo();
+                String missionName = miss.get("missionName").toString();
+                String gadget = miss.get("gadget").toString();
+                Integer duration = miss.get("duration").getAsInt();
+                Integer timeIssued = miss.get("timeIssued").getAsInt();
+                Integer timeExpired = miss.get("timeExpired").getAsInt();
+                List<String> serialAgentsNumbers = new LinkedList<String>();
+                JsonArray agentsNumbers = miss.get("serialAgentsNumbers").getAsJsonArray();
+                for (int k=0; k<agentsNumbers.size();k++)
+                {
+                    serialAgentsNumbers.add(agentsNumbers.get(k).toString());
+                }
+                mi.setDuration(duration);
+                mi.setGadget(gadget);
+                mi.setMissionName(missionName);
+                mi.setSerialAgentsNumbers(serialAgentsNumbers);
+                mi.setTimeExpired(timeExpired);
+                mi.setTimeIssued(timeIssued);
+                missionInfoList.add(mi);
             }
-
-            /** services */
-            JsonObject ser = element.getAsJsonObject().get("services").getAsJsonObject();
-            Integer m = ser.getAsJsonObject().get("M").getAsInt();
-            Integer mp = ser.getAsJsonObject().get("Moneypenny").getAsInt();
-
-
-
-
-
-
-            /** squad */
-            JsonArray sqd = element.getAsJsonObject().get("squad").getAsJsonArray();
-            Agent[] agents = new Agent[sqd.size()];
-            int i=0;
-            for (JsonElement agentDetails: sqd){
-                Agent a = new Agent();
-                a.setName(agentDetails.getAsJsonObject().get("name").getAsString());
-                a.setSerialNumber(agentDetails.getAsJsonObject().get("serialNumber").getAsString());
-                agents[i]=a;
-                i++;
-            }
-            Squad.getInstance().load(agents);
-
-
-
-
-
-
-
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            threads.add( new Thread(new Intelligence(missionInfoList,i,time)));
+        }
+        for(int i =0;i<m;i++)
+        {
+            threads.add( new Thread(new M(time.intValue(),i)));
+        }
+        for(int i =0;i<mp;i++)
+        {
+            threads.add( new Thread(new Moneypenny(i)));
         }
 
 
+        /** squad */
+        JsonArray sqd = element.getAsJsonObject().get("squad").getAsJsonArray();
+        Agent[] agents = new Agent[sqd.size()];
+        int i=0;
+        for (JsonElement agentDetails: sqd){
+            Agent a = new Agent();
+            a.setName(agentDetails.getAsJsonObject().get("name").getAsString());
+            a.setSerialNumber(agentDetails.getAsJsonObject().get("serialNumber").getAsString());
+            agents[i]=a;
+            i++;
+        }
+        Squad.getInstance().load(agents);
+        /** Q and TimeService */
+        threads.add( new Thread(new TimeService(time)));
+        threads.add( new Thread(new Q()));
     }
 
 

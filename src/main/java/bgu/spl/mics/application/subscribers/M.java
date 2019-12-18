@@ -20,9 +20,10 @@ public class M extends Subscriber {
 	private int thicksLimit;
 	private Integer id;
 
-	public M(int ticksLimit) {
+	public M(int ticksLimit,Integer id) {
 		super("Change_This_Name");
 		this.thicksLimit=ticksLimit;
+		id=id;
 		// TODO Implement this
 	}
 

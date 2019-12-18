@@ -22,10 +22,10 @@ public class Q extends Subscriber {
  	private Inventory inv;
  	private AtomicInteger tickCounter;
 
-	private static class QHolder{
-		private static Q instance=new Q();
-	}
-	private Q(){
+//	private static class QHolder{
+//		private static Q instance=new Q();
+//	}
+	public Q(){
 		// innitiate fields
 		super("Q");
 		inv= Inventory.getInstance();
