@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> subsMap;
 	private ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>> eventsMap;
-	private Map<String, LinkedList<Subscriber>> broadcastList;
+	private ConcurrentHashMap<String, LinkedList<Subscriber>> broadcastList;
 	private final String MR = "bgu.spl.mics.MissionReceivedEvent";
 	private final String AA = "bgu.spl.mics.AgentsAvailableEvent";
 	private final String GA = "bgu.spl.mics.GadgetAvailableEvent";
@@ -31,6 +31,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		// innitiate fields
 		subsMap = new ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>>();
 		eventsMap = new ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>>();
+		broadcastList = new ConcurrentHashMap<String, LinkedList<Subscriber>>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -61,12 +62,11 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void sendBroadcast(Broadcast b) {
 		// TODO Auto-generated method stub
-		for (Subscriber s: eventsMap.get(b.getClass().toString()))
+		for (Subscriber s: broadcastList.get(b.getClass().getName()))
 		{
 			subsMap.get(s).add(b);
 		}
 	}
-
 
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
@@ -106,7 +106,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {
 		subsMap.put(m,new LinkedBlockingQueue<>());
-
 	}
 
 	@Override
@@ -124,15 +123,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private Message sendMessage(Subscriber m)
-	{
-
-
-
-
 		return null;
 	}
 
