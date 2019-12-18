@@ -61,7 +61,6 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO Auto-generated method stub
 		for (Subscriber s: broadcastList.get(b.getClass().getName()))
 		{
 			subsMap.get(s).add(b);
