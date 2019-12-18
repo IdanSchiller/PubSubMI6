@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> subsMap;
 	private ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>> eventsMap;
+	private Map<String, LinkedList<Subscriber>> broadcastList;
 	private final String MR = "bgu.spl.mics.MissionReceivedEvent";
 	private final String AA = "bgu.spl.mics.AgentsAvailableEvent";
 	private final String GA = "bgu.spl.mics.GadgetAvailableEvent";
