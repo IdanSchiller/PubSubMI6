@@ -1,12 +1,10 @@
 package bgu.spl.mics.application.passiveObjects;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import netscape.javascript.JSObject;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,18 +21,18 @@ public class Diary {
 	private List<Report> reports;
 	private AtomicInteger total;
 
-	private static class dairyHolder{
+	private static class diaryHolder {
 		private static Diary instance=new Diary();
 	}
 	private Diary(){
-		reports = new ArrayList<Report>();
+		reports = new ArrayList<>();
 		total= new AtomicInteger();
 	}
 	/**
 	 * Retrieves the single instance of this class.
 	 */
 	public static Diary getInstance() {
-		return dairyHolder.instance;
+		return diaryHolder.instance;
 	}
 
 	public List<Report> getReports() {
@@ -46,7 +44,6 @@ public class Diary {
 	 * @param reportToAdd - the report to add
 	 */
 	public void addReport(Report reportToAdd){
-		//TODO: Implement this
 		reports.add(reportToAdd);
 		incrementTotal();
 	}
@@ -96,7 +93,6 @@ public class Diary {
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
 	public int getTotal(){
-		//TODO: Implement this
 		return total.get();
 	}
 
