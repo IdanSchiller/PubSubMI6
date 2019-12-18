@@ -28,41 +28,42 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		tickCounter=0;
+		tickCounter = 0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
-		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
+		this.subscribeBroadcast(TickBroadcast.class, tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
 			Future<Integer> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
-			Event<Pair<List<String>,Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
-			Future<Pair<List<String>,Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
-			Pair<List<String>,Integer> agentsFutureResault = agentsFuture.get();
-			Boolean agentsIsDone = agentsFuture.isDone();
-			if (agentsFutureResault.getValue()==null){
+			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
+			Future<Pair<List<String>, Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
+			Pair<List<String>, Integer> agentsFutureResault = agentsFuture.get();
+			if (agentsFutureResault.getValue() == null) { // not all agents exist in the squad
 				Diary.getInstance().incrementTotal();
-			}
-			else if (agentsIsDone) {
+			} else { // all agents exist in the squad
 				String gadget = missionEvent.getMission().getGadget();
 				Event<Integer> gadgetEvent = new GadgetAvailableEvent(gadget);
 				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
 				Integer gadgFutureResault = gadgFuture.get();
-				Boolean gadgetIsDone = gadgFuture.isDone();
-				if (gadgetIsDone && missionEvent.getMission().getTimeExpired()<tickCounter) {
-					Event<Boolean> sendAgents= new SendAgentsEvent<>(serialAgentsList,missionEvent.getMission().getDuration());
-					Future<Boolean> sendAgentsFut = this.getSimplePublisher().sendEvent(sendAgents);
-				}
-				if (gadgetIsDone && tickCounter<=missionEvent.getMission().getTimeExpired()){
-					Event<Boolean> releaseAgents = new ReleaseAgentsEvent<>(serialAgentsList);
-					Future<Boolean> releaseAgentsFut = this.getSimplePublisher().sendEvent(releaseAgents);
+				if (gadgFuture == null) { // gadget doesn't exist in the inventory
+					Diary.getInstance().incrementTotal();
+				} else { // gadget exists in the inventory
+					if (missionEvent.getMission().getTimeExpired() >= tickCounter) { // mission's time expired
+						Event<Boolean> releaseAgents = new ReleaseAgentsEvent<>(serialAgentsList);
+						Future<Boolean> releaseAgentsFut = this.getSimplePublisher().sendEvent(releaseAgents);
+						Diary.getInstance().incrementTotal();
+					} else { // all conditions to execute the mission are met and the agents are sent
+						Event<Boolean> sendAgents = new SendAgentsEvent<>(serialAgentsList, missionEvent.getMission().getDuration());
+						Future<Boolean> sendAgentsFut = this.getSimplePublisher().sendEvent(sendAgents);
+						Report r = new Report(missionEvent.getMission(), agentsFutureResault.getKey(), id, agentsFutureResault.getValue(), gadgFuture.get(), this.tickCounter);
+						Diary.getInstance().addReport(r);
+					}
 				}
 			}
 			missionEvent.getFuture().resolve("resolved");
-			Report r = new Report(missionEvent.getMission(),agentsFutureResault.getKey(),id,agentsFutureResault.getValue(),gadgFuture.get(),this.tickCounter);
-			Diary.getInstance().addReport(r);
-		};
-		this.subscribeEvent(MissionReceivedEvent.class,MREcallBack);
 
+		};
+		this.subscribeEvent(MissionReceivedEvent.class, MREcallBack);
 	}
 
 	public Integer getId(){ return id; }
