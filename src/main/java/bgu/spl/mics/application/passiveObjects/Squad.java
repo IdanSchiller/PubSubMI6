@@ -54,7 +54,7 @@ public class Squad {
 	 * @param time   milliseconds to sleep
 	 */
 	public void sendAgents(List<String> serials, int time) throws InterruptedException {
-		Thread.sleep((long) time);
+		Thread.sleep(time);
 		this.releaseAgents(serials);
 	}
 
@@ -71,7 +71,9 @@ public class Squad {
 				return false;
 			}
 			else if (this.agentsMap.get(agentSerialNum).isAvailable()) {
-				this.agentsMap.get(agentSerialNum).acquire();
+				synchronized (this) {
+					this.agentsMap.get(agentSerialNum).acquire();
+				}
 			} else {wait(); } // waits till the agent is release (notified by Agent.release() method) and available again
 		}
 		return true;
