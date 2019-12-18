@@ -70,27 +70,41 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
-		// TODO Auto-generated method stub
-		// add Event e to subscriber queue
+		Subscriber currSub;
+		Future<T> currFutue = new Future<>();
 		String eventClass = e.getClass().getName();
 		switch (eventClass){
 			case MR:
-				Future<T> future =  ((MissionReceivedEvent) e).getFuture();
-				Subscriber currM = eventsMap.get(eventClass).take();
-				subsMap.get(currM).put(e);
-				return future;
+				currFutue =  ((MissionReceivedEvent) e).getFuture();
+				currSub = eventsMap.get(eventClass).take();
+				subsMap.get(currSub).put(e);
+				eventsMap.get(eventClass).put(currSub);
 			case AA:
-				currMP = mpQueue.pop();
-				currMP.getQueue().push(e);
-				mpQueue.push(currMP);
-
+				currFutue = ((AgentsAvailableEvent)e).getFuture();
+				currSub = eventsMap.get(eventClass).take();
+				subsMap.get(currSub).put(e);
+				eventsMap.get(eventClass).put(currSub);
+			case GA:
+				currFutue = ((GadgetAvailableEvent)e).getFuture();
+				currSub = eventsMap.get(eventClass).take();
+				subsMap.get(currSub).put(e);
+				eventsMap.get(eventClass).put(currSub);
+			case SA:
+				currFutue = ((SendAgentsEvent)e).getFuture();
+				currSub = eventsMap.get(eventClass).take();
+				subsMap.get(currSub).put(e);
+				eventsMap.get(eventClass).put(currSub);
+			case RA:
+				currFutue = ((ReleaseAgentsEvent)e).getFuture();
+				currSub = eventsMap.get(eventClass).take();
+				subsMap.get(currSub).put(e);
+				eventsMap.get(eventClass).put(currSub);
 		}
-		return null;
+		return currFutue;
 	}
 
 	@Override
 	public void register(Subscriber m) {
-		// TODO Auto-generated method stub
 		subsMap.put(m,new LinkedBlockingQueue<>());
 
 	}
