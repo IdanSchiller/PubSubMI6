@@ -60,8 +60,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		// TODO Auto-generated method stub
-		for (Subscriber s: eventsMap.get(b.getClass().toString()))
+		for (Subscriber s: eventsMap.get(b.getClass().getName()))
 		{
 			subsMap.get(s).add(b);
 		}
