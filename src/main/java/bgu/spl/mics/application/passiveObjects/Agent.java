@@ -66,6 +66,6 @@ public class Agent {
 	 */
 	public void release(){
 		isAvailable=true;
-		notifyAll();
+		// notifyAll();
 	}
 }

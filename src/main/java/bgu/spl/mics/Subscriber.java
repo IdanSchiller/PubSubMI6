@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,6 +39,8 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     public Subscriber(String name) {
         super(name);
+        eventMap=new HashMap<>();
+        broadcastMap=new HashMap<>();
     }
 
     /**
@@ -61,11 +64,9 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 {@code type} are taken from this Subscriber message
      *                 queue.
      */
-    //TODO: idan
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
         eventMap.put(type,callback);
         MessageBrokerImpl.getInstance().subscribeEvent(type,this);
-        //TODO: implement this.
     }
 
     /**
@@ -88,7 +89,6 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 {@code type} are taken from this Subscriber message
      *                 queue.
      */
-    // TODO ziv
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
         this.broadcastMap.put(type,callback);
         MessageBrokerImpl.getInstance().subscribeBroadcast(type,this);
@@ -105,7 +105,19 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        //TODO: implement this.
+        String type = e.getClass().getName();
+        switch (type){
+            case MR:
+                ((MissionReceivedEvent)e).getFuture().resolve(result);
+            case AA:
+                ((AgentsAvailableEvent)e).getFuture().resolve(result);
+            case GA:
+                ((GadgetAvailableEvent)e).getFuture().resolve(result);
+            case SA:
+                ((SendAgentsEvent)e).getFuture().resolve(result);
+            case RA:
+                ((ReleaseAgentsEvent)e).getFuture().resolve(result);
+        }
     }
 
     /**
