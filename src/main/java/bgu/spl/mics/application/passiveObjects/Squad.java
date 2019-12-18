@@ -64,7 +64,7 @@ public class Squad {
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
 	public boolean getAgents(List<String> serials) throws InterruptedException {
-		Collections.sort(serials);
+		Collections.sort(serials); //TODO: check if sort is okay
 		for (String agentSerialNum: serials) {
 			if (!this.agentsMap.containsKey(agentSerialNum)) {
 				this.releaseAgents(serials);
