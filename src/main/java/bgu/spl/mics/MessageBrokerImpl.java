@@ -1,12 +1,7 @@
 package bgu.spl.mics;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
-
-import java.util.ArrayDeque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The {@link MessageBrokerImpl class is the implementation of the MessageBroker interface.
@@ -14,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private ConcurrentHashMap<Subscriber, ArrayQueue<Message>> subsMap;
-	private ConcurrentHashMap<String, LinkedList<Subscriber>> topicsMap;
+	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> subsMap;
+	private ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>> eventsMap;
 
 
 	private static class MessageBrokerImplHolder{
@@ -23,9 +18,9 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	private MessageBrokerImpl(){
-      // innitiate fields
-		subsMap = new ConcurrentHashMap<Subscriber, ArrayQueue<Message>>();
-		topicsMap = new ConcurrentHashMap<String, LinkedList<Subscriber>>();
+		// innitiate fields
+		subsMap = new ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>>();
+		eventsMap = new ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -56,13 +51,13 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void sendBroadcast(Broadcast b) {
 		// TODO Auto-generated method stub
-		for (Subscriber s: topicsMap.get(b.getClass().toString()))
+		for (Subscriber s: eventsMap.get(b.getClass().toString()))
 		{
 			subsMap.get(s).add(b);
 		}
 	}
 
-	
+
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
 		// TODO Auto-generated method stub
@@ -87,14 +82,14 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void register(Subscriber m) {
 		// TODO Auto-generated method stub
-
+		subsMap.put(m,new LinkedBlockingQueue<>());
 
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
 		// TODO Auto-generated method stub
-
+		subsMap.
 	}
 
 	@Override
