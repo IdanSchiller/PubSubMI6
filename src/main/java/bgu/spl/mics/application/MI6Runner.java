@@ -6,16 +6,14 @@ import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.MissionInfo;
 import bgu.spl.mics.application.passiveObjects.Squad;
 import bgu.spl.mics.application.subscribers.Q;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,41 +23,32 @@ import org.json.simple.parser.ParseException;
  * In the end, you should output serialized objects.
  */
 public class MI6Runner {
-    HashMap<String,Agent> agents;
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws FileNotFoundException {
         // TODO Implement this
-        HashMap<String, Agent> agents = new HashMap<String, Agent>();
+
 
 //        if (args[0] == null) {
 //
 //        }
-        JSONParser parser = new JSONParser();
+        Gson gson = new Gson();
+        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
+        List<Thread> threads = new LinkedList<>();
 
-        Object obj = null;
+
         try {
-            obj = parser.parse(new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json"));
+            JsonReader read = new JsonReader(FR);
+            JsonElement element = JsonParser.parseReader(read);
 
-
-            JSONObject jsonObject = (JSONObject) obj;
-
-            String[] inventory = (String[]) jsonObject.get("inventory");
-
-            Inventory inv = new Inventory();
-            inv.load(inventory);
-
-            Map squad = (Map) jsonObject.get("squad");
-
-            String name = iter.next().toString();
-            String serialNumber = iter.next().toString();
-
-
-            Agent[] agentsArr = new Agent[squad.size()];
-
-            Squad sq = new Squad();
-            sq.load(agentsArr);
-
-            Map services = (Map) jsonObject.get("services");
+            /** inventory*/
+            Inventory inventory = Inventory.getInstance();
+            JsonArray inv = element.getAsJsonObject().get("inventory").getAsJsonArray();
+            String[] inventoryToLoad = new String[inv.size()];
+            for(int i=0;i<inventoryToLoad.length;i++)
+            {
+                inventoryToLoad[i]= inv.get(i).toString();
+            }
 
 
         } catch (ParseException ex) {
