@@ -39,7 +39,7 @@ public class M extends Subscriber {
 			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
 			Future<Pair<List<String>, Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
 			Pair<List<String>, Integer> agentsFutureResult = agentsFuture.get();
-			if (agentsFutureResult.getValue() == null) { // not all agents exist in the squad
+			if (agentsFutureResult.getValue1() == null) { // not all agents exist in the squad
 				Diary.getInstance().incrementTotal();
 			} else { // all agents exist in the squad
 				String gadget = missionEvent.getMission().getGadget();
@@ -56,7 +56,7 @@ public class M extends Subscriber {
 					} else { // all conditions to execute the mission are met and the agents are sent
 						Event<Boolean> sendAgents = new SendAgentsEvent<>(serialAgentsList, missionEvent.getMission().getDuration());
 						Future<Boolean> sendAgentsFut = this.getSimplePublisher().sendEvent(sendAgents);
-						Report r = new Report(missionEvent.getMission(), agentsFutureResult.getKey(), id, agentsFutureResult.getValue(), gadgFuture.get(), this.tickCounter);
+						Report r = new Report(missionEvent.getMission(), agentsFutureResult.getValue0(), id, agentsFutureResult.getValue1(), gadgFuture.get(), this.tickCounter);
 						Diary.getInstance().addReport(r);
 					}
 				}
