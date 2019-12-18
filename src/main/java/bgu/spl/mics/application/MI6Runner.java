@@ -50,6 +50,14 @@ public class MI6Runner {
                 inventoryToLoad[i]= inv.get(i).toString();
             }
 
+            /** services */
+            JsonObject ser = element.getAsJsonObject().get("services").getAsJsonObject();
+            Integer m = ser.getAsJsonObject().get("M").getAsInt();
+            Integer mp = ser.getAsJsonObject().get("Moneypenny").getAsInt();
+
+
+
+
 
         } catch (ParseException ex) {
             ex.printStackTrace();
