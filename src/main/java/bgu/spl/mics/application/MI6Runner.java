@@ -59,6 +59,27 @@ public class MI6Runner {
 
 
 
+
+            /** squad */
+            Squad squad = Squad.getInstance();
+            JsonArray sqd = element.getAsJsonObject().get("squad").getAsJsonArray();
+            Agent[] agents = new Agent[sqd.size()];
+            int i=0;
+            for (JsonElement agentDetails: sqd){
+                Agent a = new Agent();
+                a.setName(agentDetails.getAsJsonObject().get("name").getAsString());
+                a.setSerialNumber(agentDetails.getAsJsonObject().get("serialNumber").getAsString());
+                agents[i]=a;
+                i++;
+            }
+            Squad.getInstance().load(agents);
+
+
+
+
+
+
+
         } catch (ParseException ex) {
             ex.printStackTrace();
         } catch (FileNotFoundException ex) {
