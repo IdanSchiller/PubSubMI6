@@ -41,15 +41,15 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
+	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
 		// TODO Auto-generated method stub
-
+		eventsMap.get(type.getName()).put(m);
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		// TODO Auto-generated method stub
-
+		broadcastList.get(type.getName()).add(m);
 	}
 
 	@Override
@@ -98,7 +98,13 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void unregister(Subscriber m) {
 		// TODO Auto-generated method stub
-		subsMap.
+		subsMap.remove(m);
+		for(String s: eventsMap.keySet()){
+			eventsMap.get(s).remove(m);
+		}
+		for(String s: broadcastList.keySet()){
+			broadcastList.get(s).remove(m);
+		}
 	}
 
 	@Override
