@@ -61,7 +61,6 @@ public class MI6Runner {
 
 
             /** squad */
-            Squad squad = Squad.getInstance();
             JsonArray sqd = element.getAsJsonObject().get("squad").getAsJsonArray();
             Agent[] agents = new Agent[sqd.size()];
             int i=0;
