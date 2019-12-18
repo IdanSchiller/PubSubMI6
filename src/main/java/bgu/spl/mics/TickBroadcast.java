@@ -5,7 +5,7 @@ public class TickBroadcast implements Broadcast {
     private int tick;
 
     public TickBroadcast(int tick){
-        tick=tick;
+        this.tick=tick;
     }
 
     public int getTick() {

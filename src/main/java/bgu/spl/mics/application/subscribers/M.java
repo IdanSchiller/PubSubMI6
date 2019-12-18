@@ -33,7 +33,7 @@ public class M extends Subscriber {
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
-			Future<Pair<Boolean,Integer>> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
+			Future<Integer> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
 			Event<Pair<List<String>,Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
 			Future<Pair<List<String>,Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
@@ -41,9 +41,9 @@ public class M extends Subscriber {
 			Boolean agentsIsDone = agentsFuture.isDone();
 			if (agentsIsDone) {
 				String gadget = missionEvent.getMission().getGadget();
-				Event<Pair<Boolean,Integer>> gadgetEvent = new GadgetAvailableEvent(gadget);
+				Event<Integer> gadgetEvent = new GadgetAvailableEvent(gadget);
 				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
-				Pair<Boolean,Integer> gadgFutureResault = gadgFuture.get();
+				Integer gadgFutureResault = gadgFuture.get();
 				Boolean gadgetIsDone = gadgFuture.isDone();
 				if (gadgetIsDone && missionEvent.getMission().getTimeExpired()<tickCounter) {
 					Event<Boolean> sendAgents= new SendAgentsEvent<>(serialAgentsList,missionEvent.getMission().getDuration());
@@ -55,7 +55,7 @@ public class M extends Subscriber {
 				}
 			}
 			missionEvent.getFuture().resolve("resolved");
-			Report r = new Report(missionEvent.getMission(),agentsFutureResault.getKey(),id,agentsFutureResault.getValue(),gadgFuture.get().getValue(),this.tickCounter);
+			Report r = new Report(missionEvent.getMission(),agentsFutureResault.getKey(),id,agentsFutureResault.getValue(),gadgFuture.get(),this.tickCounter);
 			Diary.getInstance().addReport(r);
 		};
 		this.subscribeEvent(MissionReceivedEvent.class,MREcallBack);

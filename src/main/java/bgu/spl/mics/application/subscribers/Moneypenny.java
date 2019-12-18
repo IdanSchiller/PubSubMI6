@@ -35,7 +35,7 @@ public class Moneypenny extends Subscriber {
 			if(!allAgentsExist){
 				this.complete(agentsEvent,null);
 			}else{
-				result = new Pair<>(agentsEvent.getAgentsSerialNum(),id);
+				result = new Pair<>(Squad.getInstance().getAgentsNames(agentsEvent.getAgentsSerialNum()),id);
 				this.complete(agentsEvent, result);
 			}
 		};
