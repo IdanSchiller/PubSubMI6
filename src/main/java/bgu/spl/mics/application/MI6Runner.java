@@ -30,8 +30,6 @@ public class MI6Runner {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        // TODO Implement this
-
 
 //        if (args[0] == null) {
 //
@@ -99,7 +97,6 @@ public class MI6Runner {
             threads.add( new Thread(new Moneypenny(i)));
         }
 
-
         /** squad */
         JsonArray sqd = element.getAsJsonObject().get("squad").getAsJsonArray();
         Agent[] agents = new Agent[sqd.size()];
@@ -115,6 +112,13 @@ public class MI6Runner {
         /** Q and TimeService */
         threads.add( new Thread(new TimeService(time)));
         threads.add( new Thread(new Q()));
+
+
+        /** run threads */
+        for(Thread t : threads)
+        {
+            t.run();
+        }
     }
 
 

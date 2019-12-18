@@ -2,7 +2,7 @@ package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.*;
 import bgu.spl.mics.application.passiveObjects.Squad;
-import javafx.util.Pair;
+import org.javatuples.Pair;
 
 import java.util.List;
 
