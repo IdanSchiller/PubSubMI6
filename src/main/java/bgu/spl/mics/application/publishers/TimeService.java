@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class TimeService extends Publisher {
 	// fields
-	private SimplePublisher simplePub;
 	private TimerTask task;
 	private Timer timer;
 	private Long ticksLimit;
@@ -34,10 +33,7 @@ public class TimeService extends Publisher {
 			public void run() {
 				currTime.getAndIncrement();
 				Broadcast tick = new TickBroadcast(currTime.get());
-				//TODO:
-				// 1.initialize simplePub
-				// 2. SHOULD use TimeService.getSimplePublisher().sendBroadcast(tick); instead!
-				simplePub.sendBroadcast(tick);
+				TimeService.super.getSimplePublisher().sendBroadcast(tick);
 			}
 		};
 		timer= new Timer("Timer");

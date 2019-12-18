@@ -39,7 +39,10 @@ public class M extends Subscriber {
 			Future<Pair<List<String>,Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
 			Pair<List<String>,Integer> agentsFutureResault = agentsFuture.get();
 			Boolean agentsIsDone = agentsFuture.isDone();
-			if (agentsIsDone) {
+			if (agentsFutureResault.getValue()==null){
+				Diary.getInstance().incrementTotal();
+			}
+			else if (agentsIsDone) {
 				String gadget = missionEvent.getMission().getGadget();
 				Event<Integer> gadgetEvent = new GadgetAvailableEvent(gadget);
 				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
