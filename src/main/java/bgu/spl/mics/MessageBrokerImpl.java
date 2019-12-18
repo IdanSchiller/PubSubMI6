@@ -3,6 +3,7 @@ package bgu.spl.mics;
 import com.sun.jmx.remote.internal.ArrayQueue;
 
 import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,8 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBrokerImpl implements MessageBroker {
-	private ConcurrentHashMap<Subscriber, Queue> subsMap;
-	private ConcurrentHashMap<String, List> topicsMap;
+	private ConcurrentHashMap<Subscriber, ArrayQueue<Message>> subsMap;
+	private ConcurrentHashMap<String, LinkedList<Subscriber>> topicsMap;
 
 
 	private static class MessageBrokerImplHolder{
@@ -23,8 +24,8 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	private MessageBrokerImpl(){
       // innitiate fields
-		subsMap = new ConcurrentHashMap<Subscriber, Queue>();
-		topicsMap = new ConcurrentHashMap<String, List>();
+		subsMap = new ConcurrentHashMap<Subscriber, ArrayQueue<Message>>();
+		topicsMap = new ConcurrentHashMap<String, LinkedList<Subscriber>>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -55,7 +56,10 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void sendBroadcast(Broadcast b) {
 		// TODO Auto-generated method stub
-
+		for (Subscriber s: topicsMap.get(b.getClass().toString()))
+		{
+			subsMap.get(s).add(b);
+		}
 	}
 
 	

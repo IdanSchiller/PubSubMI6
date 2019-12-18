@@ -110,10 +110,10 @@ public class Report {
 	/**
 	 * Sets the agents names.
 	 */
-//	public void setAgentsNames(List<String> agentsNames) {
-//		// TODO Implement this
-//		agentsNames=agentsNames;
-//	}
+	public void setAgentsNames(List<String> agentsNames) {
+		// TODO Implement this
+		agentsNames=agentsNames;
+	}
 
 	/**
 	 * Retrieves the name of the gadget.

@@ -55,7 +55,9 @@ public final class SimplePublisher {
      */
     public final void sendBroadcast(Broadcast b) {
         //TODO: implement this. ziv
-
         //tickbroadcast
+        MessageBrokerImpl.getInstance().sendBroadcast(b);
+
+
     }
 }

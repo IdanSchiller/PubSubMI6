@@ -31,9 +31,9 @@ public class Squad {
 	 * 						of the squad.
 	 */
 	public void load (Agent[] agents) {
-	for(Agent a:agents)
-			this.AgentsMap.put(a.getSerialNumber(),a);
-
+		for(Agent a:agents) {
+			this.AgentsMap.put(a.getSerialNumber(), a);
+		}
 	}
 
 	/**
@@ -72,19 +72,19 @@ public class Squad {
 		return true;
 	}
 
-    /**
-     * gets the agents names
-     * @param serials the serial numbers of the agents
-     * @return a list of the names of the agents with the specified serials.
-     */
-    public List<String> getAgentsNames(List<String> serials){
-        List<String> agentsNameList = new LinkedList<>();
-        for (String agentSerialNum: serials){
-        	if (this.AgentsMap.containsKey(agentSerialNum)){
-        		agentsNameList.add(this.AgentsMap.get(agentSerialNum).getName());
+	/**
+	 * gets the agents names
+	 * @param serials the serial numbers of the agents
+	 * @return a list of the names of the agents with the specified serials.
+	 */
+	public List<String> getAgentsNames(List<String> serials){
+		List<String> agentsNameList = new LinkedList<>();
+		for (String agentSerialNum: serials){
+			if (this.AgentsMap.containsKey(agentSerialNum)){
+				agentsNameList.add(this.AgentsMap.get(agentSerialNum).getName());
 			}
 		}
-	    return  agentsNameList;
-    }
+		return  agentsNameList;
+	}
 
 }

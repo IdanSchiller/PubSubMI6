@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Moneypenny extends Subscriber {
 	private int tickCounter;
-	private Pair<List<String>,Integer> resault;
+	private Pair<List<String>,Integer> result;
 	private Integer id;
 
 	public Moneypenny(Integer id) {
@@ -35,8 +35,8 @@ public class Moneypenny extends Subscriber {
 			if(!allAgentsExist){
 				this.complete(agentsEvent,null);
 			}else{
-				resault= new Pair<>(agentsEvent.getAgentsSerialNum(),id);
-				this.complete(agentsEvent,resault);
+				result = new Pair<>(agentsEvent.getAgentsSerialNum(),id);
+				this.complete(agentsEvent, result);
 			}
 		};
 		this.subscribeEvent(AgentsAvailableEvent.class,agentsCallBack);

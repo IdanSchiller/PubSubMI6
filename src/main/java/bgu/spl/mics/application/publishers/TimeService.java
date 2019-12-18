@@ -45,7 +45,6 @@ public class TimeService extends Publisher {
 	@Override
 	protected void initialize() {
 		currTime = new AtomicInteger();
-
 	}
 	// TODO ziv
 	@Override
