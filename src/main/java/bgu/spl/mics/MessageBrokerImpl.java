@@ -11,7 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> subsMap;
 	private ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>> eventsMap;
-	private ConcurrentHashMap<String, LinkedList<Subscriber>> broadcastList;
 	private final String MR = "bgu.spl.mics.MissionReceivedEvent";
 	private final String AA = "bgu.spl.mics.AgentsAvailableEvent";
 	private final String GA = "bgu.spl.mics.GadgetAvailableEvent";
@@ -67,18 +66,17 @@ public class MessageBrokerImpl implements MessageBroker {
 
 
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) {
+	public <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
 		// TODO Auto-generated method stub
 		// add Event e to subscriber queue
-		String eventClass = e.getClass().toString();
+		String eventClass = e.getClass().getName();
 		switch (eventClass){
-			case "MissionReceivedEvent":
+			case MR:
 				Future<T> future =  ((MissionReceivedEvent) e).getFuture();
-				currM = mQueue.pop();
-				currM.getQueue().push(e);
-				mQueue.push(currM);
+				Subscriber currM = eventsMap.get(eventClass).take();
+				subsMap.get(currM).put(e);
 				return future;
-			case "AgentsAvailableEvent":
+			case AA:
 				currMP = mpQueue.pop();
 				currMP.getQueue().push(e);
 				mpQueue.push(currMP);
