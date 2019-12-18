@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SendAgentsEvent<T> implements Event<T> {
 
-    private Future<T> future;
+    private Future<T> future=null;
     private List<String> serials;
     private int duration;
 

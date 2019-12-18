@@ -1,15 +1,13 @@
 package bgu.spl.mics;
-import bgu.spl.mics.application.passiveObjects.Agent;
 //import javafx.util.Pair;
 
 import java.util.List;
-import java.util.Map;
 
 public class AgentsAvailableEvent<T> implements Event<T> {
 
 
     // Fields
-private Future<T> fut;
+private Future<T> future=null;
     private List<String> agentsSerialNum;
 
 
@@ -22,5 +20,5 @@ private Future<T> fut;
         return agentsSerialNum;
     }
 
-    public Future<T> getFuture(){return fut;}
+    public Future<T> getFuture(){return future;}
 }

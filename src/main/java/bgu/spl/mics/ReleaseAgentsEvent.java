@@ -3,7 +3,7 @@ package bgu.spl.mics;
 import java.util.List;
 
 public class ReleaseAgentsEvent<T> implements Event<T> {
-    private Future<T> future;
+    private Future<T> future=null;
     private List<String> serials;
 
     public ReleaseAgentsEvent(List<String> serials){

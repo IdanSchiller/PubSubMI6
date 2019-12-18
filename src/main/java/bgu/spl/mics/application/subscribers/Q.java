@@ -35,7 +35,7 @@ public class Q extends Subscriber {
  //TODO ziv
 
 	@Override
-	protected void initialize() {
+	protected void initialize() throws InterruptedException {
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter.getAndIncrement();
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);

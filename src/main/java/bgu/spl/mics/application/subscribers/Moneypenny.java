@@ -25,7 +25,7 @@ public class Moneypenny extends Subscriber {
 	}
 
 	@Override
-	protected void initialize() {
+	protected void initialize() throws InterruptedException {
 		tickCounter=0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;

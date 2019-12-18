@@ -122,7 +122,11 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
-        initialize();
+        try {
+            initialize();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         while (!terminated) {
             try {
                 Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);

@@ -27,7 +27,7 @@ public class M extends Subscriber {
 	}
 
 	@Override
-	protected void initialize() {
+	protected void initialize() throws InterruptedException {
 		tickCounter = 0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
@@ -60,7 +60,7 @@ public class M extends Subscriber {
 					}
 				}
 			}
-			missionEvent.getFuture().resolve("resolved");
+			this.complete(missionEvent,true);
 
 		};
 		this.subscribeEvent(MissionReceivedEvent.class, MREcallBack);

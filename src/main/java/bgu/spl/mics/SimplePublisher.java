@@ -28,7 +28,7 @@ public final class SimplePublisher {
      * 	       			null in case no Subscriber has subscribed to {@code e.getClass()}.
      */
     //TODO: idan
-    public final <T> Future<T> sendEvent(Event<T> e) {
+    public final <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
         Future<T>  future = MessageBrokerImpl.getInstance().sendEvent(e);
 
         String eventClass = e.getClass().getName();

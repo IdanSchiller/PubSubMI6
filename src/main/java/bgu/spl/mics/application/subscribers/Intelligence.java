@@ -34,7 +34,7 @@ public class Intelligence  extends Subscriber {
 	}
 
 	@Override
-	protected void initialize() {
+	protected void initialize() throws InterruptedException {
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
 			if (missionMap.containsKey(tickCounter)) {
