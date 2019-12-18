@@ -74,11 +74,12 @@ public class Inventory {
 	 * List of all the gadgets that remain in the inventory.
 	 * This method is called by the main method in order to generate the output.
 	 */
-	public void printToFile(String filename){
+	public void printToFile(String filename) throws IOException {
 		JsonArray obj = new JsonArray();
 		for(String gadget : gadgets) obj.add(gadget);
+		FileWriter file = new FileWriter(filename);
 		try{
-			FileWriter file = new FileWriter(filename);
+			file.write(obj.toString());
 		}
 		catch (IOException e){
 			e.printStackTrace();

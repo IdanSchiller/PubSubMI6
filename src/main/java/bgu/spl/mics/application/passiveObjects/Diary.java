@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import netscape.javascript.JSObject;
@@ -61,7 +62,8 @@ public class Diary {
 
 		JsonObject obj = new JsonObject();
 		obj.add("Diary.total", total.get());
-		obj.add("Reports");
+		JsonArray arr = new JsonArray();
+		obj.add("Reports",arr);
 
 		for (Report r : reports) {
 			JsonObject j = new JsonObject();
@@ -76,11 +78,16 @@ public class Diary {
 			j.add("timeCreated", r.getTimeCreated());
 			obj.getAsJsonObject("Reports").add(j);
 		}
+		FileWriter file = new FileWriter(filename);
 		try{
-			FileWriter file = new FileWriter(filename);
+			file.write(obj.toJSONString());
 		}
 		catch (IOException e){
 			e.printStackTrace();
+		}
+		finally {
+			file.flush();
+			file.close();
 		}
 	}
 
