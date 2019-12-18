@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageBrokerImpl implements MessageBroker {
 	private ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>> subsMap;
 	private ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>> eventsMap;
-
+	private ConcurrentHashMap<String, LinkedList<Subscriber>> broadcastList;
 
 	private static class MessageBrokerImplHolder{
 		private static MessageBrokerImpl instance = new MessageBrokerImpl();
@@ -21,6 +22,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		// innitiate fields
 		subsMap = new ConcurrentHashMap<Subscriber, LinkedBlockingQueue<Message>>();
 		eventsMap = new ConcurrentHashMap<String, LinkedBlockingQueue<Subscriber>>();
+		broadcastList = new ConcurrentHashMap<String, LinkedList<Subscriber>>();
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -31,27 +33,26 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) {
+	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
 		// TODO Auto-generated method stub
-
+		eventsMap.get(type.getName()).put(m);
 	}
 
 	@Override
-	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
-		// TODO Auto-generated method stub
-
+	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) throws InterruptedException {
+		// TODO check if type.tostring
+		broadcastList.get(type.getName()).add(m);
 	}
 
 	@Override
 	public <T> void complete(Event<T> e, T result) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
 		// TODO Auto-generated method stub
-		for (Subscriber s: eventsMap.get(b.getClass().toString()))
+		for (Subscriber s: broadcastList.get(b.getClass().getName()))
 		{
 			subsMap.get(s).add(b);
 		}
@@ -83,13 +84,13 @@ public class MessageBrokerImpl implements MessageBroker {
 	public void register(Subscriber m) {
 		// TODO Auto-generated method stub
 		subsMap.put(m,new LinkedBlockingQueue<>());
-
 	}
 
 	@Override
 	public void unregister(Subscriber m) {
 		// TODO Auto-generated method stub
-		subsMap.
+		subsMap.remove(m);
+		eventsMap.forEachEntry();
 	}
 
 	@Override
