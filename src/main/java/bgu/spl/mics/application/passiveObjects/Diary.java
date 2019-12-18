@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import netscape.javascript.JSObject;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,26 +57,30 @@ public class Diary {
 	 * List of all the reports in the diary.
 	 * This method is called by the main method in order to generate the output.
 	 */
-	public void printToFile(String filename){
-		//TODO: Implement this
+	public void printToFile(String filename) {
 
 		JsonObject obj = new JsonObject();
 		obj.add("Diary.total", total.get());
 		obj.add("Reports");
 
-		for(Report r: reports)
-		{
+		for (Report r : reports) {
 			JsonObject j = new JsonObject();
-			j.add("MissionName",r.getMissionName());
+			j.add("MissionName", r.getMissionName());
 			j.add("M", r.getMId());
 			j.add("MoneyPenny", r.getMoneypennyId());
 			j.add("agentsSerialNumbers", r.getAgentsSerialNumbersNumber());
-			j.add("agentsName",r.getAgentsNames());
+			j.add("agentsName", r.getAgentsNames());
 			j.add("gadgetName", r.getGadgetName());
 			j.add("timeIssued", r.getTimeIssued());
 			j.add("QTime", r.getQTime());
 			j.add("timeCreated", r.getTimeCreated());
 			obj.getAsJsonObject("Reports").add(j);
+		}
+		try{
+			FileWriter file = new FileWriter(filename);
+		}
+		catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 
