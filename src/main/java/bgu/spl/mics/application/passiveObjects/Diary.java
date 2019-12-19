@@ -1,13 +1,20 @@
 package bgu.spl.mics.application.passiveObjects;
 
-import com.google.gson.JsonArray;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.JsonObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.*;
+import java.util.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -57,35 +64,42 @@ public class Diary {
 	 */
 	public void printToFile(String filename) {
 
-		JsonObject obj = new JsonObject();
-		obj.add("Diary.total", total.get());
-		JsonArray arr = new JsonArray();
-		obj.add("Reports",arr);
+		JSONArray jsonReports = new JSONArray();
 
-		for (Report r : reports) {
-			JsonObject j = new JsonObject();
-			j.add("MissionName", r.getMissionName());
-			j.add("M", r.getMId());
-			j.add("MoneyPenny", r.getMoneypennyId());
-			j.add("agentsSerialNumbers", r.getAgentsSerialNumbersNumber());
-			j.add("agentsName", r.getAgentsNames());
-			j.add("gadgetName", r.getGadgetName());
-			j.add("timeIssued", r.getTimeIssued());
-			j.add("QTime", r.getQTime());
-			j.add("timeCreated", r.getTimeCreated());
-			obj.getAsJsonObject("Reports").add(j);
+		for (Report r : reports)
+		{
+			JSONObject j = new JSONObject();
+			JSONArray agentsSerialNumbers = new JSONArray();
+			JSONArray agentsNames = new JSONArray();
+			agentsSerialNumbers.addAll(r.getAgentsSerialNumbersNumber());
+			agentsNames.addAll(r.getAgentsNames());
+
+
+			j.put("MissionName", r.getMissionName());
+			j.put("M", r.getMId());
+			j.put("MoneyPenny", r.getMoneypennyId());
+			j.put("agentsSerialNumbers", agentsSerialNumbers);
+			j.put("agentsName", agentsNames);
+			j.put("gadgetName", r.getGadgetName());
+			j.put("timeCreated", r.getTimeCreated());
+			j.put("timeIssued", r.getTimeIssued());
+			j.put("QTime", r.getQTime());
+
+
+			jsonReports.add(j);
 		}
-		FileWriter file = new FileWriter(filename);
+		JSONObject obj = new JSONObject();
+		obj.put("reports", jsonReports);
+		obj.put("total", total);
+
 		try{
+			FileWriter file = new FileWriter(filename);
 			file.write(obj.toJSONString());
 		}
 		catch (IOException e){
 			e.printStackTrace();
 		}
-		finally {
-			file.flush();
-			file.close();
-		}
+
 	}
 
 	/**

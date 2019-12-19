@@ -1,10 +1,7 @@
 package bgu.spl.mics.application;
 import bgu.spl.mics.AgentsAvailableEvent;
 import bgu.spl.mics.MissionReceivedEvent;
-import bgu.spl.mics.application.passiveObjects.Agent;
-import bgu.spl.mics.application.passiveObjects.Inventory;
-import bgu.spl.mics.application.passiveObjects.MissionInfo;
-import bgu.spl.mics.application.passiveObjects.Squad;
+import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.application.publishers.TimeService;
 import bgu.spl.mics.application.subscribers.Intelligence;
 import bgu.spl.mics.application.subscribers.M;
@@ -29,13 +26,13 @@ import org.json.simple.parser.ParseException;
 public class MI6Runner {
 
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
 
 //        if (args[0] == null) {
 //
 //        }
         Gson gson = new Gson();
-        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
+        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
         List<Thread> threads = new LinkedList<>();
 
 
@@ -119,6 +116,8 @@ public class MI6Runner {
         {
             t.run();
         }
+        Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+        Inventory.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
     }
 
 

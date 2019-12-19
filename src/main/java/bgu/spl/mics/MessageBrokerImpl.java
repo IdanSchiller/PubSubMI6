@@ -45,11 +45,19 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
+		if(!eventsMap.containsKey(type.getName()))
+		{
+			eventsMap.put(type.getName(),new LinkedBlockingQueue<Subscriber>());
+		}
 		eventsMap.get(type.getName()).put(m);
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
+		if(!broadcastMap.containsKey(type.getName()))
+		{
+			broadcastMap.put(type.getName(),new LinkedList<Subscriber>());
+		}
 		broadcastMap.get(type.getName()).add(m);
 	}
 
