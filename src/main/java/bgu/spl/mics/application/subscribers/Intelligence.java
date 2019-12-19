@@ -36,8 +36,13 @@ public class Intelligence  extends Subscriber {
 	@Override
 	protected void initialize() throws InterruptedException {
 		MessageBrokerImpl.getInstance().register(this);
+		MessageBrokerImpl.getInstance().subscribeBroadcast(TickBroadcast.class,this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
 			if (missionMap.containsKey(tickCounter)) {
+				if(tickCounter==ticksLimit)
+				{
+					super.terminate();
+				}
 				Event<Boolean> missionEvent = new MissionReceivedEvent<>(missionMap.get(tickCounter));
 				Future<Boolean> dontCareFuture = this.getSimplePublisher().sendEvent(missionEvent);
 			}

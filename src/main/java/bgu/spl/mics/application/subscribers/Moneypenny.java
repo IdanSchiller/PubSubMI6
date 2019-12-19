@@ -17,18 +17,27 @@ public class Moneypenny extends Subscriber {
 	private int tickCounter;
 	private Pair<List<String>,Integer> result;
 	private Integer id;
+	private long ticksLimit;
 
-	public Moneypenny(Integer id) {
+	public Moneypenny(Integer id, long ticksLimit) {
 		super("MoneyPenny"+id.toString());
 		// TODO Implement this
 		this.id=id;
+		this.ticksLimit=ticksLimit;
 	}
 
 	@Override
 	protected void initialize() throws InterruptedException {
 		tickCounter=0;
 		MessageBrokerImpl.getInstance().register(this);
-		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
+			tickCounter++;
+
+			if (tickCounter== ticksLimit)
+			{
+				super.terminate();
+			}
+		};
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<AgentsAvailableEvent> agentsCallBack = (agentsEvent) -> {
 			 Boolean allAgentsExist = Squad.getInstance().getAgents(agentsEvent.getAgentsSerialNum());

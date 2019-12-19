@@ -53,6 +53,5 @@ public class TimeService extends Publisher {
 			timer.schedule(task,100);
 		}
 		timer.cancel();
-
 	}
 }

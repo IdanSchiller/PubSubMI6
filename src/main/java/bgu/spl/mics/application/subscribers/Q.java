@@ -21,15 +21,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Q extends Subscriber {
  	private Inventory inv;
  	private AtomicInteger tickCounter;
+ 	private long ticksLimit;
 
 //	private static class QHolder{
 //		private static Q instance=new Q();
 //	}
-	public Q(){
+	public Q(long ticksLimit){
 		// innitiate fields
 		super("Q");
 		inv= Inventory.getInstance();
 		tickCounter=new AtomicInteger();
+		ticksLimit=ticksLimit;
 	}
 
  //TODO ziv
@@ -37,7 +39,13 @@ public class Q extends Subscriber {
 	@Override
 	protected void initialize() throws InterruptedException {
 		MessageBrokerImpl.getInstance().register(this);
-		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter.getAndIncrement();
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
+			tickCounter.getAndIncrement();
+			if (tickCounter.intValue()== ticksLimit)
+			{
+				super.terminate();
+			}
+		};
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<GadgetAvailableEvent> GAE = (GadgetAvailableEvent gadgetAvailable) -> CheckGadgetAvailable(gadgetAvailable);
 		this.subscribeEvent(GadgetAvailableEvent.class,GAE);

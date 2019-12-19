@@ -53,7 +53,7 @@ public class MI6Runner {
         JsonObject ser = element.getAsJsonObject().get("services").getAsJsonObject();
         Integer m = ser.getAsJsonObject().get("M").getAsInt();
         Integer mp = ser.getAsJsonObject().get("Moneypenny").getAsInt();
-        Long time = ser.getAsJsonObject().get("time").getAsLong();
+        Long timeLimit = ser.getAsJsonObject().get("time").getAsLong();
         JsonArray intelligenceJson = ser.getAsJsonObject().get("intelligence").getAsJsonArray();
 
         for(int i=0;i<intelligenceJson.size();i++)
@@ -83,15 +83,15 @@ public class MI6Runner {
                 mi.setTimeIssued(timeIssued);
                 missionInfoList.add(mi);
             }
-            threads.add( new Thread(new Intelligence(missionInfoList,i,time)));
+            threads.add( new Thread(new Intelligence(missionInfoList,i,timeLimit)));
         }
         for(int i =0;i<m;i++)
         {
-            threads.add( new Thread(new M(time.intValue(),i)));
+            threads.add( new Thread(new M(timeLimit.intValue(),i)));
         }
         for(int i =0;i<mp;i++)
         {
-            threads.add( new Thread(new Moneypenny(i)));
+            threads.add( new Thread(new Moneypenny(i,timeLimit)));
         }
 
         /** squad */
@@ -107,9 +107,8 @@ public class MI6Runner {
         }
         Squad.getInstance().load(agents);
         /** Q and TimeService */
-        threads.add( new Thread(new TimeService(time)));
-        threads.add( new Thread(new Q()));
-
+        threads.add( new Thread(new Q(timeLimit)));
+        threads.add( new Thread(new TimeService(timeLimit)));
 
         /** run threads */
         for(Thread t : threads)

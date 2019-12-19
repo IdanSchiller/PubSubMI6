@@ -1,13 +1,11 @@
 package bgu.spl.mics.application.subscribers;
 
 import bgu.spl.mics.*;
-import bgu.spl.mics.application.passiveObjects.Agent;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
 import org.javatuples.Pair;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -17,12 +15,12 @@ import java.util.Map;
  */
 public class M extends Subscriber {
 	private int tickCounter;
-	private int thicksLimit;
+	private int ticksLimit;
 	private Integer id;
 
 	public M(int ticksLimit,Integer id) {
 		super("Change_This_Name");
-		this.thicksLimit=ticksLimit;
+		this.ticksLimit =ticksLimit;
 		id=id;
 		// TODO Implement this
 	}
@@ -31,7 +29,13 @@ public class M extends Subscriber {
 	protected void initialize() throws InterruptedException {
 		tickCounter = 0;
 		MessageBrokerImpl.getInstance().register(this);
-		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> tickCounter++;
+		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) ->{
+			tickCounter++;
+			if (tickCounter== ticksLimit)
+			{
+				super.terminate();
+			}
+		};
 		this.subscribeBroadcast(TickBroadcast.class, tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
 			Future<Integer> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
