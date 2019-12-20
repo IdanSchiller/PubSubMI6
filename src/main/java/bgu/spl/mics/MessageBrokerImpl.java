@@ -125,7 +125,7 @@ public class MessageBrokerImpl implements MessageBroker {
 				eventsMap.get(eventClass).put(currSub);
 				return currFuture;
 		}
-		return currFuture;
+//		return currFuture;
 	}
 
 	@Override
