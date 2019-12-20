@@ -33,6 +33,7 @@ public class M extends Subscriber {
 			tickCounter++;
 			if (tickCounter== ticksLimit)
 			{
+				Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
 				super.terminate();
 			}
 		};

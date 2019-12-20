@@ -32,7 +32,6 @@ public class Moneypenny extends Subscriber {
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
 			tickCounter++;
-
 			if (tickCounter== ticksLimit)
 			{
 				super.terminate();

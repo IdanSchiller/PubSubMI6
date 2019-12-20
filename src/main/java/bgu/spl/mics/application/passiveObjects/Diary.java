@@ -28,6 +28,7 @@ public class Diary {
 	private List<Report> reports;
 	private AtomicInteger total;
 
+
 	private static class diaryHolder {
 		private static Diary instance=new Diary();
 	}
