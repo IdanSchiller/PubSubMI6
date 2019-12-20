@@ -32,8 +32,8 @@ public class TimeService extends Publisher {
 			@Override
 			public void run() {
 				currTime.getAndIncrement();
-				Broadcast tick = new TickBroadcast(currTime.get());
-				TimeService.super.getSimplePublisher().sendBroadcast(tick);
+//				Broadcast tick = new TickBroadcast(currTime.get());
+				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currTime.get()));
 			}
 		};
 		timer= new Timer("Timer");
@@ -44,14 +44,28 @@ public class TimeService extends Publisher {
 	@Override
 	protected void initialize() {
 		currTime = new AtomicInteger();
+		//?should he register to the messegebroker??
 	}
 	// TODO ziv
 	@Override
 	public void run() {
 		initialize();
 		while (currTime.get() < ticksLimit) {
-			timer.schedule(task,100);
-		}
+//			timer.schedule(task,100);
+			timer.scheduleAtFixedRate(NewTask(),0,100);
+			}
 		timer.cancel();
+	}
+
+	private TimerTask NewTask() {
+		return new TimerTask() {
+			@Override
+			public void run() {
+				currTime.getAndIncrement();
+//				Broadcast tick = new TickBroadcast(currTime.get());
+				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currTime.get()));
+			}
+		};
+
 	}
 }

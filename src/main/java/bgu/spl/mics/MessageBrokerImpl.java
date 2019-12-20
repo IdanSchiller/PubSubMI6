@@ -81,45 +81,51 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		for (Subscriber s: broadcastMap.get(b.getClass().getName()))
-		{
-			subsMap.get(s).add(b);
+		if(!broadcastMap.isEmpty()) {
+			for (Subscriber s : broadcastMap.get(b.getClass().getName())) {
+				subsMap.get(s).add(b);
+			}
 		}
 	}
 
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
 		Subscriber currSub;
-		Future<T> currFutue = new Future<>();
+		Future<T> currFuture = new Future<>();
 		String eventClass = e.getClass().getName();
 		switch (eventClass){
 			case MR:
-				currFutue =  ((MissionReceivedEvent) e).getFuture();
+				currFuture =  ((MissionReceivedEvent) e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				return currFuture;
 			case AA:
-				currFutue = ((AgentsAvailableEvent)e).getFuture();
+				currFuture = ((AgentsAvailableEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				return currFuture;
 			case GA:
-				currFutue = ((GadgetAvailableEvent)e).getFuture();
+				currFuture = ((GadgetAvailableEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				return currFuture;
 			case SA:
-				currFutue = ((SendAgentsEvent)e).getFuture();
+				currFuture = ((SendAgentsEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				return currFuture;
 			case RA:
-				currFutue = ((ReleaseAgentsEvent)e).getFuture();
+				currFuture = ((ReleaseAgentsEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				return currFuture;
 		}
-		return currFutue;
+		return currFuture;
 	}
 
 	@Override

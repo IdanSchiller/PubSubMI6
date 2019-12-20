@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Intelligence  extends Subscriber {
 
 		private Integer id;
-		private Long tickCounter;
+		private Integer tickCounter;
 		private Map<Integer,MissionInfo> missionMap;
 		private Long ticksLimit;
 
@@ -29,7 +29,7 @@ public class Intelligence  extends Subscriber {
 		for (MissionInfo mission:missionList){
 			missionMap.put(mission.getTimeIssued(),mission);
 		}
-		this.tickCounter=null;
+		this.tickCounter= 0;
 		this.ticksLimit=ticksLimit;
 	}
 
@@ -38,11 +38,15 @@ public class Intelligence  extends Subscriber {
 		MessageBrokerImpl.getInstance().register(this);
 		MessageBrokerImpl.getInstance().subscribeBroadcast(TickBroadcast.class,this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
-			if (missionMap.containsKey(tickCounter)) {
-				if(tickCounter==ticksLimit)
-				{
-					super.terminate();
-				}
+			tickCounter=tickCounter+1;
+			if(tickCounter==ticksLimit.intValue())
+			{
+				super.terminate();
+			}
+//			/** test */
+//			System.out.println("tick received" );
+			if (missionMap.containsKey(tickCounter))
+			{
 				Event<Boolean> missionEvent = new MissionReceivedEvent<>(missionMap.get(tickCounter));
 				Future<Boolean> dontCareFuture = this.getSimplePublisher().sendEvent(missionEvent);
 			}

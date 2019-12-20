@@ -54,6 +54,8 @@ public final class SimplePublisher {
      * @param b The broadcast message to send
      */
     public final void sendBroadcast(Broadcast b) {
+//        /**   test */
+//        System.out.println("tick sent" );
         MessageBrokerImpl.getInstance().sendBroadcast(b);
 
 

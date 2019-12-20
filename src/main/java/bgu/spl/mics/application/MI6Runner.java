@@ -113,7 +113,7 @@ public class MI6Runner {
         /** run threads */
         for(Thread t : threads)
         {
-            t.run();
+            t.start();
         }
         Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
         Inventory.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
