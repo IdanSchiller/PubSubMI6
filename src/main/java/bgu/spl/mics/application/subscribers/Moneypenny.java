@@ -20,7 +20,7 @@ public class Moneypenny extends Subscriber {
 	private long ticksLimit;
 
 	public Moneypenny(Integer id, long ticksLimit) {
-		super("MoneyPenny"+id.toString());
+		super("MoneyPenny "+id.toString());
 		// TODO Implement this
 		this.id=id;
 		this.ticksLimit=ticksLimit;
@@ -28,6 +28,7 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() throws InterruptedException {
+		Thread.currentThread().setName(getName());
 		tickCounter=0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {

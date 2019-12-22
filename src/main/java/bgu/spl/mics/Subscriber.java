@@ -154,6 +154,7 @@ public abstract class Subscriber extends RunnableSubPub {
 
             }catch (Exception e){}
         }
+        System.out.println("terminated "+this.getName());
     }
 
 }

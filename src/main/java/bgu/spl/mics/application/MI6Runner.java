@@ -32,7 +32,7 @@ public class MI6Runner {
 //
 //        }
         Gson gson = new Gson();
-        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
+        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
         List<Thread> threads = new LinkedList<>();
 
 
@@ -116,7 +116,7 @@ public class MI6Runner {
             t.start();
         }
 //        Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
-        Inventory.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
+//        Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
     }
 
 

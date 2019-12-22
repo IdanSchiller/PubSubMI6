@@ -44,6 +44,7 @@ public class TimeService extends Publisher {
 	@Override
 	protected void initialize() {
 		currTime = new AtomicInteger();
+		Thread.currentThread().setName(getName());
 		//?should he register to the messegebroker??
 	}
 	// TODO ziv
@@ -55,6 +56,7 @@ public class TimeService extends Publisher {
 			timer.scheduleAtFixedRate(NewTask(),0,100);
 			}
 		timer.cancel();
+
 	}
 
 	private TimerTask NewTask() {

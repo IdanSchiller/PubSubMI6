@@ -31,13 +31,14 @@ public class Q extends Subscriber {
 		super("Q");
 		inv= Inventory.getInstance();
 		tickCounter=new AtomicInteger();
-		ticksLimit=ticksLimit;
+		this.ticksLimit=ticksLimit;
 	}
 
  //TODO ziv
 
 	@Override
 	protected void initialize() throws InterruptedException {
+		Thread.currentThread().setName(getName());
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
 			tickCounter.getAndIncrement();

@@ -19,7 +19,7 @@ public class M extends Subscriber {
 	private Integer id;
 
 	public M(int ticksLimit,Integer id) {
-		super("Change_This_Name");
+		super("M "+id.toString());
 		this.ticksLimit =ticksLimit;
 		id=id;
 		// TODO Implement this
@@ -27,13 +27,14 @@ public class M extends Subscriber {
 
 	@Override
 	protected void initialize() throws InterruptedException {
+		Thread.currentThread().setName(getName());
 		tickCounter = 0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) ->{
 			tickCounter++;
 			if (tickCounter== ticksLimit)
 			{
-				Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
 				super.terminate();
 			}
 		};

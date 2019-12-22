@@ -23,7 +23,7 @@ public class Intelligence  extends Subscriber {
 		private Long ticksLimit;
 
 	public Intelligence(List<MissionInfo> missionList, Integer id, Long ticksLimit) {
-		super("Intelligence"+id.toString());
+		super("Intelligence "+id.toString());
 		this.id=id;
 		missionMap=new HashMap<>();
 		for (MissionInfo mission:missionList){
@@ -35,6 +35,7 @@ public class Intelligence  extends Subscriber {
 
 	@Override
 	protected void initialize() throws InterruptedException {
+		Thread.currentThread().setName(getName());
 		MessageBrokerImpl.getInstance().register(this);
 		MessageBrokerImpl.getInstance().subscribeBroadcast(TickBroadcast.class,this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
