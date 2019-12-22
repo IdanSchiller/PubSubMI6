@@ -64,7 +64,7 @@ public class MI6Runner {
             {
                 JsonObject miss = intel.get(j).getAsJsonObject();
                 MissionInfo mi = new MissionInfo();
-                String missionName = miss.get("missionName").toString();
+                String missionName = miss.get("name").toString();
                 String gadget = miss.get("gadget").toString();
                 Integer duration = miss.get("duration").getAsInt();
                 Integer timeIssued = miss.get("timeIssued").getAsInt();

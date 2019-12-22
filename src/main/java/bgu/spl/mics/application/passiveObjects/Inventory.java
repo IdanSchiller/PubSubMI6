@@ -47,7 +47,7 @@ public class Inventory {
 		List<String> gadgets = new LinkedList<String>();
 		for(String s : inventory)
 		{
-			gadgets.add(s);
+			this.gadgets.add(s);
 		}
 	}
 

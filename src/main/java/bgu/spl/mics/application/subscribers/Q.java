@@ -50,7 +50,6 @@ public class Q extends Subscriber {
 		Callback<GadgetAvailableEvent> GAE = (GadgetAvailableEvent gadgetAvailable) -> CheckGadgetAvailable(gadgetAvailable);
 		this.subscribeEvent(GadgetAvailableEvent.class,GAE);
 
-
 	}
 
 	private void CheckGadgetAvailable(GadgetAvailableEvent gadgetAvailable){
