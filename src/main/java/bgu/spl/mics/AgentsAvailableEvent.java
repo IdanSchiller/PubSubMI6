@@ -7,7 +7,7 @@ public class AgentsAvailableEvent<T> implements Event<T> {
 
 
     // Fields
-private Future<T> future=null;
+    private Future<T> future=null;
     private List<String> agentsSerialNum;
 
 
@@ -20,5 +20,12 @@ private Future<T> future=null;
         return agentsSerialNum;
     }
 
-    public Future<T> getFuture(){return future;}
+    public Future<T> getFuture() throws InterruptedException {
+        while (future==null){
+            try {
+                wait();
+            }
+            catch (Exception e){}
+        }
+        return future;}
 }

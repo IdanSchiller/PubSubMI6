@@ -46,7 +46,7 @@ public class Future<T> {
 	public void resolve (T result) {
 		t=result;
 		done=true;
-		notify();
+		notifyAll();
 	}
 
 	/**

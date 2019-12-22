@@ -104,7 +104,7 @@ public abstract class Subscriber extends RunnableSubPub {
      * @param result The result to resolve the relevant Future object.
      *               {@code e}.
      */
-    protected final <T> void complete(Event<T> e, T result) {
+    protected final <T> void complete(Event<T> e, T result) throws InterruptedException {
         MessageBrokerImpl.getInstance().complete(e,result);
     }
 

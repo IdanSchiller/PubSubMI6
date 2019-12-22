@@ -32,7 +32,7 @@ public class Moneypenny extends Subscriber {
 		tickCounter=0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
-			tickCounter++;
+			this.tickCounter=tickBroadcast.getTick();
 			if (tickCounter== ticksLimit)
 			{
 				super.terminate();
@@ -48,17 +48,24 @@ public class Moneypenny extends Subscriber {
 				this.complete(agentsEvent, result);
 			}
 		};
-		this.subscribeEvent(AgentsAvailableEvent.class,agentsCallBack);
-		Callback<SendAgentsEvent> sendAgentsCB = (sendAgentsEvent)->{
+		if (this.id%2==0) {
+			this.subscribeEvent(AgentsAvailableEvent.class, agentsCallBack);
+		}
+
+			Callback<SendAgentsEvent> sendAgentsCB = (sendAgentsEvent)->{
 			Squad.getInstance().sendAgents(sendAgentsEvent.getSerials(),sendAgentsEvent.getDuration());
 			complete(sendAgentsEvent,true);
 		};
-		subscribeEvent(SendAgentsEvent.class,sendAgentsCB);
+		if (this.id%2!=0) {
+			subscribeEvent(SendAgentsEvent.class, sendAgentsCB);
+		}
 		Callback<ReleaseAgentsEvent> releaseAgentsCB = releaseAgentsEvent -> {
 			Squad.getInstance().releaseAgents(releaseAgentsEvent.getSerials());
 			complete(releaseAgentsEvent,true);
 		};
-		subscribeEvent(ReleaseAgentsEvent.class,releaseAgentsCB);
+		if (this.id%2!=0) {
+			subscribeEvent(ReleaseAgentsEvent.class, releaseAgentsCB);
+		}
 	};
 	public Integer getId() {
 		return id;

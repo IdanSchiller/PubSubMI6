@@ -31,7 +31,7 @@ public class M extends Subscriber {
 		tickCounter = 0;
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) ->{
-			tickCounter++;
+			this.tickCounter=tickBroadcast.getTick();
 			if (tickCounter== ticksLimit)
 			{
 				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
@@ -45,6 +45,7 @@ public class M extends Subscriber {
 			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
 			Future<Pair<List<String>, Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
 			Pair<List<String>, Integer> agentsFutureResult = agentsFuture.get();
+			System.out.println("null or not");
 			if (agentsFutureResult.getValue1() == null) { // not all agents exist in the squad
 				Diary.getInstance().incrementTotal();
 			} else { // all agents exist in the squad

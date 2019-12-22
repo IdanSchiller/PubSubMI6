@@ -26,7 +26,7 @@ import org.json.simple.parser.ParseException;
 public class MI6Runner {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
 //        if (args[0] == null) {
 //
@@ -45,7 +45,7 @@ public class MI6Runner {
         String[] inventoryToLoad = new String[inv.size()];
         for(int i=0;i<inventoryToLoad.length;i++)
         {
-            inventoryToLoad[i]= inv.get(i).toString();
+            inventoryToLoad[i]= inv.get(i).getAsString();
         }
         Inventory.getInstance().load(inventoryToLoad);
 
@@ -64,8 +64,8 @@ public class MI6Runner {
             {
                 JsonObject miss = intel.get(j).getAsJsonObject();
                 MissionInfo mi = new MissionInfo();
-                String missionName = miss.get("name").toString();
-                String gadget = miss.get("gadget").toString();
+                String missionName = miss.get("name").getAsString();
+                String gadget = miss.get("gadget").getAsString();
                 Integer duration = miss.get("duration").getAsInt();
                 Integer timeIssued = miss.get("timeIssued").getAsInt();
                 Integer timeExpired = miss.get("timeExpired").getAsInt();
@@ -73,7 +73,7 @@ public class MI6Runner {
                 JsonArray agentsNumbers = miss.get("serialAgentsNumbers").getAsJsonArray();
                 for (int k=0; k<agentsNumbers.size();k++)
                 {
-                    serialAgentsNumbers.add(agentsNumbers.get(k).toString());
+                    serialAgentsNumbers.add(agentsNumbers.get(k).getAsString());
                 }
                 mi.setDuration(duration);
                 mi.setGadget(gadget);
@@ -108,13 +108,16 @@ public class MI6Runner {
         Squad.getInstance().load(agents);
         /** Q and TimeService */
         threads.add( new Thread(new Q(timeLimit)));
-        threads.add( new Thread(new TimeService(timeLimit)));
+        //threads.add( new Thread(new TimeService(timeLimit)));
 
         /** run threads */
         for(Thread t : threads)
         {
             t.start();
         }
+        Thread timeServiceThread = new Thread(new TimeService(timeLimit));
+        timeServiceThread.start();
+
 //        Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
 //        Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
     }

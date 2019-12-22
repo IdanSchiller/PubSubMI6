@@ -3,6 +3,7 @@ package bgu.spl.mics;
 import bgu.spl.mics.application.subscribers.Moneypenny;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -44,7 +45,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
+	public  <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
 		if(!eventsMap.containsKey(type.getName()))
 		{
 			eventsMap.put(type.getName(),new LinkedBlockingQueue<Subscriber>());
@@ -53,7 +54,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
+	public synchronized void subscribeBroadcast(Class<? extends Broadcast> type, Subscriber m) {
 		if(!broadcastMap.containsKey(type.getName()))
 		{
 			broadcastMap.put(type.getName(),new LinkedList<Subscriber>());
@@ -62,7 +63,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public <T> void complete(Event<T> e, T result) {
+	public  <T> void complete(Event<T> e, T result) throws InterruptedException {
 		String type = e.getClass().getName();
 		switch (type){
 			case MR:
@@ -75,6 +76,9 @@ public class MessageBrokerImpl implements MessageBroker {
 				((SendAgentsEvent)e).getFuture().resolve(result);
 			case RA:
 				((ReleaseAgentsEvent)e).getFuture().resolve(result);
+				break;
+			default:
+				throw new IllegalStateException("Unexpected value: " + type);
 		}
 
 	}
@@ -82,14 +86,17 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void sendBroadcast(Broadcast b) {
 		if(!broadcastMap.isEmpty()) {
-			for (Subscriber s : broadcastMap.get(b.getClass().getName())) {
-				subsMap.get(s).add(b);
+			if(!broadcastMap.get(b.getClass().getName()).isEmpty()) {
+				List<Subscriber> list = broadcastMap.get(b.getClass().getName());
+				for (int i=0; i<list.size();i++) {
+					subsMap.get(list.get(i)).add(b);
+				}
 			}
 		}
 	}
 
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
+	public  <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
 		Subscriber currSub;
 		Future<T> currFuture = new Future<>();
 		String eventClass = e.getClass().getName();

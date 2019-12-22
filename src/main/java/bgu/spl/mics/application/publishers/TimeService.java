@@ -42,30 +42,78 @@ public class TimeService extends Publisher {
 
 
 	@Override
-	protected void initialize() {
+	protected void initialize() throws InterruptedException {
 		currTime = new AtomicInteger();
 		Thread.currentThread().setName(getName());
+		Thread.sleep(1000);
 		//?should he register to the messegebroker??
 	}
 	// TODO ziv
 	@Override
 	public void run() {
-		initialize();
-		while (currTime.get() < ticksLimit) {
-//			timer.schedule(task,100);
-			timer.scheduleAtFixedRate(NewTask(),0,100);
+		try {
+			initialize();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		while (currTime.get()<ticksLimit)
+		{
+			if (currTime.get()<ticksLimit) {
+				currTime.getAndIncrement();
+				try {
+					System.out.println("sending current time: " + currTime.toString());
+					TimerTask newTask = NewTask(currTime);
+					newTask.run();
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.out.println("did not send "+currTime.get());
+				}
+
 			}
+			else {
+				System.out.println("aaa");
+			}
+		}
 		timer.cancel();
 
 	}
 
-	private TimerTask NewTask() {
+//		boolean terminate=false;
+//		while (!terminate){
+//			timer.schedule(NewTask(),100);
+//			TimerTask newTask = NewTask();
+//			if (currTime.get()<ticksLimit)
+//				try {
+//					currTime.getAndIncrement();
+//					timer.scheduleAtFixedRate(NewTask(currTime), 0, 100);
+//					System.out.println("sending current time: " +currTime.toString());
+//				} catch (Exception e) {
+//					final int CUURTIME = currTime.get();
+//					System.out.println("timer task problem " + CUURTIME + " " + e);
+//					currTime.getAndIncrement();
+//				}
+//			if (currTime.get()==ticksLimit) {
+//				terminate = true;
+//			}
+//		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+
+	private TimerTask NewTask(AtomicInteger currentTime) {
 		return new TimerTask() {
 			@Override
 			public void run() {
-				currTime.getAndIncrement();
-//				Broadcast tick = new TickBroadcast(currTime.get());
-				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currTime.get()));
+				//	currTime.getAndIncrement();
+				if (currentTime.get()!=ticksLimit+1){
+				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get()));
+				System.out.println("sent "+currentTime.get());
+				}else {
+					System.out.println("out of bound");
+				}
 			}
 		};
 

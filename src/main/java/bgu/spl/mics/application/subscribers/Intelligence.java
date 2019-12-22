@@ -37,9 +37,8 @@ public class Intelligence  extends Subscriber {
 	protected void initialize() throws InterruptedException {
 		Thread.currentThread().setName(getName());
 		MessageBrokerImpl.getInstance().register(this);
-		MessageBrokerImpl.getInstance().subscribeBroadcast(TickBroadcast.class,this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) -> {
-			tickCounter=tickCounter+1;
+			this.tickCounter=tickBroadcast.getTick();
 			if(tickCounter==ticksLimit.intValue())
 			{
 				super.terminate();
