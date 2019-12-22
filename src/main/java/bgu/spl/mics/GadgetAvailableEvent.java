@@ -18,5 +18,9 @@ public class GadgetAvailableEvent<T> implements Event<T> {
     public Future<T> getFuture(){
         return future;
     }
+    public void setFuture(Future<T> fut){
+        this.future=fut;
+    }
+
 
 }

@@ -28,13 +28,13 @@ public class Future<T> {
 	 * @return return the result of type T if it is available, if not wait until it is available.
 	 *
 	 */
-	public T get() {
+	public synchronized T get() {
 		while(!done)
 		{
 			try {
 				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Future Class: "+e);
 			}
 		}
 		return t;
@@ -43,7 +43,7 @@ public class Future<T> {
 	/**
 	 * Resolves the result of this Future object.
 	 */
-	public void resolve (T result) {
+	public synchronized void resolve (T result) {
 		t=result;
 		done=true;
 		notifyAll();

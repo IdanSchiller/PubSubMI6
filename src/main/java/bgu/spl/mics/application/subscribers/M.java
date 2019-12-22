@@ -21,7 +21,7 @@ public class M extends Subscriber {
 	public M(int ticksLimit,Integer id) {
 		super("M "+id.toString());
 		this.ticksLimit =ticksLimit;
-		id=id;
+		this.id=id;
 		// TODO Implement this
 	}
 
@@ -45,7 +45,6 @@ public class M extends Subscriber {
 			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
 			Future<Pair<List<String>, Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
 			Pair<List<String>, Integer> agentsFutureResult = agentsFuture.get();
-			System.out.println("null or not");
 			if (agentsFutureResult.getValue1() == null) { // not all agents exist in the squad
 				Diary.getInstance().incrementTotal();
 			} else { // all agents exist in the squad
@@ -56,14 +55,14 @@ public class M extends Subscriber {
 				if (gadgFuture == null) { // gadget doesn't exist in the inventory
 					Diary.getInstance().incrementTotal();
 				} else { // gadget exists in the inventory
-					if (missionEvent.getMission().getTimeExpired() >= tickCounter) { // mission's time expired
+					if (missionEvent.getMission().getTimeExpired() < tickCounter) { // mission's time expired
 						Event<Boolean> releaseAgents = new ReleaseAgentsEvent<>(serialAgentsList);
 						Future<Boolean> releaseAgentsFut = this.getSimplePublisher().sendEvent(releaseAgents);
 						Diary.getInstance().incrementTotal();
 					} else { // all conditions to execute the mission are met and the agents are sent
 						Event<Boolean> sendAgents = new SendAgentsEvent<>(serialAgentsList, missionEvent.getMission().getDuration());
 						Future<Boolean> sendAgentsFut = this.getSimplePublisher().sendEvent(sendAgents);
-						Report r = new Report(missionEvent.getMission(), agentsFutureResult.getValue0(), id, agentsFutureResult.getValue1(), gadgFuture.get(), this.tickCounter);
+						Report r = new Report(missionEvent.getMission(), agentsFutureResult.getValue0(), this.id, agentsFutureResult.getValue1(), gadgFuture.get(), this.tickCounter);
 						Diary.getInstance().addReport(r);
 					}
 				}

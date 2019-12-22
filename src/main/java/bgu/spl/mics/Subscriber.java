@@ -132,27 +132,37 @@ public abstract class Subscriber extends RunnableSubPub {
                 Message currMS = MessageBrokerImpl.getInstance().awaitMessage(this);
                 String type = currMS.getClass().getName();
                 switch (type) {
-                    case TB:
+                    case TB: {
                         Callback<TickBroadcast> tickBroadcastCallBack = broadcastMap.get(TickBroadcast.class);
                         tickBroadcastCallBack.call((TickBroadcast) currMS);
-                    case MR:
+                        break;
+                    }
+                    case MR: {
                         Callback<MissionReceivedEvent> MRCallBack = eventMap.get(MissionReceivedEvent.class);
-                        MRCallBack.call((MissionReceivedEvent)currMS);
+                        MRCallBack.call((MissionReceivedEvent) currMS);
+                        break;
+                    }
                     case AA:
                         Callback<AgentsAvailableEvent> AACallBack =  eventMap.get(AgentsAvailableEvent.class);
                         AACallBack.call((AgentsAvailableEvent) currMS);
+                        break;
                     case GA:
                         Callback<GadgetAvailableEvent> GACallBack = eventMap.get(GadgetAvailableEvent.class);
                         GACallBack.call((GadgetAvailableEvent)currMS);
+                        break;
                     case SA:
                         Callback<SendAgentsEvent> SACallBack = eventMap.get(SendAgentsEvent.class);
                         SACallBack.call((SendAgentsEvent)currMS);
+                        break;
                     case RA:
                         Callback<ReleaseAgentsEvent> RACallBack = eventMap.get(ReleaseAgentsEvent.class);
                         RACallBack.call((ReleaseAgentsEvent)currMS);
+                        break;
                 }
 
-            }catch (Exception e){}
+            }catch (Exception e){
+                System.out.println("Subscriber Class: "+e);
+            }
         }
         System.out.println("terminated "+this.getName());
     }

@@ -68,12 +68,17 @@ public class MessageBrokerImpl implements MessageBroker {
 		switch (type){
 			case MR:
 				((MissionReceivedEvent)e).getFuture().resolve(result);
+				break;
 			case AA:
-				((AgentsAvailableEvent)e).getFuture().resolve(result);
+				Future<T> currFut = ((AgentsAvailableEvent)e).getFuture();
+				currFut.resolve(result);
+				break;
 			case GA:
 				((GadgetAvailableEvent)e).getFuture().resolve(result);
+				break;
 			case SA:
 				((SendAgentsEvent)e).getFuture().resolve(result);
+				break;
 			case RA:
 				((ReleaseAgentsEvent)e).getFuture().resolve(result);
 				break;
@@ -102,34 +107,34 @@ public class MessageBrokerImpl implements MessageBroker {
 		String eventClass = e.getClass().getName();
 		switch (eventClass){
 			case MR:
-				currFuture =  ((MissionReceivedEvent) e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				((MissionReceivedEvent) e).setFuture(currFuture);
 				return currFuture;
 			case AA:
-				currFuture = ((AgentsAvailableEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				((AgentsAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case GA:
-				currFuture = ((GadgetAvailableEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				((GadgetAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case SA:
-				currFuture = ((SendAgentsEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				((SendAgentsEvent)e).setFuture(currFuture);
 				return currFuture;
 			case RA:
-				currFuture = ((ReleaseAgentsEvent)e).getFuture();
 				currSub = eventsMap.get(eventClass).take();
 				subsMap.get(currSub).put(e);
 				eventsMap.get(eventClass).put(currSub);
+				((ReleaseAgentsEvent)e).setFuture(currFuture);
 				return currFuture;
 		}
 		return currFuture;
