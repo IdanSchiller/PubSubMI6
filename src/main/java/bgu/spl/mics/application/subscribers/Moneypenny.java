@@ -41,7 +41,7 @@ public class Moneypenny extends Subscriber {
 		};
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
 		Callback<AgentsAvailableEvent> agentsCallBack = (agentsEvent) -> {
-			System.out.println("MP"+id+"--GOT:"+agentsEvent.getAgentsSerialNum()+"<<M"+agentsEvent.getmId()+"--AT"+tickCounter);
+			System.out.println("MP"+id+"--GOT: AGENT AVAIL: "+agentsEvent.getAgentsSerialNum()+"<<M"+agentsEvent.getmId()+"--AT"+tickCounter);
 			Boolean allAgentsExist = Squad.getInstance().getAgents(agentsEvent.getAgentsSerialNum());
 			if(!allAgentsExist){
 				this.complete(agentsEvent,null);
@@ -71,7 +71,7 @@ public class Moneypenny extends Subscriber {
 			complete(releaseAgentsEvent,true);
 			System.out.println("MP"+id+"--FINISH RELEASE: "+releaseAgentsEvent.getSerials()+"--AT: "+tickCounter);
 		};
-		if (this.id%2==0) {
+		if (this.id%2!=0) {
 			subscribeEvent(ReleaseAgentsEvent.class, releaseAgentsCB);
 		}
 	};

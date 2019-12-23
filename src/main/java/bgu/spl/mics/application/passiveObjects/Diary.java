@@ -93,9 +93,13 @@ public class Diary {
 		obj.put("reports", jsonReports);
 		obj.put("total", total);
 
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String prettyJson = gson.toJson(obj);
+
+
 		try{
 			FileWriter file = new FileWriter(filename);
-			file.write(obj.toJSONString());
+			file.write(prettyJson);
 			file.close();
 		}
 		catch (IOException e){

@@ -93,8 +93,12 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(!broadcastMap.isEmpty()) {
 			if(!broadcastMap.get(b.getClass().getName()).isEmpty()) {
 				List<Subscriber> list = broadcastMap.get(b.getClass().getName());
-				for (int i=0; i<list.size();i++) {
-					subsMap.get(list.get(i)).add(b);
+//				for (int i=0; i<list.size();i++) {
+//					subsMap.get(list.get(i)).add(b);
+//				}
+				for (Subscriber s: list)
+				{
+					subsMap.get(s).add(b);
 				}
 			}
 		}

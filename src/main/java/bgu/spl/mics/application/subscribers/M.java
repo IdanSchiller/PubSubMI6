@@ -43,7 +43,7 @@ public class M extends Subscriber {
 		};
 		this.subscribeBroadcast(TickBroadcast.class, tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
-			System.out.println("M"+id+"--GOT:"+missionEvent.getMission().getMissionName()+"INTEL"+missionEvent.getIntelId()+"--AT:"+tickCounter);
+			System.out.println("M"+id+"--GOT:"+missionEvent.getMission().getMissionName()+" INTEL"+missionEvent.getIntelId()+"--AT:"+tickCounter);
 			Future<Integer> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
 			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList,id);

@@ -1,8 +1,11 @@
 package bgu.spl.mics;
 
+import java.util.concurrent.CountDownLatch;
+
 abstract class RunnableSubPub implements Runnable {
     private final String name;
     private final SimplePublisher simplePublisher;
+    private CountDownLatch latch;
 
     /**
      * this method is called once when the event loop starts.
@@ -13,9 +16,10 @@ abstract class RunnableSubPub implements Runnable {
      * @param name the Publisher/Subscriber name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
-    RunnableSubPub(String name) {
+    RunnableSubPub(String name,CountDownLatch latch) {
         this.name = name;
         simplePublisher = new SimplePublisher();
+        this.latch=latch;
     }
 
     /**
