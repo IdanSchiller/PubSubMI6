@@ -10,6 +10,7 @@ import bgu.spl.mics.application.passiveObjects.Report;
 
 import java.util.ArrayList;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,16 +23,18 @@ public class Q extends Subscriber {
  	private Inventory inv;
  	private Integer tickCounter;
  	private long ticksLimit;
+ 	private CountDownLatch latch;
 
 //	private static class QHolder{
 //		private static Q instance=new Q();
 //	}
-	public Q(long ticksLimit){
+	public Q(long ticksLimit,CountDownLatch latch){
 		// innitiate fields
 		super("Q");
 		inv= Inventory.getInstance();
 		tickCounter=0;
 		this.ticksLimit=ticksLimit;
+		this.latch=latch;
 	}
 
  //TODO ziv
@@ -48,6 +51,7 @@ public class Q extends Subscriber {
 			}
 		};
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
+		latch.countDown();
 		Callback<GadgetAvailableEvent> GAE = (GadgetAvailableEvent gadgetAvailable) -> CheckGadgetAvailable(gadgetAvailable);
 		this.subscribeEvent(GadgetAvailableEvent.class,GAE);
 

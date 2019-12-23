@@ -34,7 +34,7 @@ public class Diary {
 	}
 	private Diary(){
 		reports = new ArrayList<>();
-		total= new AtomicInteger();
+		total= new AtomicInteger(0);
 	}
 	/**
 	 * Retrieves the single instance of this class.
@@ -53,7 +53,6 @@ public class Diary {
 	 */
 	public void addReport(Report reportToAdd){
 		reports.add(reportToAdd);
-		incrementTotal();
 	}
 
 	/**
@@ -117,7 +116,9 @@ public class Diary {
 	}
 
 	public void incrementTotal(){
+
 		total.getAndIncrement();
+		System.out.println("TOTAL++");
 	}
 
 

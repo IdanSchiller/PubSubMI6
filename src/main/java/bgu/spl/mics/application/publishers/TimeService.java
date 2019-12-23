@@ -45,7 +45,6 @@ public class TimeService extends Publisher {
 	protected void initialize() throws InterruptedException {
 		currTime = new AtomicInteger();
 		Thread.currentThread().setName(getName());
-		Thread.sleep(1000);
 	}
 	// TODO ziv
 	@Override

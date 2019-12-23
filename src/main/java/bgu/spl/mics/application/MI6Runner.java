@@ -32,10 +32,11 @@ public class MI6Runner {
 //        if (args[0] == null) {
 //
 //        }
+
         Gson gson = new Gson();
 //        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
 //        FileReader FR = new FileReader("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/input_.json");
-        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/tamirJson1.json");
+        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/SPL201test2.json");
         List<Thread> threads = new LinkedList<>();
 
 
@@ -58,7 +59,7 @@ public class MI6Runner {
         Integer mp = ser.getAsJsonObject().get("Moneypenny").getAsInt();
         Long timeLimit = ser.getAsJsonObject().get("time").getAsLong();
         JsonArray intelligenceJson = ser.getAsJsonObject().get("intelligence").getAsJsonArray();
-
+        CountDownLatch latch = new CountDownLatch(m+mp+intelligenceJson.size()+1);
         for(int i=0;i<intelligenceJson.size();i++)
         {
             JsonArray intel = intelligenceJson.get(i).getAsJsonObject().get("missions").getAsJsonArray();
@@ -86,15 +87,15 @@ public class MI6Runner {
                 mi.setTimeIssued(timeIssued);
                 missionInfoList.add(mi);
             }
-            threads.add( new Thread(new Intelligence(missionInfoList,i,timeLimit)));
+            threads.add( new Thread(new Intelligence(missionInfoList,i,timeLimit,latch)));
         }
         for(int i =0;i<m;i++)
         {
-            threads.add( new Thread(new M(timeLimit.intValue(),i)));
+            threads.add( new Thread(new M(timeLimit.intValue(),i,latch)));
         }
         for(int i =0;i<mp;i++)
         {
-            threads.add( new Thread(new Moneypenny(i,timeLimit)));
+            threads.add( new Thread(new Moneypenny(i,timeLimit,latch)));
         }
 
         /** squad */
@@ -110,14 +111,14 @@ public class MI6Runner {
         }
         Squad.getInstance().load(agents);
         /** Q and TimeService */
-        threads.add( new Thread(new Q(timeLimit)));
-        //threads.add( new Thread(new TimeService(timeLimit)));
+        threads.add( new Thread(new Q(timeLimit,latch)));
 
         /** run threads */
         for(Thread t : threads)
         {
             t.start();
         }
+        latch.await();
         Thread timeServiceThread = new Thread(new TimeService(timeLimit));
         timeServiceThread.start();
         threads.add(timeServiceThread);

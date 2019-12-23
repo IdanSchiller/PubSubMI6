@@ -6,6 +6,7 @@ import bgu.spl.mics.application.passiveObjects.MissionInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,10 +22,12 @@ public class Intelligence  extends Subscriber {
 		private Integer tickCounter;
 		private Map<Integer,MissionInfo> missionMap;
 		private Long ticksLimit;
+		private CountDownLatch latch;
 
-	public Intelligence(List<MissionInfo> missionList, Integer id, Long ticksLimit) {
+	public Intelligence(List<MissionInfo> missionList, Integer id, Long ticksLimit,CountDownLatch latch) {
 		super("Intelligence "+id.toString());
 		this.id=id;
+		this.latch=latch;
 		missionMap=new HashMap<>();
 		for (MissionInfo mission:missionList){
 			missionMap.put(mission.getTimeIssued(),mission);
@@ -53,6 +56,7 @@ public class Intelligence  extends Subscriber {
 			}
 		};
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);
+		latch.countDown();
 	}
 
 }

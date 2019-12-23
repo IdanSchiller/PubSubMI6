@@ -51,7 +51,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			eventsMap.put(type.getName(),new LinkedBlockingQueue<Subscriber>());
 		}
 		eventsMap.get(type.getName()).add(m);
-		System.out.println(m.getName()+" subscribed to "+type.toString().substring(19)+" events");
+		//System.out.println(m.getName()+" subscribed to "+type.toString().substring(19)+" events");
 	}
 
 	@Override
@@ -61,6 +61,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			broadcastMap.put(type.getName(),new LinkedList<Subscriber>());
 		}
 		broadcastMap.get(type.getName()).add(m);
+		//System.out.println(m.getName()+" subscribed to "+type.toString().substring(19)+" broadcast");
 	}
 
 	@Override
