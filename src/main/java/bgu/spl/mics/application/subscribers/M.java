@@ -34,7 +34,8 @@ public class M extends Subscriber {
 			this.tickCounter=tickBroadcast.getTick();
 			if (tickCounter== ticksLimit)
 			{
-				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+				Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+//				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
 				super.terminate();
 			}
 		};
