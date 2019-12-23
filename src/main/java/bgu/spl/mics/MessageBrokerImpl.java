@@ -89,7 +89,7 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void sendBroadcast(Broadcast b) {
+	public synchronized void sendBroadcast(Broadcast b) {
 		if(!broadcastMap.isEmpty()) {
 			if(!broadcastMap.get(b.getClass().getName()).isEmpty()) {
 				List<Subscriber> list = broadcastMap.get(b.getClass().getName());

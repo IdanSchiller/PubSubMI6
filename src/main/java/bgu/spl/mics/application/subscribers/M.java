@@ -52,8 +52,8 @@ public class M extends Subscriber {
 				String gadget = missionEvent.getMission().getGadget();
 				Event<Integer> gadgetEvent = new GadgetAvailableEvent(gadget);
 				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
-				Integer gadgFutureResault = gadgFuture.get();
-				if (gadgFuture == null) { // gadget doesn't exist in the inventory
+//				Integer gadgFutureResault = gadgFuture.get();
+				if (gadgFuture.get() == null) { // gadget doesn't exist in the inventory
 					Diary.getInstance().incrementTotal();
 				} else { // gadget exists in the inventory
 					if (missionEvent.getMission().getTimeExpired() < tickCounter) { // mission's time expired

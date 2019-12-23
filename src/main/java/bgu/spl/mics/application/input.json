@@ -3,7 +3,9 @@
         "Sky Hook",
         "Geiger counter",
         "X-ray glasses",
-        "Dagger shoe"
+        "Dagger shoe",
+        "cat",
+        "chair"
     ],
     "services": {
         "M": 2,
@@ -60,11 +62,35 @@
                         "name": "Thunderball",
                         "timeExpired": 15,
                         "timeIssued": 3
+                    },
+                    {
+                        "serialAgentsNumbers": [
+                            "007",
+                            "006",
+                            "0010"
+                        ],
+                        "duration": 15,
+                        "gadget": "cat",
+                        "name": "catMission",
+                        "timeExpired": 30,
+                        "timeIssued": 25
+                    },
+                    {
+                        "serialAgentsNumbers": [
+                            "0010",
+                            "006",
+                            "00100"
+                        ],
+                        "duration": 7,
+                        "gadget": "chair",
+                        "name": "idan the shark",
+                        "timeExpired": 49,
+                        "timeIssued": 47
                     }
                 ]
             }
         ],
-        "time": 25
+        "time": 50
     },
     "squad": [
         {
@@ -74,6 +100,14 @@
         {
             "name": "Alec Trevelyan",
             "serialNumber": "006"
+        },
+        {
+            "name": "Ziv Sinianski",
+            "serialNumber": "0010"
+        },
+        {
+            "name": "Idan Schiller",
+            "serialNumber": "00100"
         }
     ]
 }
