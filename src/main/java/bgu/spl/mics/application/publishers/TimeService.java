@@ -46,7 +46,6 @@ public class TimeService extends Publisher {
 		currTime = new AtomicInteger();
 		Thread.currentThread().setName(getName());
 		Thread.sleep(1000);
-		//?should he register to the messegebroker??
 	}
 	// TODO ziv
 	@Override
@@ -58,21 +57,15 @@ public class TimeService extends Publisher {
 		}
 		while (currTime.get()<ticksLimit)
 		{
-			if (currTime.get()<ticksLimit) {
-				currTime.getAndIncrement();
-				try {
-					System.out.println("sending current time: " + currTime.toString());
-					TimerTask newTask = NewTask(currTime);
-					newTask.run();
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					System.out.println("did not send "+currTime.get());
-				}
-
-			}
-			else {
-				System.out.println("aaa");
+			currTime.getAndIncrement();
+			try {
+				System.out.println("sending current time: " + currTime.toString());
+				TimerTask newTask = NewTask(currTime);
+				newTask.run();
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				System.out.println("did not send "+currTime.get());
 			}
 		}
 		timer.cancel();
@@ -109,8 +102,8 @@ public class TimeService extends Publisher {
 			public void run() {
 				//	currTime.getAndIncrement();
 				if (currentTime.get()!=ticksLimit+1){
-				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get()));
-				System.out.println("sent "+currentTime.get());
+					TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get()));
+					System.out.println("sent "+currentTime.get());
 				}else {
 					System.out.println("out of bound");
 				}

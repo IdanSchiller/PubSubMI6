@@ -96,6 +96,7 @@ public class Diary {
 		try{
 			FileWriter file = new FileWriter(filename);
 			file.write(obj.toJSONString());
+			file.close();
 		}
 		catch (IOException e){
 			e.printStackTrace();

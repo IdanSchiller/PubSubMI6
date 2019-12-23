@@ -164,6 +164,7 @@ public abstract class Subscriber extends RunnableSubPub {
                 System.out.println("Subscriber Class: "+e);
             }
         }
+        MessageBrokerImpl.getInstance().unregister(this);
         System.out.println("terminated "+this.getName());
     }
 
