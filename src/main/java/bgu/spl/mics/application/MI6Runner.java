@@ -33,7 +33,8 @@ public class MI6Runner {
 //        }
         Gson gson = new Gson();
 //        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
-        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
+        FileReader FR = new FileReader("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/input_.json");
+ //       FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
         List<Thread> threads = new LinkedList<>();
 
 
@@ -118,6 +119,18 @@ public class MI6Runner {
         }
         Thread timeServiceThread = new Thread(new TimeService(timeLimit));
         timeServiceThread.start();
+        threads.add(timeServiceThread);
+
+        for(Thread t : threads)
+        {
+            t.join();
+        }
+
+        Diary.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/diary.json");
+        Inventory.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/inventory.json");
+
+
+
 
 //        Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
 //        Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");

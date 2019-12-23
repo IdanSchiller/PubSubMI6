@@ -10,10 +10,17 @@ public class AgentsAvailableEvent<T> implements Event<T> {
     private Future<T> future=new Future<>();
     private List<String> agentsSerialNum;
 
+    public int getmId() {
+        return mId;
+    }
+
+    private int mId;
+
 
     // Constructor
-    public AgentsAvailableEvent(List<String> agentsSerialNum){
+    public AgentsAvailableEvent(List<String> agentsSerialNum,int mId){
         this.agentsSerialNum=agentsSerialNum;
+        this.mId=mId;
     }
 
     public List<String> getAgentsSerialNum() {

@@ -47,6 +47,7 @@ public class Squad {
 				notifyAll();
 			}
 		}
+		System.out.println("Agents released");
 	}
 
 	/**
@@ -54,7 +55,7 @@ public class Squad {
 	 * @param time   milliseconds to sleep
 	 */
 	public void sendAgents(List<String> serials, int time) throws InterruptedException {
-		Thread.sleep(time);
+		Thread.sleep(time*100);
 		this.releaseAgents(serials);
 	}
 
@@ -65,15 +66,18 @@ public class Squad {
 	 */
 	public synchronized boolean getAgents(List<String> serials) throws InterruptedException {
 		Collections.sort(serials); //TODO: check if sort is okay
-		for (String agentSerialNum: serials) {
+		for (String agentSerialNum : serials) {
 			if (!this.agentsMap.containsKey(agentSerialNum)) {
 				this.releaseAgents(serials);
 				return false;
+			} else  {
+				while (!this.agentsMap.get(agentSerialNum).isAvailable()) {
+					wait();
+				}
+				this.agentsMap.get(agentSerialNum).acquire();
 			}
-			else if (this.agentsMap.get(agentSerialNum).isAvailable()) {
-					this.agentsMap.get(agentSerialNum).acquire();
-			} else {wait(); } // waits till the agent is release (notified by Agent.release() method) and available again
 		}
+
 		return true;
 	}
 

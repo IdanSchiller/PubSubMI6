@@ -47,8 +47,9 @@ public class Intelligence  extends Subscriber {
 //			System.out.println("tick received" );
 			if (missionMap.containsKey(tickCounter))
 			{
-				Event<Boolean> missionEvent = new MissionReceivedEvent<>(missionMap.get(tickCounter));
+				Event<Boolean> missionEvent = new MissionReceivedEvent<>(missionMap.get(tickCounter),this.id);
 				Future<Boolean> dontCareFuture = this.getSimplePublisher().sendEvent(missionEvent);
+				System.out.println("Intelligence "+id+" sent mission: "+missionMap.get(tickCounter).getMissionName()+" at tick: "+tickCounter);
 			}
 		};
 		this.subscribeBroadcast(TickBroadcast.class,tickBroadcastCallback);

@@ -80,6 +80,7 @@ public class Inventory {
 		FileWriter file = new FileWriter(filename);
 		try{
 			file.write(obj.toString());
+			file.close();
 		}
 		catch (IOException e){
 			e.printStackTrace();

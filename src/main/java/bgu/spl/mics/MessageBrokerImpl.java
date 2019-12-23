@@ -45,12 +45,13 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public  <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
+	public synchronized  <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber m) throws InterruptedException {
 		if(!eventsMap.containsKey(type.getName()))
 		{
 			eventsMap.put(type.getName(),new LinkedBlockingQueue<Subscriber>());
 		}
-		eventsMap.get(type.getName()).put(m);
+		eventsMap.get(type.getName()).add(m);
+		System.out.println(m.getName()+" subscribed to "+type.toString().substring(19)+" events");
 	}
 
 	@Override
@@ -70,8 +71,7 @@ public class MessageBrokerImpl implements MessageBroker {
 				((MissionReceivedEvent)e).getFuture().resolve(result);
 				break;
 			case AA:
-				Future<T> currFut = ((AgentsAvailableEvent)e).getFuture();
-				currFut.resolve(result);
+				((AgentsAvailableEvent)e).getFuture().resolve(result);
 				break;
 			case GA:
 				((GadgetAvailableEvent)e).getFuture().resolve(result);
@@ -101,39 +101,39 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public  <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
+	public synchronized   <T> Future<T> sendEvent(Event<T> e) throws InterruptedException {
 		Subscriber currSub;
 		Future<T> currFuture = new Future<>();
 		String eventClass = e.getClass().getName();
 		switch (eventClass){
 			case MR:
-				currSub = eventsMap.get(eventClass).take();
-				subsMap.get(currSub).put(e);
-				eventsMap.get(eventClass).put(currSub);
+				currSub = eventsMap.get(eventClass).remove();
+				subsMap.get(currSub).add(e);
+				eventsMap.get(eventClass).add(currSub);
 				((MissionReceivedEvent) e).setFuture(currFuture);
 				return currFuture;
 			case AA:
-				currSub = eventsMap.get(eventClass).take();
-				subsMap.get(currSub).put(e);
-				eventsMap.get(eventClass).put(currSub);
+				currSub = eventsMap.get(eventClass).remove();
+				subsMap.get(currSub).add(e);
+				eventsMap.get(eventClass).add(currSub);
 				((AgentsAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case GA:
-				currSub = eventsMap.get(eventClass).take();
-				subsMap.get(currSub).put(e);
-				eventsMap.get(eventClass).put(currSub);
+				currSub = eventsMap.get(eventClass).remove();
+				subsMap.get(currSub).add(e);
+				eventsMap.get(eventClass).add(currSub);
 				((GadgetAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case SA:
-				currSub = eventsMap.get(eventClass).take();
-				subsMap.get(currSub).put(e);
-				eventsMap.get(eventClass).put(currSub);
+				currSub = eventsMap.get(eventClass).remove();
+				subsMap.get(currSub).add(e);
+				eventsMap.get(eventClass).add(currSub);
 				((SendAgentsEvent)e).setFuture(currFuture);
 				return currFuture;
 			case RA:
-				currSub = eventsMap.get(eventClass).take();
-				subsMap.get(currSub).put(e);
-				eventsMap.get(eventClass).put(currSub);
+				currSub = eventsMap.get(eventClass).remove();
+				subsMap.get(currSub).add(e);
+				eventsMap.get(eventClass).add(currSub);
 				((ReleaseAgentsEvent)e).setFuture(currFuture);
 				return currFuture;
 		}

@@ -59,7 +59,7 @@ public class TimeService extends Publisher {
 		{
 			currTime.getAndIncrement();
 			try {
-				System.out.println("sending current time: " + currTime.toString());
+			//	System.out.println("sending current time: " + currTime.toString());
 				TimerTask newTask = NewTask(currTime);
 				newTask.run();
 				Thread.sleep(100);
@@ -103,7 +103,7 @@ public class TimeService extends Publisher {
 				//	currTime.getAndIncrement();
 				if (currentTime.get()!=ticksLimit+1){
 					TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get()));
-					System.out.println("sent "+currentTime.get());
+					 System.out.println("sent "+currentTime.get());
 				}else {
 					System.out.println("out of bound");
 				}

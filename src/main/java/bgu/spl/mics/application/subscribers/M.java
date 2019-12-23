@@ -32,19 +32,23 @@ public class M extends Subscriber {
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) ->{
 			this.tickCounter=tickBroadcast.getTick();
+			//System.out.println("M "+id+" received tick number: "+tickBroadcast.getTick());
 			if (tickCounter== ticksLimit)
 			{
 //				Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
-				Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+				//Diary.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+				// Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
 				super.terminate();
 			}
 		};
 		this.subscribeBroadcast(TickBroadcast.class, tickBroadcastCallback);
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
+			System.out.println("M"+id+"--GOT:"+missionEvent.getMission().getMissionName()+"INTEL"+missionEvent.getIntelId()+"--AT:"+tickCounter);
 			Future<Integer> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.
 			List<String> serialAgentsList = missionEvent.getMission().getSerialAgentsNumbers();
-			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList);
+			Event<Pair<List<String>, Integer>> agentsEvent = new AgentsAvailableEvent<>(serialAgentsList,id);
 			Future<Pair<List<String>, Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
+			System.out.println("M"+id+"--AGENT AVAIL>>MP: "+missionEvent.getMission().getMissionName()+"--AT:"+tickCounter);
 			Pair<List<String>, Integer> agentsFutureResult = agentsFuture.get();
 			if (agentsFutureResult.getValue1() == null) { // not all agents exist in the squad
 				Diary.getInstance().incrementTotal();
@@ -54,13 +58,18 @@ public class M extends Subscriber {
 				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
 //				Integer gadgFutureResault = gadgFuture.get();
 				if (gadgFuture.get() == null) { // gadget doesn't exist in the inventory
+					System.out.println("M"+id+" --RELEASE AGENTS>>MP: "+missionEvent.getMission().getSerialAgentsNumbers()+"--AT:"+tickCounter);
+					Event<Boolean> releaseAgents = new ReleaseAgentsEvent<>(serialAgentsList);
+					Future<Boolean> releaseAgentsFut = this.getSimplePublisher().sendEvent(releaseAgents);
 					Diary.getInstance().incrementTotal();
 				} else { // gadget exists in the inventory
 					if (missionEvent.getMission().getTimeExpired() < tickCounter) { // mission's time expired
+						System.out.println("M"+id+" --RELEASE AGENTS>>MP: "+missionEvent.getMission().getSerialAgentsNumbers()+"--AT: "+tickCounter);
 						Event<Boolean> releaseAgents = new ReleaseAgentsEvent<>(serialAgentsList);
 						Future<Boolean> releaseAgentsFut = this.getSimplePublisher().sendEvent(releaseAgents);
 						Diary.getInstance().incrementTotal();
 					} else { // all conditions to execute the mission are met and the agents are sent
+						System.out.println("M"+id+" --SEND AGENTS>>MP: "+missionEvent.getMission().getSerialAgentsNumbers()+"--AT: "+tickCounter);
 						Event<Boolean> sendAgents = new SendAgentsEvent<>(serialAgentsList, missionEvent.getMission().getDuration());
 						Future<Boolean> sendAgentsFut = this.getSimplePublisher().sendEvent(sendAgents);
 						Report r = new Report(missionEvent.getMission(), agentsFutureResult.getValue0(), this.id, agentsFutureResult.getValue1(), gadgFuture.get(), this.tickCounter);

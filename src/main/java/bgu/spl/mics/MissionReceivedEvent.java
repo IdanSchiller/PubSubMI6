@@ -6,9 +6,16 @@ public class MissionReceivedEvent<T> implements Event<T> {
     private MissionInfo mission;
     private Future<T> future;
 
-    public MissionReceivedEvent(MissionInfo mission){
+    public int getIntelId() {
+        return intelId;
+    }
+
+    private int intelId;
+
+    public MissionReceivedEvent(MissionInfo mission,int intelId){
         this.mission=mission;
         this.future =  null;
+        this.intelId=intelId;
 
     }
 
