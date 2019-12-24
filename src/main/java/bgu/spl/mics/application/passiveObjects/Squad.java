@@ -39,12 +39,12 @@ public class Squad {
 	/**
 	 * Releases agents.
 	 */
-	public synchronized void releaseAgents(List<String> serials){
+	public  void releaseAgents(List<String> serials){
 		Collections.sort(serials);
 		for (String agentSerialNum: serials){
 			if (this.agentsMap.containsKey(agentSerialNum)) {
 				this.agentsMap.get(agentSerialNum).release();
-				notifyAll();
+				// notifyAll();
 			}
 		}
 		System.out.println("Agents released");
@@ -64,19 +64,20 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public synchronized boolean getAgents(List<String> serials) throws InterruptedException {
+	public  boolean getAgents(List<String> serials) throws InterruptedException {
 		Collections.sort(serials); //TODO: check if sort is okay
 		for (String agentSerialNum : serials) {
 			if (!this.agentsMap.containsKey(agentSerialNum)) {
 				this.releaseAgents(serials);
 				return false;
-			} else  {
-				while (!this.agentsMap.get(agentSerialNum).isAvailable()) {
-					wait();
-				}
+			}
+//			} else  {
+//				while (!this.agentsMap.get(agentSerialNum).isAvailable()) {
+//					wait();
+//				}
 				this.agentsMap.get(agentSerialNum).acquire();
 			}
-		}
+	//	}
 
 		return true;
 	}

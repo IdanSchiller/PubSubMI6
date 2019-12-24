@@ -97,9 +97,17 @@ public class MessageBrokerImpl implements MessageBroker {
 //				for (int i=0; i<list.size();i++) {
 //					subsMap.get(list.get(i)).add(b);
 //				}
-				for (Subscriber s: list)
-				{
-					subsMap.get(s).add(b);
+				long tick = ((TickBroadcast)b).getTick();
+				if ((tick==(((TickBroadcast)b).getLimit()))){
+					Object[] subArr = list.toArray();
+					for (int i = 0;i<subArr.length;i++){
+						subsMap.get(subArr[i]).add(b);
+					}
+				}
+				else {
+					for (Subscriber s : list) {
+						subsMap.get(s).add(b);
+					}
 				}
 			}
 		}
@@ -112,33 +120,58 @@ public class MessageBrokerImpl implements MessageBroker {
 		String eventClass = e.getClass().getName();
 		switch (eventClass){
 			case MR:
-				currSub = eventsMap.get(eventClass).remove();
-				subsMap.get(currSub).add(e);
-				eventsMap.get(eventClass).add(currSub);
+				if (eventsMap.get(eventClass).isEmpty()){
+					currFuture.resolve(null);
+				}
+				else {
+					currSub = eventsMap.get(eventClass).remove();
+					subsMap.get(currSub).add(e);
+					eventsMap.get(eventClass).add(currSub);
+				}
 				((MissionReceivedEvent) e).setFuture(currFuture);
 				return currFuture;
 			case AA:
-				currSub = eventsMap.get(eventClass).remove();
-				subsMap.get(currSub).add(e);
-				eventsMap.get(eventClass).add(currSub);
+				if (eventsMap.get(eventClass).isEmpty()){
+					currFuture.resolve(null);
+				}
+				else {
+					currSub = eventsMap.get(eventClass).remove();
+					subsMap.get(currSub).add(e);
+					eventsMap.get(eventClass).add(currSub);
+				}
 				((AgentsAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case GA:
-				currSub = eventsMap.get(eventClass).remove();
-				subsMap.get(currSub).add(e);
-				eventsMap.get(eventClass).add(currSub);
+				if (eventsMap.get(eventClass).isEmpty()){
+					currFuture.resolve(null);
+				}
+				else {
+					currSub = eventsMap.get(eventClass).remove();
+					subsMap.get(currSub).add(e);
+					eventsMap.get(eventClass).add(currSub);
+				}
 				((GadgetAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case SA:
-				currSub = eventsMap.get(eventClass).remove();
-				subsMap.get(currSub).add(e);
-				eventsMap.get(eventClass).add(currSub);
+				if (eventsMap.get(eventClass).isEmpty()){
+					currFuture.resolve(null);
+				}
+				else {
+					currSub = eventsMap.get(eventClass).remove();
+					subsMap.get(currSub).add(e);
+					eventsMap.get(eventClass).add(currSub);
+				}
 				((SendAgentsEvent)e).setFuture(currFuture);
 				return currFuture;
 			case RA:
-				currSub = eventsMap.get(eventClass).remove();
-				subsMap.get(currSub).add(e);
-				eventsMap.get(eventClass).add(currSub);
+				if (eventsMap.get(eventClass).isEmpty()){
+					currFuture.resolve(null);
+				}
+				else {
+					currSub = eventsMap.get(eventClass).remove();
+					subsMap.get(currSub).add(e);
+					eventsMap.get(eventClass).add(currSub);
+				}
 				((ReleaseAgentsEvent)e).setFuture(currFuture);
 				return currFuture;
 		}
@@ -153,12 +186,21 @@ public class MessageBrokerImpl implements MessageBroker {
 	@Override
 	public void unregister(Subscriber m) {
 		subsMap.remove(m);
-		for(String s: eventsMap.keySet()){
-			eventsMap.get(s).remove(m);
+		Object[] eventsArr = eventsMap.keySet().toArray();
+		for (int i=0;i<eventsArr.length;i++){
+			eventsMap.get(eventsArr[i]).remove(m);
 		}
-		for(String s: broadcastMap.keySet()){
-			broadcastMap.get(s).remove(m);
+//		for(String s: eventsMap.keySet()){
+//			eventsMap.get(s).remove(m);
+//		}
+		Object[] broadcastsArr = broadcastMap.keySet().toArray();
+		for (int i=0;i<broadcastsArr.length;i++){
+			broadcastMap.get(broadcastsArr[i]).remove(m);
 		}
+
+//		for(String s: broadcastMap.keySet()){
+//			broadcastMap.get(s).remove(m);
+//		}
 	}
 
 	@Override

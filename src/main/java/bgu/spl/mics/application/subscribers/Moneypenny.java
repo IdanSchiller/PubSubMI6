@@ -46,14 +46,14 @@ public class Moneypenny extends Subscriber {
 		latch.countDown();
 
 		Callback<AgentsAvailableEvent> agentsCallBack = (agentsEvent) -> {
-			//System.out.println("MP"+id+"--GOT: AGENT AVAIL: "+agentsEvent.getAgentsSerialNum()+"<<M"+agentsEvent.getmId()+"--AT"+tickCounter);
+			System.out.println("MP"+id+"--GOT: AGENT AVAIL: "+agentsEvent.getAgentsSerialNum()+"<<M"+agentsEvent.getmId()+"--AT"+tickCounter);
 			Boolean allAgentsExist = Squad.getInstance().getAgents(agentsEvent.getAgentsSerialNum());
 			if(!allAgentsExist){
 				this.complete(agentsEvent,null);
 			}else{
 				result = new Pair<>(Squad.getInstance().getAgentsNames(agentsEvent.getAgentsSerialNum()),id);
 				this.complete(agentsEvent, result);
-				//System.out.println("MP"+id+"--FINISHED:"+agentsEvent.getAgentsSerialNum()+" with result: "+agentsEvent.getFuture().get()+ "--AT"+tickCounter);
+				System.out.println("MP"+id+"--FINISHED:"+agentsEvent.getAgentsSerialNum()+" with result: "+agentsEvent.getFuture().get()+ "--AT"+tickCounter);
 			}
 		};
 		if (this.id%2==0) {
@@ -61,20 +61,20 @@ public class Moneypenny extends Subscriber {
 		}
 
 			Callback<SendAgentsEvent> sendAgentsCB = (sendAgentsEvent)->{
-				//System.out.println("MP"+id+"--GOT SEND:"+sendAgentsEvent.getSerials()+"--AT:"+tickCounter);
+				System.out.println("MP"+id+"--GOT SEND:"+sendAgentsEvent.getSerials()+"--AT:"+tickCounter);
 				Squad.getInstance().sendAgents(sendAgentsEvent.getSerials(),sendAgentsEvent.getDuration());
 			complete(sendAgentsEvent,true);
-				//System.out.println("MP"+id+"--FINISHED SENT:"+sendAgentsEvent.getSerials()+"--AT:"+tickCounter);
+				System.out.println("MP"+id+"--FINISHED SENT:"+sendAgentsEvent.getSerials()+"--AT:"+tickCounter);
 
 			};
 		if (this.id%2!=0) {
 			subscribeEvent(SendAgentsEvent.class, sendAgentsCB);
 		}
 		Callback<ReleaseAgentsEvent> releaseAgentsCB = releaseAgentsEvent -> {
-			//System.out.println("MP"+id+"--GOT RELEASE: "+releaseAgentsEvent.getSerials()+"--AT: "+tickCounter);
+			System.out.println("MP"+id+"--GOT RELEASE: "+releaseAgentsEvent.getSerials()+"--AT: "+tickCounter);
 			Squad.getInstance().releaseAgents(releaseAgentsEvent.getSerials());
 			complete(releaseAgentsEvent,true);
-			//System.out.println("MP"+id+"--FINISH RELEASE: "+releaseAgentsEvent.getSerials()+"--AT: "+tickCounter);
+			System.out.println("MP"+id+"--FINISH RELEASE: "+releaseAgentsEvent.getSerials()+"--AT: "+tickCounter);
 		};
 		if (this.id%2!=0) {
 			subscribeEvent(ReleaseAgentsEvent.class, releaseAgentsCB);

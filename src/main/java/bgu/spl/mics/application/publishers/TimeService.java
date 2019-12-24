@@ -28,14 +28,14 @@ public class TimeService extends Publisher {
 	public TimeService(Long ticksLimits) {
 		super("TimeService");
 		this.ticksLimit = ticksLimits;
-		task= new TimerTask() {
-			@Override
-			public void run() {
-				currTime.getAndIncrement();
-//				Broadcast tick = new TickBroadcast(currTime.get());
-				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currTime.get()));
-			}
-		};
+//		task= new TimerTask() {
+//			@Override
+//			public void run() {
+//				currTime.getAndIncrement();
+////				Broadcast tick = new TickBroadcast(currTime.get());
+//				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currTime.get()));
+//			}
+//		};
 		timer= new Timer("Timer");
 
 	}
@@ -101,7 +101,7 @@ public class TimeService extends Publisher {
 			public void run() {
 				//	currTime.getAndIncrement();
 				if (currentTime.get()!=ticksLimit+1){
-					TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get()));
+					TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get(),ticksLimit));
 					 System.out.println("sent "+currentTime.get());
 				}else {
 					System.out.println("out of bound");

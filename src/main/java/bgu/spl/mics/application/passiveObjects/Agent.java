@@ -57,15 +57,18 @@ public class Agent {
 	/**
 	 * Acquires an agent.
 	 */
-	public void acquire(){
+	public synchronized void acquire() throws InterruptedException {
+		while (!isAvailable){
+			wait();
+		}
 		isAvailable=false;
 	}
 
 	/**
 	 * Releases an agent.
 	 */
-	public void release(){
+	public synchronized void release(){
 		isAvailable=true;
-		// notifyAll();
+		 notifyAll();
 	}
 }
