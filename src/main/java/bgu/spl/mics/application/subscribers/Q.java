@@ -58,6 +58,7 @@ public class Q extends Subscriber {
 	}
 
 	private void CheckGadgetAvailable(GadgetAvailableEvent gadgetAvailable) throws InterruptedException {
+		System.out.println("Q RECEIVED " +gadgetAvailable.getGadget()+" AT: "+tickCounter);
 		int tick = tickCounter;
 		Boolean b=inv.getItem(gadgetAvailable.getGadget());
 		if (b){

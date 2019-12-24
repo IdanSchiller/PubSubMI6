@@ -52,13 +52,15 @@ public class M extends Subscriber {
 			Future<Pair<List<String>, Integer>> agentsFuture = this.getSimplePublisher().sendEvent(agentsEvent);
 			System.out.println("M"+id+"--AGENT AVAIL>>MP: "+missionEvent.getMission().getMissionName()+"--AT:"+tickCounter);
 			Pair<List<String>, Integer> agentsFutureResult = agentsFuture.get();
-			if (agentsFutureResult.getValue1() == null) { // not all agents exist in the squad
+			if (agentsFutureResult == null) { // not all agents exist in the squad
+				System.out.println("M-"+id+" RECEIVED ANS: NULL AFTER AAE");
 				//Diary.getInstance().incrementTotal();
 			} else { // all agents exist in the squad
+				System.out.println("M-"+id+" RECEIVED ANS: ALL AGENTS AVAIL");
 				String gadget = missionEvent.getMission().getGadget();
 				Event<Integer> gadgetEvent = new GadgetAvailableEvent(gadget);
-				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
 				System.out.println("M"+id+"--GADGET AVAIL>>Q: "+missionEvent.getMission().getMissionName()+"--AT:"+tickCounter);
+				gadgFuture = this.getSimplePublisher().sendEvent(gadgetEvent);
 //				Integer gadgFutureResault = gadgFuture.get();
 				if (gadgFuture.get() == null) { // gadget doesn't exist in the inventory
 					System.out.println("M"+id+" --RELEASE AGENTS>>MP: "+missionEvent.getMission().getSerialAgentsNumbers()+"--AT:"+tickCounter);

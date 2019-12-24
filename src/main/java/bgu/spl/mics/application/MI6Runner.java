@@ -33,7 +33,7 @@ public class MI6Runner {
 //        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
 //        FileReader FR = new FileReader("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/input_.json");
         FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/tamirJson1.json");
-       // FileReader FR = new FileReader(args[0]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+//        FileReader FR = new FileReader(args[0]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
         List<Thread> threads = new LinkedList<>();
 
 
@@ -136,8 +136,8 @@ public class MI6Runner {
 
 
 
-        // Inventory.getInstance().printToFile(args[2]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
-        //   Diary.getInstance().printToFile(args[1]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+//        Inventory.getInstance().printToFile(args[1]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+//        Diary.getInstance().printToFile(args[2]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
     }
 
 

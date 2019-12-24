@@ -5,6 +5,8 @@ import bgu.spl.mics.application.subscribers.Moneypenny;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -184,7 +186,14 @@ public class MessageBrokerImpl implements MessageBroker {
 	}
 
 	@Override
-	public void unregister(Subscriber m) {
+	public synchronized void unregister(Subscriber m)  {
+		System.out.println(m.getName()+ " UNREGISTERED");
+		try {
+			for (Message event : subsMap.get(m)){
+				this.complete((Event) event, null);
+			}
+		} catch (Exception e){
+			System.out.println("MB: "+e);}
 		subsMap.remove(m);
 		Object[] eventsArr = eventsMap.keySet().toArray();
 		for (int i=0;i<eventsArr.length;i++){

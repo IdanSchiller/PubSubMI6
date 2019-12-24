@@ -75,7 +75,7 @@ public interface MessageBroker {
      * <p>
      * @param s the Subscriber to unregister.
      */
-    void unregister(Subscriber s);
+    void unregister(Subscriber s) throws InterruptedException;
 
     /**
      * Using this method, a <b>registered</b> Subscriber can take message

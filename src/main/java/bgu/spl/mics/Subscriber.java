@@ -161,7 +161,7 @@ public abstract class Subscriber extends RunnableSubPub {
                 }
 
             }catch (Exception e){
-                System.out.println("Subscriber Class: "+e+" "+this.getName());
+                System.out.println("Subscriber Class: "+e+" "+this.getName()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
         }
 //        try {
@@ -169,7 +169,11 @@ public abstract class Subscriber extends RunnableSubPub {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        MessageBrokerImpl.getInstance().unregister(this);
+        try {
+            MessageBrokerImpl.getInstance().unregister(this);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("terminated "+this.getName());
     }
 
