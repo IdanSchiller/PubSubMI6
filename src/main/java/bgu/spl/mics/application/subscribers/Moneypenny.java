@@ -4,6 +4,7 @@ import bgu.spl.mics.*;
 import bgu.spl.mics.application.passiveObjects.Squad;
 import org.javatuples.Pair;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -20,6 +21,7 @@ public class Moneypenny extends Subscriber {
 	private Integer id;
 	private long ticksLimit;
 	private CountDownLatch latch;
+	private List<String> lastMissionAgents;
 
 	public Moneypenny(Integer id, long ticksLimit,CountDownLatch latch) {
 		super("MoneyPenny "+id.toString());
@@ -27,6 +29,7 @@ public class Moneypenny extends Subscriber {
 		this.id=id;
 		this.ticksLimit=ticksLimit;
 		this.latch=latch;
+		this.lastMissionAgents = null;
 	}
 
 	@Override
@@ -39,6 +42,9 @@ public class Moneypenny extends Subscriber {
 			// System.out.println("MoneyPenny "+id+" received tick number: "+tickBroadcast.getTick());
 			if (tickCounter== ticksLimit)
 			{
+				if (lastMissionAgents!=null) {
+					Squad.getInstance().releaseAgents(lastMissionAgents);
+				}
 				super.terminate();
 			}
 		};
@@ -51,6 +57,7 @@ public class Moneypenny extends Subscriber {
 			if(!allAgentsExist){
 				this.complete(agentsEvent,null);
 			}else{
+				lastMissionAgents=agentsEvent.getAgentsSerialNum();
 				result = new Pair<>(Squad.getInstance().getAgentsNames(agentsEvent.getAgentsSerialNum()),id);
 				this.complete(agentsEvent, result);
 				System.out.println("MP"+id+"--FINISHED:"+agentsEvent.getAgentsSerialNum()+" with result: "+agentsEvent.getFuture().get()+ "--AT"+tickCounter);
@@ -59,13 +66,11 @@ public class Moneypenny extends Subscriber {
 		if (this.id%2==0) {
 			this.subscribeEvent(AgentsAvailableEvent.class, agentsCallBack);
 		}
-
 			Callback<SendAgentsEvent> sendAgentsCB = (sendAgentsEvent)->{
 				System.out.println("MP"+id+"--GOT SEND:"+sendAgentsEvent.getSerials()+"--AT:"+tickCounter);
 				Squad.getInstance().sendAgents(sendAgentsEvent.getSerials(),sendAgentsEvent.getDuration());
-			complete(sendAgentsEvent,true);
+				complete(sendAgentsEvent,true);
 				System.out.println("MP"+id+"--FINISHED SENT:"+sendAgentsEvent.getSerials()+"--AT:"+tickCounter);
-
 			};
 		if (this.id%2!=0) {
 			subscribeEvent(SendAgentsEvent.class, sendAgentsCB);

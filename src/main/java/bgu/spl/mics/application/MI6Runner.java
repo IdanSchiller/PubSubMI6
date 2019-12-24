@@ -29,14 +29,12 @@ public class MI6Runner {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-//        if (args[0] == null) {
-//
-//        }
 
         Gson gson = new Gson();
 //        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
 //        FileReader FR = new FileReader("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/input_.json");
-        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
+        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/tamirJson1.json");
+       // FileReader FR = new FileReader(args[0]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
         List<Thread> threads = new LinkedList<>();
 
 
@@ -136,6 +134,11 @@ public class MI6Runner {
 
         Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
         Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
+
+
+
+        // Inventory.getInstance().printToFile(args[2]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+        //   Diary.getInstance().printToFile(args[1]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
     }
 
 

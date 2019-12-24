@@ -35,7 +35,7 @@ public class M extends Subscriber {
 		MessageBrokerImpl.getInstance().register(this);
 		Callback<TickBroadcast> tickBroadcastCallback = (TickBroadcast tickBroadcast) ->{
 			this.tickCounter=tickBroadcast.getTick();
-			System.out.println("M "+id+" GOT TICK: "+tickBroadcast.getTick());
+//			System.out.println("M "+id+" GOT TICK: "+tickBroadcast.getTick());
 			if (tickCounter== ticksLimit)
 			{
 				super.terminate();
