@@ -46,7 +46,7 @@ public class TimeService extends Publisher {
 		currTime = new AtomicInteger();
 		Thread.currentThread().setName(getName());
 	}
-	// TODO ziv
+
 	@Override
 	public void run() {
 		try {
