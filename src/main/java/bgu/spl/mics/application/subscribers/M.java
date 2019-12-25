@@ -7,6 +7,7 @@ import org.javatuples.Pair;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * M handles ReadyEvent - fills a report and sends agents to mission.
@@ -44,6 +45,7 @@ public class M extends Subscriber {
 		this.subscribeBroadcast(TickBroadcast.class, tickBroadcastCallback);
 		latch.countDown();
 		Callback<MissionReceivedEvent> MREcallBack = missionEvent -> {
+
 			Diary.getInstance().incrementTotal();
 			System.out.println("M"+id+"--GOT:"+missionEvent.getMission().getMissionName()+" INTEL"+missionEvent.getIntelId()+"--AT:"+tickCounter);
 			Future<Integer> gadgFuture = null; // so it will be out of "if"'s scope and can be used in the Report constructor.

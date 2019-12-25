@@ -28,15 +28,11 @@ public class Future<T> {
 	 * @return return the result of type T if it is available, if not wait until it is available.
 	 *
 	 */
-	public synchronized T get() {
+	public synchronized T get() throws InterruptedException {
 		while(!done)
 		{
-			try {
 				wait();
-			} catch (Exception e) {
-				System.out.println("Future Class: "+e);
 			}
-		}
 		return t;
 	}
 
@@ -67,7 +63,7 @@ public class Future<T> {
 	 * 	       wait for {@code timeout} TimeUnits {@code unit}. If time has
 	 *         elapsed, return null.
 	 */
-	public T get(long timeout, TimeUnit unit) {
+	public synchronized T get(long timeout, TimeUnit unit) {
 		if(done)
 		{
 			return t;
@@ -75,8 +71,9 @@ public class Future<T> {
 		else
 		{
 			try {
-				wait(unit.toMillis(timeout));
+				wait(unit.toMillis(timeout*100));
 			} catch (InterruptedException e) {
+
 				e.printStackTrace();
 			}
 			if(done)
@@ -84,6 +81,7 @@ public class Future<T> {
 				return t;
 			}
 		}
+		done=true;
 		return null;
 	}
 }

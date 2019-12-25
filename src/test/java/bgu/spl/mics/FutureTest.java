@@ -19,7 +19,7 @@ public class FutureTest {
         assertEquals(true,b);
     }
 
-    public void testResolve(){
+    public void testResolve() throws InterruptedException {
         boolean result= false;
         f.resolve(result);
         Object x=f.get();
@@ -27,7 +27,7 @@ public class FutureTest {
     }
 
     @Test
-    public void test(){
+    public void test() throws InterruptedException {
         testIsDone();
         testResolve();
         //TODO: change this test and add more tests :)

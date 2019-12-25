@@ -30,11 +30,15 @@ public class MI6Runner {
 
 
         Gson gson = new Gson();
-//        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/input.json");
+        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/SPL201test2.json");
 //        FileReader FR = new FileReader("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/input_.json");
-        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/tamirJson1.json");
+//        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/boaz-input2.json");
 //        FileReader FR = new FileReader(args[0]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+        List<Thread> IntellThreads = new LinkedList<>();
+        List<Thread> MThreads = new LinkedList<>();
+        List<Thread> MPThreads = new LinkedList<>();
         List<Thread> threads = new LinkedList<>();
+
 
 
         JsonReader read = new JsonReader(FR);
@@ -84,15 +88,16 @@ public class MI6Runner {
                 mi.setTimeIssued(timeIssued);
                 missionInfoList.add(mi);
             }
-            threads.add( new Thread(new Intelligence(missionInfoList,i,timeLimit,latch)));
+
+            IntellThreads.add( new Thread(new Intelligence(missionInfoList,i,timeLimit,latch)));
         }
         for(int i =0;i<m;i++)
         {
-            threads.add( new Thread(new M(timeLimit.intValue(),i,latch)));
+            MThreads.add( new Thread(new M(timeLimit.intValue(),i,latch)));
         }
         for(int i =0;i<mp;i++)
         {
-            threads.add( new Thread(new Moneypenny(i,timeLimit,latch)));
+            MPThreads.add( new Thread(new Moneypenny(i,timeLimit,latch)));
         }
 
         /** squad */
@@ -111,6 +116,18 @@ public class MI6Runner {
         threads.add( new Thread(new Q(timeLimit,latch)));
 
         /** run threads */
+        for(Thread t : MThreads)
+        {
+            t.start();
+        }
+        for(Thread t : MPThreads)
+        {
+            t.start();
+        }
+        for(Thread t : IntellThreads)
+        {
+            t.start();
+        }
         for(Thread t : threads)
         {
             t.start();
@@ -120,10 +137,37 @@ public class MI6Runner {
         timeServiceThread.start();
         threads.add(timeServiceThread);
 
-        for(Thread t : threads)
+
+        timeServiceThread.join();
+        for(Thread t : IntellThreads)
         {
             t.join();
         }
+        for(Thread t : threads)  //Q
+        {
+            t.join();
+        }
+
+        for(Thread t : MPThreads)
+        {
+            if(t.isAlive()){
+                t.interrupt();
+
+            }
+            t.join();
+        }
+        for(Thread t : MThreads)
+        {
+            if(t.isAlive()){
+                t.interrupt();
+
+            }
+            t.join();
+        }
+//        for(Thread t : threads)
+//        {
+//            t.join();
+//        }
 //
 //        Diary.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/diary.json");
 //        Inventory.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/inventory.json");
@@ -131,9 +175,12 @@ public class MI6Runner {
 
 
 
-        Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
-        Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
+//        Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
+//        Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
 
+
+        Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/Dairy.json");
+        Inventory.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/Inv.json");
 
 
 //        Inventory.getInstance().printToFile(args[1]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION

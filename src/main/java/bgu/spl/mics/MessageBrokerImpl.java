@@ -189,8 +189,10 @@ public class MessageBrokerImpl implements MessageBroker {
 	public synchronized void unregister(Subscriber m)  {
 		System.out.println(m.getName()+ " UNREGISTERED");
 		try {
-			for (Message event : subsMap.get(m)){
-				this.complete((Event) event, null);
+			for (Message message : subsMap.get(m)){
+				if (!message.getClass().getName().equals(TB)){
+				this.complete((Event) message, null);
+			}
 			}
 		} catch (Exception e){
 			System.out.println("MB: "+e);}
@@ -216,5 +218,6 @@ public class MessageBrokerImpl implements MessageBroker {
 	public Message awaitMessage(Subscriber m) throws InterruptedException {
 		return this.subsMap.get(m).take();
 	}
+
 
 }
