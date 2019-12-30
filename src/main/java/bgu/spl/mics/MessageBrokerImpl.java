@@ -77,9 +77,6 @@ public class MessageBrokerImpl implements MessageBroker {
 				((AgentsAvailableEvent)e).getFuture().resolve(result);
 				break;
 			case GA:
-				System.out.println("happened in complete-MB");
-				if (((GadgetAvailableEvent)e).getFuture()==null)
-					System.out.println("GA fut is null");
 				((GadgetAvailableEvent)e).getFuture().resolve(result);
 				break;
 			case SA:
@@ -99,9 +96,6 @@ public class MessageBrokerImpl implements MessageBroker {
 		if(!broadcastMap.isEmpty()) {
 			if(!broadcastMap.get(b.getClass().getName()).isEmpty()) {
 				List<Subscriber> list = broadcastMap.get(b.getClass().getName());
-//				for (int i=0; i<list.size();i++) {
-//					subsMap.get(list.get(i)).add(b);
-//				}
 				long tick = ((TickBroadcast)b).getTick();
 				if ((tick==(((TickBroadcast)b).getLimit()))){
 					Object[] subArr = list.toArray();

@@ -161,16 +161,10 @@ public abstract class Subscriber extends RunnableSubPub {
                 }
 
             }catch (NullPointerException e){
-                System.out.println("Subscriber Class: "+e+" "+this.getName()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }catch (InterruptedException e){
                 this.terminate();
             };
         }
-//        try {
-//            Thread.sleep(100);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         try {
             MessageBrokerImpl.getInstance().unregister(this);
         } catch (InterruptedException e) {

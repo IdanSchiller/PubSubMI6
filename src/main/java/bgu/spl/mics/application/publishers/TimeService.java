@@ -28,16 +28,7 @@ public class TimeService extends Publisher {
 	public TimeService(Long ticksLimits) {
 		super("TimeService");
 		this.ticksLimit = ticksLimits;
-//		task= new TimerTask() {
-//			@Override
-//			public void run() {
-//				currTime.getAndIncrement();
-////				Broadcast tick = new TickBroadcast(currTime.get());
-//				TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currTime.get()));
-//			}
-//		};
 		timer= new Timer("Timer");
-
 	}
 
 
@@ -58,53 +49,27 @@ public class TimeService extends Publisher {
 		{
 			currTime.getAndIncrement();
 			try {
-			//	System.out.println("sending current time: " + currTime.toString());
 				TimerTask newTask = NewTask(currTime);
 				newTask.run();
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				System.out.println("did not send "+currTime.get());
+//				System.out.println("did not send "+currTime.get());
 			}
 		}
 		timer.cancel();
 
 	}
 
-//		boolean terminate=false;
-//		while (!terminate){
-//			timer.schedule(NewTask(),100);
-//			TimerTask newTask = NewTask();
-//			if (currTime.get()<ticksLimit)
-//				try {
-//					currTime.getAndIncrement();
-//					timer.scheduleAtFixedRate(NewTask(currTime), 0, 100);
-//					System.out.println("sending current time: " +currTime.toString());
-//				} catch (Exception e) {
-//					final int CUURTIME = currTime.get();
-//					System.out.println("timer task problem " + CUURTIME + " " + e);
-//					currTime.getAndIncrement();
-//				}
-//			if (currTime.get()==ticksLimit) {
-//				terminate = true;
-//			}
-//		}
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-
 	private TimerTask NewTask(AtomicInteger currentTime) {
 		return new TimerTask() {
 			@Override
 			public void run() {
-				//	currTime.getAndIncrement();
 				if (currentTime.get()!=ticksLimit+1){
 					TimeService.super.getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime.get(),ticksLimit));
 					 System.out.println("sent "+currentTime.get());
 				}else {
-					System.out.println("out of bound");
+//					System.out.println("out of bound");
 				}
 			}
 		};

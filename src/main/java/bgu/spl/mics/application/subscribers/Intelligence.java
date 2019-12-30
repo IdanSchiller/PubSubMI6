@@ -56,13 +56,11 @@ public class Intelligence  extends Subscriber {
 			{
 				super.terminate();
 			}
-//			/** test */
-//			System.out.println("tick received" );
 			if (missionMap.containsKey(tickCounter)) {
 				for (MissionInfo mission : missionMap.get(tickCounter)) {
 					Event<Boolean> missionEvent = new MissionReceivedEvent<>(mission, this.id);
 					Future<Boolean> dontCareFuture = this.getSimplePublisher().sendEvent(missionEvent);
-					System.out.println("Intelligence " + id + " sent mission: " + mission.getMissionName() + " at tick: " + tickCounter);
+//					System.out.println("Intelligence " + id + " sent mission: " + mission.getMissionName() + " at tick: " + tickCounter);
 				}
 			}
 		};

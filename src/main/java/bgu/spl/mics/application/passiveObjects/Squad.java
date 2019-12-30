@@ -44,7 +44,6 @@ public class Squad {
 		for (String agentSerialNum: serials){
 			if (this.agentsMap.containsKey(agentSerialNum)) {
 				this.agentsMap.get(agentSerialNum).release();
-				// notifyAll();
 			}
 		}
 		System.out.println("Agents released");
@@ -71,14 +70,8 @@ public class Squad {
 				this.releaseAgents(serials);
 				return false;
 			}
-//			} else  {
-//				while (!this.agentsMap.get(agentSerialNum).isAvailable()) {
-//					wait();
-//				}
 				this.agentsMap.get(agentSerialNum).acquire();
 			}
-	//	}
-
 		return true;
 	}
 
