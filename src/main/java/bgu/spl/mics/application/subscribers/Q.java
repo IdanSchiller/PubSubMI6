@@ -61,10 +61,16 @@ public class Q extends Subscriber {
 		System.out.println("Q RECEIVED " +gadgetAvailable.getGadget()+" AT: "+tickCounter);
 		int tick = tickCounter;
 		Boolean b=inv.getItem(gadgetAvailable.getGadget());
+		System.out.println("happened 63");
+		if (b==null)
+			System.out.println("B is null");
 		if (b){
+			System.out.println("happened 66-IF");
 			this.complete(gadgetAvailable, tick);
+			System.out.println("happened 66");
 		}
 		else{
+			System.out.println("happened 70-ELSE");
 			this.complete(gadgetAvailable, null);
 		}
 

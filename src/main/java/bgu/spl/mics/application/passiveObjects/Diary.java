@@ -65,46 +65,21 @@ public class Diary {
 	public void printToFile(String filename) {
 
 		JSONArray jsonReports = new JSONArray();
-
-		for (Report r : reports)
-		{
-			JSONObject j = new JSONObject();
-			JSONArray agentsSerialNumbers = new JSONArray();
-			JSONArray agentsNames = new JSONArray();
-			agentsSerialNumbers.addAll(r.getAgentsSerialNumbersNumber());
-			agentsNames.addAll(r.getAgentsNames());
-
-
-			j.put("MissionName", r.getMissionName());
-			j.put("M", r.getMId());
-			j.put("MoneyPenny", r.getMoneypennyId());
-			j.put("agentsSerialNumbers", agentsSerialNumbers);
-			j.put("agentsName", agentsNames);
-			j.put("gadgetName", r.getGadgetName());
-			j.put("timeCreated", r.getTimeCreated());
-			j.put("timeIssued", r.getTimeIssued());
-			j.put("QTime", r.getQTime());
-
-
-			jsonReports.add(j);
+		for (Report r : reports) {
+			jsonReports.add(r);
 		}
 		JSONObject obj = new JSONObject();
 		obj.put("reports", jsonReports);
-		obj.put("total", total);
-
+		obj.put("total", getTotal());
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String prettyJson = gson.toJson(obj);
-
-
-		try{
+		try {
 			FileWriter file = new FileWriter(filename);
 			file.write(prettyJson);
 			file.close();
-		}
-		catch (IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**

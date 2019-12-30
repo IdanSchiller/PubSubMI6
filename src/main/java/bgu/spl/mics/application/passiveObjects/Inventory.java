@@ -61,7 +61,6 @@ public class Inventory {
 			gadgets.remove(gadget);
 			return true;
 		}
-		//TODO: Implement this
 		return false;
 	}
 

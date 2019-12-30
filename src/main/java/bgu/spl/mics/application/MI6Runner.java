@@ -30,10 +30,7 @@ public class MI6Runner {
 
 
         Gson gson = new Gson();
-        FileReader FR = new FileReader("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/SPL201test2.json");
-//        FileReader FR = new FileReader("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/input_.json");
-//        FileReader FR = new FileReader("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/boaz-input2.json");
-//        FileReader FR = new FileReader(args[0]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+        FileReader FR = new FileReader(args[0]);
         List<Thread> IntellThreads = new LinkedList<>();
         List<Thread> MThreads = new LinkedList<>();
         List<Thread> MPThreads = new LinkedList<>();
@@ -164,27 +161,10 @@ public class MI6Runner {
             }
             t.join();
         }
-//        for(Thread t : threads)
-//        {
-//            t.join();
-//        }
-//
-//        Diary.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/diary.json");
-//        Inventory.getInstance().printToFile("/home/idansch14/newSPLass2/src/main/java/bgu/spl/mics/application/inventory.json");
 
 
-
-
-//        Diary.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/dairy.json");
-//        Inventory.getInstance().printToFile("/users/studs/bsc/2020/zivsini/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/inv.json");
-
-
-        Diary.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/Dairy.json");
-        Inventory.getInstance().printToFile("/home/ziv/IdeaProjects/SPLass2/src/main/java/bgu/spl/mics/application/Inv.json");
-
-
-//        Inventory.getInstance().printToFile(args[1]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
-//        Diary.getInstance().printToFile(args[2]); //TODO: THIS SHOULD BE USED BEFORE SUBMISSION
+        Inventory.getInstance().printToFile(args[1]);
+        Diary.getInstance().printToFile(args[2]);
     }
 
 

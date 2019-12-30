@@ -77,6 +77,9 @@ public class MessageBrokerImpl implements MessageBroker {
 				((AgentsAvailableEvent)e).getFuture().resolve(result);
 				break;
 			case GA:
+				System.out.println("happened in complete-MB");
+				if (((GadgetAvailableEvent)e).getFuture()==null)
+					System.out.println("GA fut is null");
 				((GadgetAvailableEvent)e).getFuture().resolve(result);
 				break;
 			case SA:
@@ -120,6 +123,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		Subscriber currSub;
 		Future<T> currFuture = new Future<>();
 		String eventClass = e.getClass().getName();
+
 		switch (eventClass){
 			case MR:
 				if (eventsMap.get(eventClass).isEmpty()){
@@ -146,13 +150,14 @@ public class MessageBrokerImpl implements MessageBroker {
 			case GA:
 				if (eventsMap.get(eventClass).isEmpty()){
 					currFuture.resolve(null);
+					((GadgetAvailableEvent)e).setFuture(currFuture);
 				}
 				else {
+					((GadgetAvailableEvent)e).setFuture(currFuture);
 					currSub = eventsMap.get(eventClass).remove();
 					subsMap.get(currSub).add(e);
 					eventsMap.get(eventClass).add(currSub);
 				}
-				((GadgetAvailableEvent)e).setFuture(currFuture);
 				return currFuture;
 			case SA:
 				if (eventsMap.get(eventClass).isEmpty()){

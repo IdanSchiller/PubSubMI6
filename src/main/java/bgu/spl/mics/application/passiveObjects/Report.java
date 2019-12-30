@@ -11,21 +11,21 @@ import java.util.List;
 public class Report {
 
 	private String missionName;
-	private int mId;
-	private int mpId;
+	private int m;
+	private int moneypenny;
 	private List<String> agentsSerialNumbers;
 	private List<String> agentsNames;
 	private String gadgetName;
-	private int qTime;
-	private int timeIssued;
 	private int timeCreated;
+	private int timeIssued;
+	private int qTime;
 	/**
      * Retrieves the mission name.
      */
 	public Report(MissionInfo mission,List<String> agentsNames,int mId,int mpId,int qTime,int timeCreated){
 			missionName=mission.getMissionName();
-			this.mId=mId;
-			this.mpId=mpId;
+			this.m =mId;
+			this.moneypenny=mpId;
 			this.agentsSerialNumbers=mission.getSerialAgentsNumbers();
 			this.agentsNames=agentsNames;
 			this.gadgetName=mission.getGadget();
@@ -49,28 +49,28 @@ public class Report {
 	 * Retrieves the M's id.
 	 */
 	public int getMId() {
-		return mId;
+		return m;
 	}
 
 	/**
 	 * Sets the M's id.
 	 */
 	public void setM(int mId) {
-		this.mId=mId;
+		this.m =mId;
 	}
 
 	/**
 	 * Retrieves the Moneypenny's id.
 	 */
 	public int getMoneypennyId() {
-		return mpId;
+		return moneypenny;
 	}
 
 	/**
 	 * Sets the Moneypenny's id.
 	 */
 	public void setMoneypennyId(int moneyPennyId) {
-		mpId=moneyPennyId;
+		moneypenny=moneyPennyId;
 	}
 
 	/**
